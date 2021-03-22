@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Master_Intro : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+namespace EFN {
+	public class Master_Intro : MonoBehaviour {
+		private void Start() {
+			this.IntroProcess();
+		}
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+		private void IntroProcess() {
+			Global_Common.LoadScene(eSceneName.SceneMain.ToString());
+		}
+	}
 }
