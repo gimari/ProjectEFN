@@ -2,16 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Actor_Base : MonoBehaviour {
+namespace EFN.Game {
+	public class Actor_Base : MonoBehaviour {
 
-	private void Awake() {
-		this.OnAwake();
+		[SerializeField] private Graphic_Actor _graphic = default;
+		public Graphic_Actor Graphic {
+			get { return this._graphic; }
+		}
+
+		protected Vector2 _movDirection = default;
+		protected Vector2 _sightDirection = default;
+
+		private void Awake() {
+			this.OnAwake();
+		}
+
+		private void Start() {
+			this.OnStart();
+		}
+
+		protected virtual void OnStart() { }
+		protected virtual void OnAwake() { }
 	}
-
-	private void Start() {
-		this.OnStart();
-	}
-
-	protected virtual void OnStart() { }
-	protected virtual void OnAwake() { }
 }
