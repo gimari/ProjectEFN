@@ -1,9 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace EFN.Game {
-	public class Actor_Base : MonoBehaviour {
+	public class Actor_Base : MonoBehaviour, IPointerEnterHandler {
 
 		[SerializeField] private Graphic_Actor _graphic = default;
 		public Graphic_Actor Graphic {
@@ -23,5 +24,11 @@ namespace EFN.Game {
 
 		protected virtual void OnStart() { }
 		protected virtual void OnAwake() { }
+
+		protected virtual void OnTriggerEnter2D(Collider2D other) { }
+
+		public void OnPointerEnter(PointerEventData eventData) {
+			Debug.LogError("FUCK");
+		}
 	}
 }
