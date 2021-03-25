@@ -6,7 +6,7 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(Button))]
-public class Graphic_ToggleButton : MonoBehaviour, IPointerDownHandler, IPointerUpHandler {
+public class Graphic_ToggleButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
 	[SerializeField] private GameObject _targetObj = default;
 
@@ -16,7 +16,7 @@ public class Graphic_ToggleButton : MonoBehaviour, IPointerDownHandler, IPointer
 		this._graphicTargetList = _targetObj.GetComponentsInChildren<MaskableGraphic>();
 	}
 	
-	public void OnPointerDown(PointerEventData eventData) {
+	public void OnPointerEnter(PointerEventData eventData) {
 		_targetObj.SetActive(true);
 
 		foreach (MaskableGraphic graphic in this._graphicTargetList) {
@@ -25,10 +25,13 @@ public class Graphic_ToggleButton : MonoBehaviour, IPointerDownHandler, IPointer
 		}
 	}
 
-	public void OnPointerUp(PointerEventData eventData) {
+	private void OnDisable() {
+		_targetObj.SetActive(false);
+	}
+
+	public void OnPointerExit(PointerEventData eventData) {
 		foreach (MaskableGraphic graphic in this._graphicTargetList) {
 			graphic.DOFade(0, 0.2f);
 		}
 	}
-
 }

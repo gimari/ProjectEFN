@@ -6,6 +6,12 @@ using UnityEngine;
 namespace EFN {
 	public enum eEventType {
 		None = 0,
+
+		OpenStartMenu,
+
+		OpenTradeSelectPanel,
+
+		OpenDealerPanel,
 	}
 
 	public enum ePermanetEventType {
