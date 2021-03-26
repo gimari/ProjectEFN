@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 namespace EFN.Game {
-	public class Actor_Base : MonoBehaviour, IPointerEnterHandler {
+	public class Actor_Base : MonoBehaviour {
 
 		[SerializeField] private Graphic_Actor _graphic = default;
 		public Graphic_Actor Graphic {
@@ -12,6 +12,10 @@ namespace EFN.Game {
 		}
 
 		protected Vector2 _movDirection = default;
+		public Vector2 MoveDirection {
+			get { return this._movDirection; }
+		}
+
 		protected Vector2 _sightDirection = default;
 
 		private void Awake() {
@@ -26,9 +30,14 @@ namespace EFN.Game {
 		protected virtual void OnAwake() { }
 
 		protected virtual void OnTriggerEnter2D(Collider2D other) { }
+		protected virtual void OnTriggerExit2D(Collider2D other) { }
 
-		public void OnPointerEnter(PointerEventData eventData) {
-			Debug.LogError("FUCK");
+		public virtual void SetMoveDirection(Vector2 vec) {
+			this._movDirection = vec;
+		}
+
+		public virtual void SetSightDirection(Vector3 vec) {
+			this._sightDirection = (vec - Graphic.Pos).normalized;
 		}
 	}
 }

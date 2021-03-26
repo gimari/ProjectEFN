@@ -60,7 +60,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6540273158613722352}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!58 &3579644301325833236
 CircleCollider2D:
@@ -183,12 +183,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6540273158581974305}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 6540273158613722352}
-  m_RootOrder: 1
+  m_Father: {fileID: 6540273159221659296}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &6540273158581974335
 MonoBehaviour:
@@ -205,7 +205,7 @@ MonoBehaviour:
   m_LightType: 3
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.93934995, g: 0.9433962, b: 0.752047, a: 1}
   m_Intensity: 1
   m_LightVolumeOpacity: 0
   m_ApplyToSortingLayers: 00000000
@@ -261,7 +261,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6540273159221659296}
-  - {fileID: 6540273158581974334}
   - {fileID: 7271071870984436031}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -281,6 +280,7 @@ MonoBehaviour:
   _graphic: {fileID: 3832859083674229871}
   _playerArmObject: {fileID: 256437031421243796}
   _playerEnvironmentLight: {fileID: 6540273158581974335}
+  _playerCamera: {fileID: 0}
 --- !u!114 &2238118079345803259
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -337,6 +337,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: fd086a2d-f65f-4eaf-8b2c-8c0a81a67544
     m_ActionName: Actor/View[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: d1994b02-2ee4-4f65-97dc-66ff529ad225
+    m_ActionName: Actor/Interact[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Actor
@@ -374,6 +378,7 @@ Transform:
   - {fileID: 6540273157901299623}
   - {fileID: 6540273159261961364}
   - {fileID: 4687725994875518206}
+  - {fileID: 6540273158581974334}
   m_Father: {fileID: 6540273158613722352}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

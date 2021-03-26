@@ -13,6 +13,12 @@ namespace EFN {
 		StackOverflow = 10,
 	}
 
+	public enum eLayerMask {
+		Default = 0,
+		UI = 5,
+		Interactable = 8,
+	}
+
 	public class Global_Common {
 
 		[Conditional("EFN_DEBUG")]

@@ -19,11 +19,11 @@ namespace EFN.Game {
 			PlayerLookingProcess();
 		}
 
-		private void PlayerMovementProcess() {
+		protected virtual void PlayerMovementProcess() {
 			this.transform.position = (Vector2)this.transform.position + (_movDirection.normalized * Time.deltaTime * 2f);
 		}
 
-		private void PlayerLookingProcess() {
+		protected virtual void PlayerLookingProcess() {
 			_playerArmObject.transform.rotation = Quaternion.FromToRotation(Vector2.up, this._sightDirection);
 		}
 	}

@@ -8,8 +8,24 @@ namespace EFN.Game {
 		private static Actor_Base _selfPlayer = null;
 		public static Actor_Base SelfPlayer {
 			get { return Global_Actor._selfPlayer; }
+			set { _selfPlayer = value; }
 		}
 
+		public static class Interactable {
 
+			private static List<GameObject> _interactableActors = new List<GameObject>();
+
+			public static bool IsExist() {
+				return 0 < _interactableActors.Count;
+			}
+
+			public static void Add(GameObject Actor) {
+				_interactableActors.Add(Actor);
+			}
+
+			public static void Remove(GameObject Actor) {
+				_interactableActors.Remove(Actor);
+			}
+		}
 	}
 }

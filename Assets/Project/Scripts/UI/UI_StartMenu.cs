@@ -13,10 +13,11 @@ namespace EFN.Main {
 		}
 
 		public void OnClickExit() {
-			EFN.Global_Common.Quit();
+			Global_Common.Quit();
 		}
 
 		public void OnClickEnterEscape() {
+			Global_Common.LoadScene(eSceneName.SceneGame.ToString());
 		}
 
 		public void OnClickTrading() {

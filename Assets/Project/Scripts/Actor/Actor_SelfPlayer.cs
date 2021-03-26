@@ -3,11 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Experimental.Rendering.Universal;
 using UnityEngine.InputSystem;
+using DG.Tweening;
 
 namespace EFN.Game {
 
     [RequireComponent(typeof(PlayerInput))]
     public class Actor_SelfPlayer : Actor_Player {
+
+		protected override void OnAwake() {
+			Global_Actor.SelfPlayer = this;
+			base.OnAwake();
+		}
 
 		[Header("* Actor_SelfPlayer ---------------")]
 		/// <summary>
@@ -15,12 +21,12 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] private Light2D _playerEnvironmentLight = default;
 
-		public void Move(InputAction.CallbackContext context) {
-			this._movDirection = context.ReadValue<Vector2>();
-		}
+		[SerializeField] private Camera _playerCamera = default;
 
-		public void View(InputAction.CallbackContext context) {
-			this._sightDirection = (Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>()) - Graphic.Pos).normalized;
+		public override void SetSightDirection(Vector3 vec) {
+			base.SetSightDirection(vec);
+
+			_playerCamera.transform.localPosition = (new Vector3(this._sightDirection.x, this._sightDirection.y, -10));
 		}
 	}
 }
