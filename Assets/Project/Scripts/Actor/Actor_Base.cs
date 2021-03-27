@@ -16,7 +16,7 @@ namespace EFN.Game {
 			get { return this._movDirection; }
 		}
 
-		protected Vector2 _sightDirection = default;
+		protected Vector2 _sightDirection = Vector2.right;
 
 		private void Awake() {
 			this.OnAwake();

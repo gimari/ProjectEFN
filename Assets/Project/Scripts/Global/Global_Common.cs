@@ -17,6 +17,7 @@ namespace EFN {
 		Default = 0,
 		UI = 5,
 		Interactable = 8,
+		Wall = 9,
 	}
 
 	public class Global_Common {

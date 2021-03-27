@@ -14,6 +14,11 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] protected GameObject _playerArmObject = default;
 
+		/// <summary>
+		/// 총알 실제로 날라갈 총구부분
+		/// </summary>
+		[SerializeField] protected Transform _muzzle = default;
+
 		private void Update() {
 			PlayerMovementProcess();
 			PlayerLookingProcess();
@@ -24,7 +29,11 @@ namespace EFN.Game {
 		}
 
 		protected virtual void PlayerLookingProcess() {
+			Graphic.Flip(0 < this._sightDirection.x);
+
 			_playerArmObject.transform.rotation = Quaternion.FromToRotation(Vector2.up, this._sightDirection);
 		}
+
+		public virtual void Fire() { }
 	}
 }

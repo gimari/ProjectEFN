@@ -41,6 +41,22 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Fire"",
+                    ""type"": ""Button"",
+                    ""id"": ""654df9fe-5ed4-48c6-8ee4-d0f3223cc799"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                },
+                {
+                    ""name"": ""Zoom"",
+                    ""type"": ""Button"",
+                    ""id"": ""56c85fbf-a6c2-44b9-b1ea-bcce2fd5b9e3"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -120,6 +136,28 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Interact"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f26859b5-d89a-4703-8128-80214de92251"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Fire"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ad33312e-0d20-4a85-8161-4a9c8c46b3de"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Zoom"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -131,6 +169,8 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         m_Actor_Move = m_Actor.FindAction("Move", throwIfNotFound: true);
         m_Actor_View = m_Actor.FindAction("View", throwIfNotFound: true);
         m_Actor_Interact = m_Actor.FindAction("Interact", throwIfNotFound: true);
+        m_Actor_Fire = m_Actor.FindAction("Fire", throwIfNotFound: true);
+        m_Actor_Zoom = m_Actor.FindAction("Zoom", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,6 +223,8 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Actor_Move;
     private readonly InputAction m_Actor_View;
     private readonly InputAction m_Actor_Interact;
+    private readonly InputAction m_Actor_Fire;
+    private readonly InputAction m_Actor_Zoom;
     public struct ActorActions
     {
         private @EFNInputAction m_Wrapper;
@@ -190,6 +232,8 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         public InputAction @Move => m_Wrapper.m_Actor_Move;
         public InputAction @View => m_Wrapper.m_Actor_View;
         public InputAction @Interact => m_Wrapper.m_Actor_Interact;
+        public InputAction @Fire => m_Wrapper.m_Actor_Fire;
+        public InputAction @Zoom => m_Wrapper.m_Actor_Zoom;
         public InputActionMap Get() { return m_Wrapper.m_Actor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -208,6 +252,12 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Interact.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnInteract;
+                @Fire.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnFire;
+                @Fire.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnFire;
+                @Fire.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnFire;
+                @Zoom.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnZoom;
+                @Zoom.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnZoom;
+                @Zoom.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnZoom;
             }
             m_Wrapper.m_ActorActionsCallbackInterface = instance;
             if (instance != null)
@@ -221,6 +271,12 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
+                @Fire.started += instance.OnFire;
+                @Fire.performed += instance.OnFire;
+                @Fire.canceled += instance.OnFire;
+                @Zoom.started += instance.OnZoom;
+                @Zoom.performed += instance.OnZoom;
+                @Zoom.canceled += instance.OnZoom;
             }
         }
     }
@@ -230,5 +286,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         void OnMove(InputAction.CallbackContext context);
         void OnView(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
+        void OnFire(InputAction.CallbackContext context);
+        void OnZoom(InputAction.CallbackContext context);
     }
 }

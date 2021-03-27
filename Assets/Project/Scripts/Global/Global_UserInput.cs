@@ -20,8 +20,27 @@ namespace EFN.Game {
 			Global_Actor.SelfPlayer.SetSightDirection(worldPoint);
 		}
 
-		public void TryInteract(InputAction.CallbackContext context) {
+		public void Fire(InputAction.CallbackContext context) {
+			if (context.phase != InputActionPhase.Started) {
+				return;
+			}
 
+			if (null == Global_Actor.SelfPlayer) {
+				return;
+			}
+
+			Global_Actor.SelfPlayer.Fire();
+			Graphic_GameCamera.Shake(5);
+		}
+
+		public void Zoom(InputAction.CallbackContext context) {
+			if (context.phase != InputActionPhase.Started) {
+				return;
+			}
+
+		}
+
+		public void TryInteract(InputAction.CallbackContext context) {
 			if (false == Global_Actor.Interactable.IsExist()) {
 				return;
 			}
