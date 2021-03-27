@@ -39,5 +39,9 @@ namespace EFN.Game {
 		public virtual void SetSightDirection(Vector3 vec) {
 			this._sightDirection = (vec - Graphic.Pos).normalized;
 		}
+
+		public virtual void Stop() {
+			this._movDirection = Vector2.zero;
+		}
 	}
 }

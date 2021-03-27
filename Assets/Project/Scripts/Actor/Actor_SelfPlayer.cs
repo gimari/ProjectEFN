@@ -22,12 +22,12 @@ namespace EFN.Game {
 		
 		protected override void PlayerMovementProcess() {
 			base.PlayerMovementProcess();
-			Graphic_GameCamera.UserTrackProcess(this._sightDirection + (Vector2)Graphic.Pos);
+			Graphic_GameCamera.UserTrackProcess(this._sightDirection, Graphic.Pos);
 		}
 
 		protected override void PlayerLookingProcess() {
 			base.PlayerLookingProcess();
-			Graphic_GameCamera.UserTrackProcess(this._sightDirection + (Vector2)Graphic.Pos);
+			Graphic_GameCamera.UserTrackProcess(this._sightDirection, Graphic.Pos);
 		}
 
 		public override void Fire() {
@@ -36,9 +36,18 @@ namespace EFN.Game {
 			// Debug.DrawLine(Graphic.Pos, (Vector2)Graphic.Pos + _sightDirection * 10, Color.red, 1f, false);
 
 			RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.Wall);
+
+			
+
 			if (rays) {
-				
-				Debug.LogError("SHOOT");
+
+				EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
+				info.Pos = rays.point;
+				info.RotateType = eEffectRotateType.Normal;
+				info.TargetNormal = rays.normal;
+				info.Duration = 1f;
+
+				Global_Effect.ShowEffect(info);
 			}
 		}
 	}

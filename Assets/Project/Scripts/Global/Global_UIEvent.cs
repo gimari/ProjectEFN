@@ -8,10 +8,16 @@ namespace EFN {
 		None = 0,
 
 		OpenStartMenu,
-
 		OpenTradeSelectPanel,
-
 		OpenDealerPanel,
+
+		ToggleIngameInven,			// 인게임 인벤토리 열음
+		OpenInvenWithRoot,			// 루팅열면서 인벤 열음
+
+		TryPickSlot,				// 아이템 슬롯 픽킹햇음.
+		EndPickSlot,				// 아이템 슬롯 픽 끝
+
+		OnEndFocus,
 	}
 
 	public enum ePermanetEventType {
@@ -297,6 +303,29 @@ namespace EFN {
 			} else {
 				// 이벤트에 함수 추가.
 				table[parseType].AddFunction<EventFunc<T1, T2, T3>>(func);
+			}
+		}
+
+		public static class Focus {
+
+			private static GameObject _focusTarget = null;
+
+			/// <summary>
+			/// 기적의 C# 스크립트 덕분에 댕글링 걱정은 필요 없다.
+			/// </summary>
+			public static bool IsFocusing {
+				get { return _focusTarget != null; }
+			}
+
+			/// <summary>
+			/// SetFocus 에 target 이 null 이오던말던 신경쓰지 않는다.
+			/// </summary>
+			public static void SetFocus(GameObject target) {
+				_focusTarget = target;
+			}
+
+			public static void EndFocus() {
+				_focusTarget = null;
 			}
 		}
 	}
