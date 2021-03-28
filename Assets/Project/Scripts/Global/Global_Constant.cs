@@ -10,6 +10,6 @@ namespace EFN {
 	}
 
 	public class Global_Constant {
-
+		public const int MAX_QUICKSLOT_SIZE = 10;
 	}
 }

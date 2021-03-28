@@ -9,6 +9,7 @@ namespace EFN {
 		private bool _stackable = true;
 		public bool Stackable {
 			get { return this._stackable; }
+			set { this._stackable = value; }
 		}
 
 		public bool IsFullStack {

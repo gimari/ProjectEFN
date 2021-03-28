@@ -16,6 +16,7 @@ namespace EFN {
 
 		TryPickSlot,				// 아이템 슬롯 픽킹햇음.
 		EndPickSlot,				// 아이템 슬롯 픽 끝
+		RegistQuickSlot,			// 퀵슬롯 등록
 
 		OnEndFocus,
 	}

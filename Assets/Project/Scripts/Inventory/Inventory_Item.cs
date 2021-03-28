@@ -8,14 +8,14 @@ namespace EFN {
 
         protected SortedDictionary<int, Data_Item> _inventoryList = new SortedDictionary<int, Data_Item>();
 
-        public void AddInventory(Data_Item item) {
+        public virtual void AddInventory(Data_Item item) {
             int firstIdx = GetFirstIdx();
 
             this._inventoryList.Add(firstIdx, item);
             item.SlotIndex = firstIdx;
         }
 
-        public int GetFirstIdx() {
+        public virtual int GetFirstIdx() {
             int rv = 0;
 
             while(true == _inventoryList.ContainsKey(rv)) {
@@ -25,36 +25,67 @@ namespace EFN {
             return rv;
         }
 
-        public void AddInventory(Data_Item item, int slotIdx) {
+		/// <summary>
+		/// 같은 인벤토리 내부에서 특정 아이템을 다른 슬롯으로 옮길 때!!
+		/// </summary>
+        public virtual eErrorCode AddInventory(Data_Item fromItem, int targetIdx) {
 
-            if (item.Stackable == false) {
-                return;
-            }
+			int fromIdx = fromItem.SlotIndex;
 
-            Data_Item target = null;
-            this._inventoryList.TryGetValue(slotIdx, out target);
+			Data_Item target = null;
+            this._inventoryList.TryGetValue(targetIdx, out target);
+
+			// 들어가려 하는 슬롯에 없으면 null 로 처리
             if (null == target) {
-                this._inventoryList.Add(slotIdx, item);
-                item.SlotIndex = slotIdx;
-                return;
+                this._inventoryList.Add(targetIdx, fromItem);
+                fromItem.SlotIndex = targetIdx;
+
+				// 성공적으로 자리 바꿈. 기존거에서 지우고 나감
+				this._inventoryList.Remove(fromIdx);
+				return eErrorCode.Success;
             }
 
-            if (target.Key != item.Key) {
-                return;
-            }
+			// 키가 다르거나, 이미 있는애가 스택이 안되거나, 스택이 꽉차있으면 서로 교체
+            if (target.Key != fromItem.Key || target.Stackable == false || target.IsFullStack == true) {
+				int swapIndex = target.SlotIndex;
 
-            if (target.Stackable == false) {
-                return;
-            }
+				this._inventoryList[fromItem.SlotIndex] = target;
+				target.SlotIndex = fromItem.SlotIndex;
 
-            if (target.IsFullStack == true) {
-                return;
-            }
+				this._inventoryList[swapIndex] = fromItem;
+				fromItem.SlotIndex = swapIndex;
 
-            eErrorCode rv = target.AddStack(item);
-            if (rv == eErrorCode.StackOverflow) {
-                // 스택이 초과되서 못 들어갈 때 처리
+				// 교체 성공.
+				return eErrorCode.Success;
             }
-        }
+			
+            eErrorCode rv = target.AddStack(fromItem);
+
+			// 성공시에만 기존 자리에서 지운다.
+            if (rv == eErrorCode.Success) {
+				this._inventoryList.Remove(fromIdx);
+			}
+
+			return rv;
+		}
+
+		/// <summary>
+		/// 각기 다른 두개의 인벤토리에서 슬롯을 서로 옮길 때!!
+		/// </summary>
+		public virtual eErrorCode AddInventory(Data_Item item, int slotIdx, Inventory_Item externalInven) {
+			if (externalInven == this) {
+				return AddInventory(item, slotIdx);
+			}
+
+			return eErrorCode.Success;
+		}
+
+		public virtual void Use(int slotIdx) {
+			if (false == this._inventoryList.ContainsKey(slotIdx)) {
+				return;
+			}
+
+			this._inventoryList[slotIdx].OnUse();
+		}
     }
 }

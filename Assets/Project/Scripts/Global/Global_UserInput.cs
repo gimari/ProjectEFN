@@ -6,6 +6,14 @@ using UnityEngine.InputSystem;
 namespace EFN.Game {
 	public class Global_UserInput : MonoBehaviour {
 
+		private static Global_UserInput _instance = null;
+
+		private void Awake() {
+			_instance = this;
+		}
+
+		private Data_Item[] _quickSlotList = new Data_Item[Global_Constant.MAX_QUICKSLOT_SIZE];
+
 		public void Move(InputAction.CallbackContext context) {
 
 			if (true == Global_UIEvent.Focus.IsFocusing) { return; }
@@ -73,6 +81,14 @@ namespace EFN.Game {
 			if (null == Global_Actor.SelfPlayer) { return; }
 
 			Global_UIEvent.CallUIEvent(eEventType.ToggleIngameInven);
+		}
+		
+		public void QuickSlot(InputAction.CallbackContext context) {
+			if (context.phase != InputActionPhase.Started) { return; }
+
+			if (null == Global_Actor.SelfPlayer) { return; }
+			
+			(Global_Actor.SelfPlayer.ActorInventory as Inventory_SelfPlayer).UseQuickSlot(int.Parse(context.control.name));
 		}
 	}
 }

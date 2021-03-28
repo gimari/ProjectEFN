@@ -65,6 +65,14 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""QuickSlot"",
+                    ""type"": ""Button"",
+                    ""id"": ""8e300899-3f15-4464-8c89-3cd0c590b5ae"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -177,6 +185,116 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Inventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7cee36e0-f070-46dd-bbca-8fde8a5b3eac"",
+                    ""path"": ""<Keyboard>/0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""39ca00e9-5457-41ba-9bd1-4cf6e7a86437"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""db4d3759-a932-4790-ba85-ca62d0b600fa"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""967e3f00-8384-46f8-9392-726949685b29"",
+                    ""path"": ""<Keyboard>/3"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4aa89732-0c91-47b7-9230-d7e9a00454c9"",
+                    ""path"": ""<Keyboard>/4"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a9e4c4a7-2c21-4d2f-bb40-c102f4de9934"",
+                    ""path"": ""<Keyboard>/5"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""67865d1e-6693-47d4-b118-eb211102885e"",
+                    ""path"": ""<Keyboard>/6"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4971de59-e8fb-4660-b7bd-9266453bbfbc"",
+                    ""path"": ""<Keyboard>/7"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""241587ec-2ae0-44f8-aedb-4027c59644c3"",
+                    ""path"": ""<Keyboard>/8"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f366c2bd-ec50-4855-9395-d8518f53402e"",
+                    ""path"": ""<Keyboard>/9"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuickSlot"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -191,6 +309,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         m_Actor_Fire = m_Actor.FindAction("Fire", throwIfNotFound: true);
         m_Actor_Zoom = m_Actor.FindAction("Zoom", throwIfNotFound: true);
         m_Actor_Inventory = m_Actor.FindAction("Inventory", throwIfNotFound: true);
+        m_Actor_QuickSlot = m_Actor.FindAction("QuickSlot", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -246,6 +365,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Actor_Fire;
     private readonly InputAction m_Actor_Zoom;
     private readonly InputAction m_Actor_Inventory;
+    private readonly InputAction m_Actor_QuickSlot;
     public struct ActorActions
     {
         private @EFNInputAction m_Wrapper;
@@ -256,6 +376,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         public InputAction @Fire => m_Wrapper.m_Actor_Fire;
         public InputAction @Zoom => m_Wrapper.m_Actor_Zoom;
         public InputAction @Inventory => m_Wrapper.m_Actor_Inventory;
+        public InputAction @QuickSlot => m_Wrapper.m_Actor_QuickSlot;
         public InputActionMap Get() { return m_Wrapper.m_Actor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -283,6 +404,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Inventory.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnInventory;
                 @Inventory.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnInventory;
                 @Inventory.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnInventory;
+                @QuickSlot.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnQuickSlot;
+                @QuickSlot.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnQuickSlot;
+                @QuickSlot.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnQuickSlot;
             }
             m_Wrapper.m_ActorActionsCallbackInterface = instance;
             if (instance != null)
@@ -305,6 +429,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Inventory.started += instance.OnInventory;
                 @Inventory.performed += instance.OnInventory;
                 @Inventory.canceled += instance.OnInventory;
+                @QuickSlot.started += instance.OnQuickSlot;
+                @QuickSlot.performed += instance.OnQuickSlot;
+                @QuickSlot.canceled += instance.OnQuickSlot;
             }
         }
     }
@@ -317,5 +444,6 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnZoom(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
+        void OnQuickSlot(InputAction.CallbackContext context);
     }
 }

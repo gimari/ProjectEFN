@@ -12,8 +12,10 @@ namespace EFN.Game {
 		protected override void OnAwake() {
 			Global_Actor.SelfPlayer = this;
 			base.OnAwake();
-		}
 
+			_actorInventory = new Inventory_SelfPlayer();
+		}
+		
 		[Header("* Actor_SelfPlayer ---------------")]
 		/// <summary>
 		/// 현재 맵 시간, 날씨에 따라 실제 유저의 시야 밝기를 조절해줄 light
@@ -33,11 +35,7 @@ namespace EFN.Game {
 		public override void Fire() {
 			base.Fire();
 
-			// Debug.DrawLine(Graphic.Pos, (Vector2)Graphic.Pos + _sightDirection * 10, Color.red, 1f, false);
-
 			RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.Wall);
-
-			
 
 			if (rays) {
 
