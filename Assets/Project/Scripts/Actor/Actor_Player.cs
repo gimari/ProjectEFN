@@ -19,11 +19,6 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] protected Transform _muzzle = default;
 
-		protected Inventory_Item _actorInventory = null;
-		public Inventory_Item ActorInventory {
-			get { return this._actorInventory; }
-		}
-
 		private void Update() {
 			PlayerMovementProcess();
 			PlayerLookingProcess();

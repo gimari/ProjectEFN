@@ -14,6 +14,10 @@ namespace EFN {
 			get { return this._targetData; }
 		}
 
+		public bool IsEmpty() {
+			return _targetData == null;
+		}
+
 		private void Start() {
 			Data_Item data = new Data_Item(_debugItemType);
 			data.Stackable = false;

@@ -5,15 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace EFN.Game {
 	public class Global_UserInput : MonoBehaviour {
-
-		private static Global_UserInput _instance = null;
-
-		private void Awake() {
-			_instance = this;
-		}
-
-		private Data_Item[] _quickSlotList = new Data_Item[Global_Constant.MAX_QUICKSLOT_SIZE];
-
+		
 		public void Move(InputAction.CallbackContext context) {
 
 			if (true == Global_UIEvent.Focus.IsFocusing) { return; }
@@ -71,7 +63,12 @@ namespace EFN.Game {
 			RaycastHit2D rays = Physics2D.Raycast(worldPoint, transform.forward, 100, 1 << (int)eLayerMask.Interactable);
 
 			if (rays) {
-				Debug.LogFormat("You hit [{0}]", rays.collider.gameObject.name);
+				Actor_Base actor = rays.collider.gameObject.GetComponent<Actor_Base>();
+				if (null == actor) {
+					return;
+				}
+
+				Global_UIEvent.CallUIEvent<Actor_Base>(eEventType.TryInteractWith, actor);
 			}
 		}
 

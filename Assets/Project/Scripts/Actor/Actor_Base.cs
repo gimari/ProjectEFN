@@ -16,6 +16,11 @@ namespace EFN.Game {
 			get { return this._movDirection; }
 		}
 
+		protected Inventory_Item _actorInventory = null;
+		public virtual Inventory_Item ActorInventory {
+			get { return this._actorInventory; }
+		}
+
 		protected Vector2 _sightDirection = Vector2.right;
 
 		private void Awake() {

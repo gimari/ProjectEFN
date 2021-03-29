@@ -14,71 +14,67 @@ namespace EFN {
 		[SerializeField] private int _quickSlotIdx = default;
 		public int QuickSlotIdx {
 			get { return this._quickSlotIdx; }
+			set { this._quickSlotIdx = value; }
 		}
 
 		[Header("Components")]
 		[SerializeField] private GameObject _emptyImage = default;
+		[SerializeField] private Image _itemImage = default;
 
-		[SerializeField] private Transform _slotImage = default;
-		public Transform SlotImage {
-			get { return _slotImage; }
+		private Data_Item _targetData = null;
+		public Data_Item TargetData {
+			get { return this._targetData; }
+		}
+
+		/// <summary>
+		/// 이 슬롯이 들어가있는 인벤토리가 있어야 함..
+		/// 데이터가 잇으면 그걸 반환하면 되지만 없다면 지정해주어야 한다.
+		/// </summary>
+		private Inventory_Item _storedInventory = null;
+		public Inventory_Item StoredInventory {
+			get {
+				if (null != _targetData) {
+					return _targetData.StoredInventory;
+				} else {
+					return _storedInventory;
+				}
+			}
+
+			set { _storedInventory = value; }
 		}
 
 		public const float DEFAULT_ITEMSLOT_SIZE = 100f;
 
-		private void Awake() {
-			this.ImageResize();
+		public bool IsEmpty() {
+			return _targetData == null;
 		}
-		
-		/// <summary>
-		/// 지금 슬롯 사이즈에 맞게 이미지 크기를 같이 조정해줘야함
-		/// </summary>
-		private void ImageResize() {
-			
-			if (null != _emptyImage) {
-				_emptyImage.SetActive(null == _slotImage);
-			}
 
-			if (null == _slotImage) {
+		public virtual void UpdateItem(Data_Item data) {
+
+			this._targetData = data;
+
+			// empty?
+			if (null == data) {
+				ClearImage();
 				return;
 			}
 
-			_slotImage.transform.localPosition = Vector2.zero;
-			_slotImage.localScale = Vector3.one * (this.GetComponent<RectTransform>().rect.height / DEFAULT_ITEMSLOT_SIZE);
+			this._emptyImage.SetActive(false);
+			this._itemImage.gameObject.SetActive(true);
+
+			this._itemImage.sprite = Global_ItemIcon.GetSprite(data.ItemType.ToString());
+			this._itemImage.SetNativeSize();
+			this._itemImage.transform.localPosition = Vector2.zero;
+			this._itemImage.transform.localScale = Vector3.one * (this.GetComponent<RectTransform>().rect.height / DEFAULT_ITEMSLOT_SIZE);
 		}
 
 		public virtual void ClearImage() {
-			_slotImage = null;
+			_targetData = null;
+			this._itemImage.gameObject.SetActive(false);
 
 			if (null != _emptyImage) {
 				_emptyImage.SetActive(true);
 			}
-		}
-
-		/// <summary>
-		/// 이 슬롯에 특정 아이템을 등록해준다.
-		/// </summary>
-		/// <param name="image"></param>
-		public virtual eErrorCode SetImage(Transform image) {
-			// 이거 그냥 이렇게 seflplayer 에다가 직접하는거는 그냥 임시임. main 에서도 써야하니깐 일케하지말고 케이스 갈라서 따로해야함
-			if (null == Game.Global_Actor.SelfPlayer) {
-				return eErrorCode.Fail;
-			}
-
-			Graphic_Item target = image.GetComponent<Graphic_Item>();
-
-			// 인벤토리가 정상 반영 콜백.
-			eErrorCode rv = Game.Global_Actor.SelfPlayer.ActorInventory.AddInventory(target.TargetData, this._quickSlotIdx);
-			if (rv != eErrorCode.Success) {
-				return rv;
-			}
-
-			this._slotImage = image;
-			image.SetParent(this.transform);
-
-			this.ImageResize();
-
-			return rv;
 		}
 
 		/// <summary>

@@ -23,6 +23,14 @@ namespace EFN {
 		private long _price = 0;
 		private float _durability = 0;
 
+		// 이게 저장되어 있는 부모 인벤토리를 지정해줘야 한다.
+		// 부모 인벤토리가 없을 수도 있음.
+		private Inventory_Item _storedInventory = null;
+		public Inventory_Item StoredInventory {
+			get { return this._storedInventory; }
+			set { this._storedInventory = value; }
+		}
+
 		private eItemType _itemType;
 		public eItemType ItemType {
 			get { return this._itemType; }

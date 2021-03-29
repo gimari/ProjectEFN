@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EFN.Game {
-	public class UI_IngameInventory : UI_Ingame {
+namespace EFN.Main {
+    public class UI_MainInventory : MonoBehaviour {
 
 		[SerializeField] private GameObject _panel = default;
 		[SerializeField] private GameObject _interactPanel = default;
@@ -21,8 +21,6 @@ namespace EFN.Game {
 
 		private void Awake() {
 			Global_UIEvent.RegisterUIEvent(eEventType.UpdateUserInventory, UpdateUserInventory);
-			Global_UIEvent.RegisterUIEvent(eEventType.ToggleIngameInven, ToggleIngameInven);
-			Global_UIEvent.RegisterUIEvent<Actor_Base>(eEventType.TryInteractWith, TryInteractWith);
 		}
 
 		/// <summary>
@@ -37,12 +35,10 @@ namespace EFN.Game {
 				slot.ClearImage();
 			}
 
-			// selfplayer 가 잇으면?
-			if (null != Global_Actor.SelfPlayer) {
-				foreach (Graphic_ItemSlot slot in _indexedSlotList) {
-					slot.StoredInventory = Global_Actor.SelfPlayer.ActorInventory;
-					slot.UpdateItem(Global_Actor.SelfPlayer.ActorInventory.Get(slot.QuickSlotIdx));
-				}
+			// self inventory
+			foreach (Graphic_ItemSlot slot in _indexedSlotList) {
+				slot.StoredInventory = Global_SelfPlayerData.SelfInventory;
+				slot.UpdateItem(Global_SelfPlayerData.SelfInventory.Get(slot.QuickSlotIdx));
 			}
 
 			// 인터렉션중인 inven 이 잇으면?
@@ -57,29 +53,12 @@ namespace EFN.Game {
 			}
 		}
 
-		public void TryInteractWith(Actor_Base targetActor) {
-			_interactingInven = targetActor.ActorInventory;
-			Open();
-		}
-
-		public void ToggleIngameInven() {
-			if (true == this._panel.activeSelf) {
-				Close();
-			} else {
-				Open();
-			}
-		}
-
 		public void Close() {
-			_interactingInven = null;
 			this._panel.SetActive(false);
-			this.EndFocus();
 		}
 
 		public void Open() {
-			this.OnFocus();
 			this.UpdateUserInventory();
-
 			this._panel.SetActive(true);
 		}
 	}

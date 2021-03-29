@@ -8,7 +8,12 @@ using System.Linq;
 namespace EFN {
     public delegate void OnOneSecondLater_WithRemainTime(TimeSpan remainTime);
     public delegate void OnOneSecondLater();
-    public class Global_Time : MonoBehaviour {
+    public class Global_Time : MonoBehaviour, IDontDestroy {
+
+        public void Init() {
+            _instance = this;
+            Timer.StartTimerRoutine();
+        }
 
         public static class TimeScaler {
             private static Dictionary<int, bool> _popupRecorder = new Dictionary<int, bool>();
@@ -49,11 +54,6 @@ namespace EFN {
         }
 
         public static DateTime CurrentTime { get { return DateTime.UtcNow; } }
-
-        private void Awake() {
-            _instance = this;
-            Timer.StartTimerRoutine();
-        }
 
 #if UNITY_EDITOR
         /*
