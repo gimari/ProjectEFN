@@ -14,6 +14,10 @@ namespace EFN {
 		}
 
 		private Inventory_Item _stashInventory = null;
+		public static Inventory_Item StashInventory {
+			get { return _instance._stashInventory; }
+		}
+
 		private static Global_SelfPlayerData _instance = null;
 
 		public void Init() {
@@ -31,6 +35,9 @@ namespace EFN {
 
 			_selfInventory.AddInventory(item1, 4);
 			_selfInventory.AddInventory(item2, 3);
+
+			_stashInventory = new Inventory_Item();
+			_stashInventory.MaxDisplayIndex = 40;
 		}
 	}
 }

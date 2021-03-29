@@ -26,7 +26,8 @@ namespace EFN.Main {
 		}
 
 		public void OnClickCharacter() {
-
+			CloseMenu();
+			Global_UIEvent.CallUIEvent(eEventType.OpenMainInven);
 		}
 
 		private void CloseMenu() {

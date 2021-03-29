@@ -4,6 +4,10 @@ using UnityEngine;
 
 namespace EFN {
 	public class Master_Intro : MonoBehaviour {
+
+		private void Awake() {
+		}
+
 		private void Start() {
 			this.IntroProcess();
 		}

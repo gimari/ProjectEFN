@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace EFN.Main {
-    public class Master_Main : MonoBehaviour {
+namespace EFN.Game {
+	public class Master_Game : MonoBehaviour {
 
 		private void Awake() {
 #if !UNITY_EDITOR
-			Cursor.lockState = CursorLockMode.None;
+			Cursor.lockState = CursorLockMode.Confined;
 #endif
 		}
+
 	}
 }

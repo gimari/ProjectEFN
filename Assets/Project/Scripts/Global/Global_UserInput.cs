@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace EFN.Game {
 	public class Global_UserInput : MonoBehaviour {
-		
+
 		public void Move(InputAction.CallbackContext context) {
 
 			if (true == Global_UIEvent.Focus.IsFocusing) { return; }
@@ -15,16 +15,7 @@ namespace EFN.Game {
 			Global_Actor.SelfPlayer.SetMoveDirection(context.ReadValue<Vector2>());
 		}
 
-		public void View(InputAction.CallbackContext context) {
-
-			if (true == Global_UIEvent.Focus.IsFocusing) { return; }
-
-			if (null == Global_Actor.SelfPlayer) { return; }
-
-			Vector3 worldPoint = Camera.main.ScreenToWorldPoint(context.ReadValue<Vector2>());
-
-			Global_Actor.SelfPlayer.SetSightDirection(worldPoint);
-		}
+		public void View(InputAction.CallbackContext context) { }
 
 		public void Fire(InputAction.CallbackContext context) {
 
@@ -79,13 +70,19 @@ namespace EFN.Game {
 
 			Global_UIEvent.CallUIEvent(eEventType.ToggleIngameInven);
 		}
-		
+
 		public void QuickSlot(InputAction.CallbackContext context) {
 			if (context.phase != InputActionPhase.Started) { return; }
 
 			if (null == Global_Actor.SelfPlayer) { return; }
-			
+
 			(Global_Actor.SelfPlayer.ActorInventory as Inventory_SelfPlayer).UseQuickSlot(int.Parse(context.control.name));
+		}
+
+		public void PressExit(InputAction.CallbackContext context) {
+			if (context.phase != InputActionPhase.Started) { return; }
+
+			Global_Common.LoadScene(eSceneName.SceneMain.ToString());
 		}
 	}
 }

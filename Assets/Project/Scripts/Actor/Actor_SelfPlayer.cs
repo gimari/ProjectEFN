@@ -30,6 +30,14 @@ namespace EFN.Game {
 		}
 
 		protected override void PlayerLookingProcess() {
+
+			Vector3 screenPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - Graphic.Pos;
+
+			// Z포지션을 10 으로 줘가지고 좀더 시점을 자연스럽게 유도했음.
+			screenPos.z = 10;
+
+			this._sightDirection = screenPos.normalized;
+
 			base.PlayerLookingProcess();
 			Graphic_GameCamera.UserTrackProcess(this._sightDirection, Graphic.Pos);
 		}

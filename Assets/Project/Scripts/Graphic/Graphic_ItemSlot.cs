@@ -59,7 +59,10 @@ namespace EFN {
 				return;
 			}
 
-			this._emptyImage.SetActive(false);
+			if (null != _emptyImage) {
+				this._emptyImage.SetActive(false);
+			}
+
 			this._itemImage.gameObject.SetActive(true);
 
 			this._itemImage.sprite = Global_ItemIcon.GetSprite(data.ItemType.ToString());

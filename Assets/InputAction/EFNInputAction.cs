@@ -73,6 +73,14 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Exit"",
+                    ""type"": ""Button"",
+                    ""id"": ""e375d42a-f210-40d8-927f-c91dde52c27b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -295,6 +303,17 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""action"": ""QuickSlot"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b7de87e4-da9e-4872-aa65-d00e9d8ce437"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Exit"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -310,6 +329,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         m_Actor_Zoom = m_Actor.FindAction("Zoom", throwIfNotFound: true);
         m_Actor_Inventory = m_Actor.FindAction("Inventory", throwIfNotFound: true);
         m_Actor_QuickSlot = m_Actor.FindAction("QuickSlot", throwIfNotFound: true);
+        m_Actor_Exit = m_Actor.FindAction("Exit", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -366,6 +386,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Actor_Zoom;
     private readonly InputAction m_Actor_Inventory;
     private readonly InputAction m_Actor_QuickSlot;
+    private readonly InputAction m_Actor_Exit;
     public struct ActorActions
     {
         private @EFNInputAction m_Wrapper;
@@ -377,6 +398,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         public InputAction @Zoom => m_Wrapper.m_Actor_Zoom;
         public InputAction @Inventory => m_Wrapper.m_Actor_Inventory;
         public InputAction @QuickSlot => m_Wrapper.m_Actor_QuickSlot;
+        public InputAction @Exit => m_Wrapper.m_Actor_Exit;
         public InputActionMap Get() { return m_Wrapper.m_Actor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -407,6 +429,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @QuickSlot.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnQuickSlot;
                 @QuickSlot.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnQuickSlot;
                 @QuickSlot.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnQuickSlot;
+                @Exit.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnExit;
+                @Exit.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnExit;
+                @Exit.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnExit;
             }
             m_Wrapper.m_ActorActionsCallbackInterface = instance;
             if (instance != null)
@@ -432,6 +457,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @QuickSlot.started += instance.OnQuickSlot;
                 @QuickSlot.performed += instance.OnQuickSlot;
                 @QuickSlot.canceled += instance.OnQuickSlot;
+                @Exit.started += instance.OnExit;
+                @Exit.performed += instance.OnExit;
+                @Exit.canceled += instance.OnExit;
             }
         }
     }
@@ -445,5 +473,6 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         void OnZoom(InputAction.CallbackContext context);
         void OnInventory(InputAction.CallbackContext context);
         void OnQuickSlot(InputAction.CallbackContext context);
+        void OnExit(InputAction.CallbackContext context);
     }
 }

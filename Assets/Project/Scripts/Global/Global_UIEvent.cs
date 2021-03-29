@@ -11,6 +11,8 @@ namespace EFN {
 		OpenTradeSelectPanel,
 		OpenDealerPanel,
 
+		OpenMainInven,				// 메인 씬에서 인벤 열음
+
 		ToggleIngameInven,			// 인게임 인벤토리 열음
 		OpenInvenWithRoot,			// 루팅열면서 인벤 열음
 

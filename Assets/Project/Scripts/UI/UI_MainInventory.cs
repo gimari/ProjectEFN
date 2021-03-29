@@ -21,6 +21,15 @@ namespace EFN.Main {
 
 		private void Awake() {
 			Global_UIEvent.RegisterUIEvent(eEventType.UpdateUserInventory, UpdateUserInventory);
+			Global_UIEvent.RegisterUIEvent(eEventType.OpenMainInven, OpenMainInven);
+		}
+
+		/// <summary>
+		/// 메인화면에서 그냥 열면 유저 스태시랑 같이연다
+		/// </summary>
+		public void OpenMainInven() {
+			_interactingInven = Global_SelfPlayerData.StashInventory;
+			this.Open();
 		}
 
 		/// <summary>
@@ -60,6 +69,11 @@ namespace EFN.Main {
 		public void Open() {
 			this.UpdateUserInventory();
 			this._panel.SetActive(true);
+		}
+
+		public void OnClickBack() {
+			this.Close();
+			Global_UIEvent.CallUIEvent(eEventType.OpenStartMenu);
 		}
 	}
 }
