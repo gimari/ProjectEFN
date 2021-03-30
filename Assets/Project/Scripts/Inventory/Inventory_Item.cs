@@ -86,14 +86,14 @@ namespace EFN {
 				return eErrorCode.Fail;
 			}
 
-			// 같은 자리끼리는 의미가 없음.
-			if (fromItem.SlotIndex == targetIdx) {
-				return eErrorCode.Success;
-			}
-
 			// 들어온 애가 혹시나 다른곳에서 왓을수도 잇음
 			if (fromItem.StoredInventory != this) {
 				return AddInventory(fromItem, targetIdx, fromItem.StoredInventory);
+			}
+
+			// 같은 자리끼리는 의미가 없음.
+			if (fromItem.SlotIndex == targetIdx) {
+				return eErrorCode.Success;
 			}
 
 			int fromIdx = fromItem.SlotIndex;

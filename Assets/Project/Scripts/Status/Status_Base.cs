@@ -35,6 +35,6 @@ namespace EFN {
 
         public virtual bool Fireable { get { return false; } }
 
-        public virtual eItemType[] RequireItem() { return null; }
+        public virtual eItemType[] RequireItem { get { return null; } }
     }
 }

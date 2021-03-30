@@ -56,14 +56,11 @@ namespace EFN {
 		}
 
 		public virtual eErrorCode OnUse() {
-			// Debug.Log(StatusData.Name());
 			return eErrorCode.Fail;
 		}
 
 		public virtual eErrorCode Fire() {
 			return eErrorCode.Fail;
 		}
-
-		public virtual void OnDiscard() { }
 	}
 }

@@ -80,5 +80,22 @@ namespace EFN {
 		}
 
 		protected virtual void InitStatusData() { }
+
+		public virtual eErrorCode DecreaseItem() { 
+			if (this._stackCount <= 0) {
+				return eErrorCode.Fail;
+			}
+
+			this._stackCount--;
+			if (this._stackCount <= 0) {
+				OnDiscard();
+			}
+
+			return eErrorCode.Success;
+		}
+
+		public virtual void OnDiscard() {
+			
+		}
 	}
 }
