@@ -30,20 +30,20 @@ namespace EFN.Game {
 		}
 
 		protected override void PlayerLookingProcess() {
-
-			Vector3 screenPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - Graphic.Pos;
-
-			// Z포지션을 10 으로 줘가지고 좀더 시점을 자연스럽게 유도했음.
-			screenPos.z = 10;
-
-			this._sightDirection = screenPos.normalized;
-
 			base.PlayerLookingProcess();
 			Graphic_GameCamera.UserTrackProcess(this._sightDirection, Graphic.Pos);
 		}
 
 		public override void Fire() {
 			base.Fire();
+
+			// 현재 장착중인 무기
+			ePlayerSlotType currentEquipSlot = ePlayerSlotType.Holster;
+
+			// 먼저 발사 가능한지 체크.
+			if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot)) {
+				return;
+			}
 
 			RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.Wall);
 
@@ -57,6 +57,8 @@ namespace EFN.Game {
 
 				Global_Effect.ShowEffect(info);
 			}
+
+			Graphic_GameCamera.Shake(5);
 		}
 	}
 }

@@ -10,6 +10,7 @@ namespace EFN {
 
 		Armor_6B3TM,
 		Weapon_MP443,
+		AMMO_9X19AP,
 	}
 
 	[Flags]
@@ -17,39 +18,52 @@ namespace EFN {
 		None = 0,
 	}
 
+	[Serializable]
 	public class Data_Item : Data_Storable {
 
-		private eItemStatus _itemStatus = eItemStatus.None;
 		private long _price = 0;
 		private float _durability = 0;
 
-		// 이게 저장되어 있는 부모 인벤토리를 지정해줘야 한다.
-		// 부모 인벤토리가 없을 수도 있음.
-		private Inventory_Item _storedInventory = null;
+		/// <summary>
+		/// 이게 저장되어 있는 부모 인벤토리를 지정해줘야 한다.
+		/// 부모 인벤토리가 없을 수도 있음.
+		/// </summary>
+		[NonSerialized] private Inventory_Item _storedInventory = null;
 		public Inventory_Item StoredInventory {
 			get { return this._storedInventory; }
 			set { this._storedInventory = value; }
 		}
 
-		private eItemType _itemType;
+		[SerializeField] private eItemType _itemType;
 		public eItemType ItemType {
 			get { return this._itemType; }
 		}
 
-		private int _slotIndex = 0;
+		[SerializeField] private int _slotIndex = 0;
 		public int SlotIndex { 
 			get { return this._slotIndex; }
 			set { this._slotIndex = value; }
 		}
 
-		public Data_Item(eItemType itemType) {
+		public Data_Item(eItemType itemType) : base() {
 			_itemType = itemType;
+			InitStatusData();
 		}
 
-		public void OnUse() {
-			Debug.LogError("I USED.. " + _itemType.ToString() + " / count : " + StackCount);
+		protected override void InitStatusData() {
+			base.InitStatusData();
+			_statusData = Status_Base.GetStatus(_itemType);
 		}
 
-		public void OnDiscard() { }
+		public virtual eErrorCode OnUse() {
+			// Debug.Log(StatusData.Name());
+			return eErrorCode.Fail;
+		}
+
+		public virtual eErrorCode Fire() {
+			return eErrorCode.Fail;
+		}
+
+		public virtual void OnDiscard() { }
 	}
 }

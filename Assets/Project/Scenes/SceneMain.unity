@@ -7730,6 +7730,7 @@ MonoBehaviour:
   _quickSlotIdx: 0
   _emptyImage: {fileID: 0}
   _itemImage: {fileID: 0}
+  _txtItemCount: {fileID: 0}
 --- !u!222 &809002483
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8211,7 +8212,7 @@ PrefabInstance:
     - target: {fileID: 852848665498476857, guid: f1a72537dffa6f142a44d38a0f213143,
         type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 852848665498476857, guid: f1a72537dffa6f142a44d38a0f213143,
         type: 3}
@@ -9258,7 +9259,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1296692035}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -13538,8 +13539,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 938468337}
   - {fileID: 880642679}
+  - {fileID: 938468337}
   - {fileID: 1518215478}
   m_Father: {fileID: 1359565237}
   m_RootOrder: 0

@@ -42,7 +42,7 @@ namespace EFN.Game {
 		}
 
 		public virtual void SetSightDirection(Vector2 vec) {
-			this._sightDirection = (vec - (Vector2)Graphic.Pos).normalized;
+			this._sightDirection = vec;
 		}
 
 		public virtual void Stop() {

@@ -20,6 +20,7 @@ namespace EFN {
 		[Header("Components")]
 		[SerializeField] private GameObject _emptyImage = default;
 		[SerializeField] private Image _itemImage = default;
+		[SerializeField] private Text _txtItemCount = default;
 
 		private Data_Item _targetData = null;
 		public Data_Item TargetData {
@@ -69,6 +70,9 @@ namespace EFN {
 			this._itemImage.SetNativeSize();
 			this._itemImage.transform.localPosition = Vector2.zero;
 			this._itemImage.transform.localScale = Vector3.one * (this.GetComponent<RectTransform>().rect.height / DEFAULT_ITEMSLOT_SIZE);
+
+			this._txtItemCount.gameObject.SetActive(data.StatusData.DisplayStack);
+			this._txtItemCount.text = data.StackCount.ToString() + "/" + data.StatusData.MaxStackSize.ToString();
 		}
 
 		public virtual void ClearImage() {
@@ -77,6 +81,10 @@ namespace EFN {
 
 			if (null != _emptyImage) {
 				_emptyImage.SetActive(true);
+			}
+
+			if (null != _txtItemCount) {
+				_txtItemCount.gameObject.SetActive(false);
 			}
 		}
 

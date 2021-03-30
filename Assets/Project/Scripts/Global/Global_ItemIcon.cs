@@ -24,6 +24,11 @@ namespace EFN {
 					 where list.name == spriteName
 					 select list;
 
+			if (rv.Count() <= 0) {
+				EFN.Global_Common.LogError("CANNOT FIND SPRITE : NO RESULT");
+				return null;
+			}
+
 			return rv.First();
 		}
 	}

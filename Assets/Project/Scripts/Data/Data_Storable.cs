@@ -1,48 +1,51 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace EFN {
 
-	public class Data_Storable {
+	[Serializable]
+	public class Data_Storable : ISerializationCallbackReceiver {
 
-		private bool _stackable = true;
-		public bool Stackable {
-			get { return this._stackable; }
-			set { this._stackable = value; }
-		}
-
-		public bool IsFullStack {
-			get { return this._maxStackCount <= this._stackCount; }
-		}
-
-		private int _maxStackCount = int.MaxValue;
-		public int MaxStackCount {
-			get { return this._maxStackCount; }
-			set { this._maxStackCount = value; }
-		}
-
+		[SerializeField]
 		private int _stackCount = 0;
 		public int StackCount {
 			get { return this._stackCount; }
 			set { this._stackCount = value; }
 		}
 
+		[SerializeField]
 		private int _key = 0;
 		public int Key {
 			get { return this._key; }
 			set { this._key = value; }
 		}
 
+		[NonSerialized] protected Status_Base _statusData = null;
+		public Status_Base StatusData {
+			get { 
+				if (null == this._statusData) {
+					Debug.LogError("I HAVE NO STATUS! : " + this.GetType());
+				}
+
+				return this._statusData; 
+			}
+		}
+
 		public Data_Storable() {
 			this._stackCount = 1;
+		}
+
+		public virtual bool IsFullStack {
+			get { return StatusData.MaxStackSize <= this._stackCount; }
 		}
 
 		public virtual void OnRemoved() { }
 		public virtual void OnStored() { }
 
 		public virtual eErrorCode AddStack(Data_Storable from) {
-			if (false == this._stackable || false == from.Stackable) {
+			if (false == StatusData.Stackable || false == from.StatusData.Stackable) {
 				Global_Common.LogError("Cannot stack Instackable.");
 				return eErrorCode.Fail;
 			}
@@ -53,13 +56,13 @@ namespace EFN {
 			}
 
 			// 최대 스택개수 넘치면
-			if (this.MaxStackCount < this._stackCount + from.StackCount) {
+			if (this.StatusData.MaxStackSize < this._stackCount + from.StackCount) {
 
 				// 여기서 들어온놈의 stack count 를 남은애들로 바꿔준다.
-				from._stackCount = this._stackCount + from.StackCount - this._maxStackCount;
+				from._stackCount = this._stackCount + from.StackCount - this.StatusData.MaxStackSize;
 
 				// 내거는 꽉차게 해줌.
-				this._stackCount = this._maxStackCount;
+				this._stackCount = this.StatusData.MaxStackSize;
 
 				return eErrorCode.StackOverflow;
 			}
@@ -69,5 +72,13 @@ namespace EFN {
 
 			return eErrorCode.Success;
 		}
+
+		public virtual void OnBeforeSerialize() { }
+
+		public virtual void OnAfterDeserialize() {
+			InitStatusData();
+		}
+
+		protected virtual void InitStatusData() { }
 	}
 }

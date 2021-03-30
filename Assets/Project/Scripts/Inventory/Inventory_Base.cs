@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 
 namespace EFN {
+    /*
     public class Inventory_Base<T> where T : Data_Storable {
 
         protected List<T> _inventoryList = new List<T>();
@@ -61,4 +62,5 @@ namespace EFN {
             Debug.Log("result : " + data.StackCount);
         }
     }
+    */
 }

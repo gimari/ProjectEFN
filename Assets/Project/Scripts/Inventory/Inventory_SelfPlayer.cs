@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +20,7 @@ namespace EFN {
 		BackpackSlotStart = 16,
 	}
 
+	[Serializable]
 	public class Inventory_SelfPlayer : Inventory_Item {
 
 		public void UseQuickSlot(int pressedKey) {
@@ -49,6 +51,10 @@ namespace EFN {
 					Use((int)ePlayerSlotType.QuickSlotStart + 6);
 					break;
 			}
+		}
+
+		public override eErrorCode TryFire(int idx) {
+			return base.TryFire(idx);
 		}
 	}
 }

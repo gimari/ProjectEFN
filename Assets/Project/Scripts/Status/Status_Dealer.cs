@@ -11,7 +11,7 @@ namespace EFN {
 		Fence = 3,
 	}
 
-	public class Status_Dealer {
+	public class Status_Dealer : Status_Base {
 
 
 

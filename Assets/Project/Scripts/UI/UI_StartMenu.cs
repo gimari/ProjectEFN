@@ -14,6 +14,8 @@ namespace EFN.Main {
 
 		public void OnClickExit() {
 			Global_Common.Quit();
+
+			Global_SelfPlayerData.Save();
 		}
 
 		public void OnClickEnterEscape() {

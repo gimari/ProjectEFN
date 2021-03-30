@@ -2,17 +2,33 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using Newtonsoft.Json;
+using System;
 
 namespace EFN {
-    public class Inventory_Item {
 
-		protected int _maxDisplayIndex = 0;
+	[Serializable]
+	public class Inventory_Item : ISerializationCallbackReceiver {
+
+		/// <summary>
+		/// 이 인벤토리 max size
+		/// </summary>
+		[SerializeField] protected int _maxDisplayIndex = 0;
 		public int MaxDisplayIndex {
 			get { return this._maxDisplayIndex; }
 			set { this._maxDisplayIndex = value; }
 		}
 
+		/// <summary>
+		/// serialize 저장 전용 리스트
+		/// </summary>
+		[SerializeField] private List<Data_Item> _serializedList = new List<Data_Item>();
+
         protected SortedDictionary<int, Data_Item> _inventoryList = new SortedDictionary<int, Data_Item>();
+
+		public virtual string ToJson() {
+			return JsonUtility.ToJson(this);
+		}
 
 		public IEnumerator GetEnumerator() {
 			return _inventoryList.GetEnumerator();
@@ -25,6 +41,20 @@ namespace EFN {
 			}
 
 			return _inventoryList[idx];
+		}
+
+		/// <summary>
+		/// 특정한 인덱스의 녀석을 발사하려 한다.
+		/// </summary>
+		public virtual eErrorCode TryFire(int idx) {
+			return eErrorCode.Fail;
+		}
+
+		/// <summary>
+		/// 특정한 인덱스의 녀석을 사용하려 한다.
+		/// </summary>
+		public virtual eErrorCode TryUse(int idx) {
+			return eErrorCode.Fail;
 		}
 
         public virtual void AddInventory(Data_Item item) {
@@ -56,6 +86,12 @@ namespace EFN {
 				return eErrorCode.Fail;
 			}
 
+			// 같은 자리끼리는 의미가 없음.
+			if (fromItem.SlotIndex == targetIdx) {
+				return eErrorCode.Success;
+			}
+
+			// 들어온 애가 혹시나 다른곳에서 왓을수도 잇음
 			if (fromItem.StoredInventory != this) {
 				return AddInventory(fromItem, targetIdx, fromItem.StoredInventory);
 			}
@@ -79,7 +115,7 @@ namespace EFN {
             }
 
 			// 키가 다르거나, 이미 있는애가 스택이 안되거나, 스택이 꽉차있으면 서로 교체
-            if (target.Key != fromItem.Key || target.Stackable == false || target.IsFullStack == true) {
+            if (target.Key != fromItem.Key || target.StatusData.Stackable == false || target.IsFullStack == true) {
 				int swapIndex = target.SlotIndex;
 
 				this._inventoryList[fromItem.SlotIndex] = target;
@@ -139,7 +175,7 @@ namespace EFN {
 			}
 
 			// 키가 다르거나, 이미 있는애가 스택이 안되거나, 스택이 꽉차있으면 서로 교체
-			if (target.Key != fromItem.Key || target.Stackable == false || target.IsFullStack == true) {
+			if (target.Key != fromItem.Key || target.StatusData.Stackable == false || target.IsFullStack == true) {
 				int swapIndex = target.SlotIndex;
 
 				externalInven._inventoryList[fromItem.SlotIndex] = target;
@@ -175,5 +211,28 @@ namespace EFN {
 
 			this._inventoryList[slotIdx].OnUse();
 		}
-    }
+
+		/// <summary>
+		/// save inventory to list
+		/// </summary>
+		public void OnBeforeSerialize() {
+			_serializedList.Clear();
+
+			foreach (KeyValuePair<int, Data_Item> pair in _inventoryList) {
+				_serializedList.Add(pair.Value);
+			}
+		}
+
+		/// <summary>
+		/// load inventory from lists
+		/// </summary>
+		public void OnAfterDeserialize() {
+			_inventoryList.Clear();
+
+			foreach (Data_Item data in _serializedList) {
+				_inventoryList.Add(data.SlotIndex, data);
+				data.StoredInventory = this;
+			}
+		}
+	}
 }

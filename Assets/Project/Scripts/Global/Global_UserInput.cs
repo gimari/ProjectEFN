@@ -6,6 +6,30 @@ using UnityEngine.InputSystem;
 namespace EFN.Game {
 	public class Global_UserInput : MonoBehaviour {
 
+		private void Update() {
+			SelfActorViewProcess();
+		}
+
+		/// <summary>
+		/// self actor 가 있다면 마우스 포지션 받아와서 sight direction 갱신해주는 로직
+		/// </summary>
+		private void SelfActorViewProcess() {
+			if (null == Global_Actor.SelfPlayer) {
+				return;
+			}
+
+			if (true == Global_UIEvent.Focus.IsFocusing) { 
+				return; 
+			}
+
+			Vector3 screenPos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue()) - Global_Actor.SelfPlayer.Graphic.Pos;
+
+			// Z포지션을 10 으로 줘가지고 좀더 시점을 자연스럽게 유도했음.
+			screenPos.z = 10;
+
+			Global_Actor.SelfPlayer.SetSightDirection(screenPos.normalized);
+		}
+
 		public void Move(InputAction.CallbackContext context) {
 
 			if (true == Global_UIEvent.Focus.IsFocusing) { return; }
@@ -30,7 +54,6 @@ namespace EFN.Game {
 			}
 
 			Global_Actor.SelfPlayer.Fire();
-			Graphic_GameCamera.Shake(5);
 		}
 
 		public void Zoom(InputAction.CallbackContext context) {
