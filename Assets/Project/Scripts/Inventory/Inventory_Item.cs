@@ -66,6 +66,10 @@ namespace EFN {
 
 		}
 
+		public virtual void Remove(int slotIdx) {
+			this._inventoryList.Remove(slotIdx);
+		}
+
         public virtual int GetFirstIdx() {
             int rv = 0;
 

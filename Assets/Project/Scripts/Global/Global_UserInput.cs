@@ -45,15 +45,14 @@ namespace EFN.Game {
 
 			if (true == Global_UIEvent.Focus.IsFocusing) { return; }
 
-			if (context.phase != InputActionPhase.Started) {
-				return;
-			}
+			if (null == Global_Actor.SelfPlayer) { return; }
 
-			if (null == Global_Actor.SelfPlayer) {
-				return;
-			}
+			if (context.phase == InputActionPhase.Started) {
+				Global_Actor.SelfPlayer.FireStart();
 
-			Global_Actor.SelfPlayer.Fire();
+			} else if (context.phase == InputActionPhase.Disabled || context.phase == InputActionPhase.Canceled) {
+				Global_Actor.SelfPlayer.FireEnd();
+			}
 		}
 
 		public void Zoom(InputAction.CallbackContext context) {

@@ -15,6 +15,9 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] private Light2D _playerEnvironmentLight = default;
 
+		private Coroutine _fireRoutine = null;
+		private bool _fireEndWaitFlag = false;
+
 		protected override void OnAwake() {
 			Global_Actor.SelfPlayer = this;
 
@@ -34,31 +37,76 @@ namespace EFN.Game {
 			Graphic_GameCamera.UserTrackProcess(this._sightDirection, Graphic.Pos);
 		}
 
-		public override void Fire() {
-			base.Fire();
+		public override void FireStart() {
+			base.FireStart();
+
+			this._fireEndWaitFlag = false;
+
+			if (null == this._fireRoutine) {
+				this._fireRoutine = StartCoroutine(AutoFireRoutine());
+			}
+		}
+
+		public override void FireEnd() {
+			base.FireEnd();
+
+			this._fireEndWaitFlag = true;
+		}
+
+		protected override IEnumerator AutoFireRoutine() {
 
 			// 현재 장착중인 무기
 			ePlayerSlotType currentEquipSlot = ePlayerSlotType.Holster;
 
-			// 먼저 발사 가능한지 체크.
-			if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot)) {
-				return;
+			Data_Item fireTarget = this.ActorInventory.Get((int)currentEquipSlot);
+
+			if (null == fireTarget) {
+				yield break;
 			}
 
-			RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.Wall);
+			while (null != fireTarget) {
 
-			if (rays) {
+				// 먼저 발사 가능한지 체크.
+#if EFN_DEBUG
+				// 무한총알 치트 체크
+				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot) && false == Global_DebugConfig.InfiniteBullet) {
+					yield break;
+				}
+#else
+				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot)) {
+					yield break;
+				}
+#endif
 
-				EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
-				info.Pos = rays.point;
-				info.RotateType = eEffectRotateType.Normal;
-				info.TargetNormal = rays.normal;
-				info.Duration = 1f;
+				RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.Wall);
 
-				Global_Effect.ShowEffect(info);
+				if (rays) {
+
+					EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
+					info.Pos = rays.point;
+					info.RotateType = eEffectRotateType.Normal;
+					info.TargetNormal = rays.normal;
+					info.Duration = 1f;
+
+					Global_Effect.ShowEffect(info);
+				}
+
+				Graphic_GameCamera.Shake(5);
+
+				yield return new WaitForSeconds(fireTarget.StatusData.UseCoolTime);
+
+				if (null == fireTarget) {
+					yield break;
+				}
+
+				if (false == fireTarget.StatusData.ContinuousFire) {
+					yield break;
+				}
+
+				if (true == _fireEndWaitFlag) {
+					yield break;
+				}
 			}
-
-			Graphic_GameCamera.Shake(5);
 		}
 	}
 }

@@ -11,6 +11,8 @@ namespace EFN {
 		Armor_6B3TM,
 		Weapon_MP443,
 		AMMO_9X19AP,
+		WEAPON_ASVAL,
+		AMMO_9X39SP5,
 	}
 
 	[Flags]
@@ -53,6 +55,11 @@ namespace EFN {
 		protected override void InitStatusData() {
 			base.InitStatusData();
 			_statusData = Status_Base.GetStatus(_itemType);
+		}
+
+		public override void OnDiscard() {
+			_storedInventory.Remove(this.SlotIndex);
+			base.OnDiscard();
 		}
 
 		public virtual eErrorCode OnUse() {

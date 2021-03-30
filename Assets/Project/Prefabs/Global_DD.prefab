@@ -148,6 +148,50 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0410f1673dff5074fb2fa720270b2889, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &407012100859825524
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7300679161813094139}
+  - component: {fileID: 8071063835647409170}
+  m_Layer: 0
+  m_Name: Global_DebugConfig
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7300679161813094139
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407012100859825524}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 8957235324897283009}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8071063835647409170
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 407012100859825524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ff2e792b8eed9541a2ec6654374ca68, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _infiniteBullet: 1
 --- !u!1 &1920013111682018128
 GameObject:
   m_ObjectHideFlags: 0
@@ -329,6 +373,8 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 37b616744d2078a4381d63750ea72ad4, type: 3}
   - {fileID: 21300000, guid: 09021b6a9c4b45c479c4018864d12e52, type: 3}
   - {fileID: 21300000, guid: ec5d756ad35449441bd9054862c61c63, type: 3}
+  - {fileID: 21300000, guid: 67b21f6b29eacea48b10e96d1124c59a, type: 3}
+  - {fileID: 21300000, guid: cf513df2faa198749b701c6132e49468, type: 3}
 --- !u!1 &8957235324897283008
 GameObject:
   m_ObjectHideFlags: 0
@@ -361,6 +407,7 @@ Transform:
   - {fileID: 4996790080905769176}
   - {fileID: 9138355164216064914}
   - {fileID: 3887855775995345661}
+  - {fileID: 7300679161813094139}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

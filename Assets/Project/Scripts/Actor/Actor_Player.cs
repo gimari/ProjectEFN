@@ -34,6 +34,8 @@ namespace EFN.Game {
 			_playerArmObject.transform.rotation = Quaternion.FromToRotation(Vector2.up, this._sightDirection);
 		}
 
-		public virtual void Fire() { }
+		public virtual void FireStart() { }
+		public virtual void FireEnd() { }
+		protected virtual IEnumerator AutoFireRoutine() { yield return null; }
 	}
 }

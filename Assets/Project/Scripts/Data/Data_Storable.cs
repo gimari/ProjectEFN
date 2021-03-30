@@ -94,8 +94,6 @@ namespace EFN {
 			return eErrorCode.Success;
 		}
 
-		public virtual void OnDiscard() {
-			
-		}
+		public virtual void OnDiscard() { }
 	}
 }
