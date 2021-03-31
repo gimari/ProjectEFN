@@ -105,6 +105,7 @@ namespace EFN {
 		public override bool ContinuousFire { get { return true; } }
 		public override float FireRate { get { return 0.11f; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X39SP5 }; } }
+		public override float UseCoolTime { get { return 1.2f; } }
 	}
 
 	/// <summary>
@@ -114,5 +115,6 @@ namespace EFN {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP }; } }
 		public override bool Fireable { get { return true; } }
 		public override float FireRate { get { return 0.2f; } }
+		public override float UseCoolTime { get { return 0.3f; } }
 	}
 }

@@ -37,6 +37,13 @@ namespace EFN.Game {
 
 			// 교체
 			_currentEquipSlot = (ePlayerSlotType)slotType;
+
+			Data_Item equipItem = _actorInventory.Get((int)_currentEquipSlot);
+
+			// 교체 쿨타임으로 usecooltime 을 사용한다.
+			if (null != equipItem) {
+				_actorui.CallUIEvent(eActorUIType.StartBehaviour, equipItem.StatusData.UseCoolTime);
+			}
 		}
 
 		protected override void PlayerMovementProcess() {
@@ -124,6 +131,11 @@ namespace EFN.Game {
 			}
 
 			_currentBehaviourCondition &= ~eBehaviourCondition.Firing;
+		}
+
+		public override void Stop() {
+			base.Stop();
+			this._currentBehaviourCondition = eBehaviourCondition.None;
 		}
 	}
 }

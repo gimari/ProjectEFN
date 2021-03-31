@@ -32,6 +32,11 @@ namespace EFN.Game {
 		[SerializeField] protected Transform _muzzle = default;
 
 		/// <summary>
+		/// 이 액터에 붙어있는 액터UI
+		/// </summary>
+		[SerializeField] protected ActorUI_Base _actorui = default;
+
+		/// <summary>
 		/// 현재 이 플레이어가 취하고 있는 행동
 		/// </summary>
 		protected eBehaviourCondition _currentBehaviourCondition = eBehaviourCondition.None;
