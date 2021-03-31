@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace EFN {
 
 	[RequireComponent(typeof(Button))]
-	public class Graphic_ItemSlot : MonoBehaviour, IBeginDragHandler, IEndDragHandler {
+	public class Graphic_ItemSlot : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
 
 		[Header("Config")]
 		[SerializeField] private bool _useEmptyImage = true;
@@ -101,7 +101,18 @@ namespace EFN {
 		}
 
 		public void OnEndDrag(PointerEventData eventData) {
-			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
+			if (null == eventData || null == eventData.pointerEnter) { return; }
+
+			Graphic_ItemSlot endTarget = eventData.pointerEnter.GetComponent<Graphic_ItemSlot>();
+
+			if (null == endTarget) {
+				Global_UIEvent.CallUIEvent(eEventType.EndPickSlot);
+				return; 
+			}
+
+			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, endTarget);
 		}
+
+		public void OnDrag(PointerEventData eventData) { }
 	}
 }

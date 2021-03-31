@@ -15,8 +15,7 @@ namespace EFN {
 			set { this._stackCount = value; }
 		}
 
-		[SerializeField]
-		private int _key = 0;
+		[NonSerialized] protected int _key = 0;
 		public int Key {
 			get { return this._key; }
 			set { this._key = value; }

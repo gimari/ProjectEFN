@@ -98,7 +98,17 @@ namespace EFN.Game {
 
 			if (null == Global_Actor.SelfPlayer) { return; }
 
-			(Global_Actor.SelfPlayer.ActorInventory as Inventory_SelfPlayer).UseQuickSlot(int.Parse(context.control.name));
+			switch (int.Parse(context.control.name)) {
+				case 1:
+				case 2:
+				case 3:
+					Global_Actor.SelfPlayer.SetCurrentEquipSlot(int.Parse(context.control.name));
+					break;
+
+				default:
+					(Global_Actor.SelfPlayer.ActorInventory as Inventory_SelfPlayer).UseQuickSlot(int.Parse(context.control.name));
+					break;
+			}
 		}
 
 		public void PressExit(InputAction.CallbackContext context) {

@@ -119,7 +119,7 @@ namespace EFN {
             }
 
 			// 키가 다르거나, 이미 있는애가 스택이 안되거나, 스택이 꽉차있으면 서로 교체
-            if (target.Key != fromItem.Key || target.StatusData.Stackable == false || target.IsFullStack == true) {
+            if (target.ItemType != fromItem.ItemType || target.StatusData.Stackable == false || target.IsFullStack == true) {
 				int swapIndex = target.SlotIndex;
 
 				this._inventoryList[fromItem.SlotIndex] = target;
@@ -179,7 +179,7 @@ namespace EFN {
 			}
 
 			// 키가 다르거나, 이미 있는애가 스택이 안되거나, 스택이 꽉차있으면 서로 교체
-			if (target.Key != fromItem.Key || target.StatusData.Stackable == false || target.IsFullStack == true) {
+			if (target.ItemType != fromItem.ItemType || target.StatusData.Stackable == false || target.IsFullStack == true) {
 				int swapIndex = target.SlotIndex;
 
 				externalInven._inventoryList[fromItem.SlotIndex] = target;

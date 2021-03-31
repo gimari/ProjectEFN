@@ -15,8 +15,8 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] private Light2D _playerEnvironmentLight = default;
 
-		private Coroutine _fireRoutine = null;
-		private bool _fireEndWaitFlag = false;
+		private ePlayerSlotType _currentEquipSlot = ePlayerSlotType.PrimeWeapon;
+		public ePlayerSlotType CurrentEquipSlot { get { return this._currentEquipSlot; } }
 
 		protected override void OnAwake() {
 			Global_Actor.SelfPlayer = this;
@@ -25,6 +25,18 @@ namespace EFN.Game {
 			_actorInventory = Global_SelfPlayerData.SelfInventory;
 
 			base.OnAwake();
+		}
+
+		/// <summary>
+		/// 현재 장착중 슬롯 교체
+		/// </summary>
+		public void SetCurrentEquipSlot(int slotType) {
+
+			// 교체하면 발사하는거 끝내줘야 한다.
+			FireEnd();
+
+			// 교체
+			_currentEquipSlot = (ePlayerSlotType)slotType;
 		}
 
 		protected override void PlayerMovementProcess() {
@@ -40,8 +52,6 @@ namespace EFN.Game {
 		public override void FireStart() {
 			base.FireStart();
 
-			this._fireEndWaitFlag = false;
-
 			// 발사 안하고 있을때만 돌려주자.
 			if (false == this._currentBehaviourCondition.HasFlag(eBehaviourCondition.Firing)) {
 				StartCoroutine(AutoFireRoutine());
@@ -51,18 +61,18 @@ namespace EFN.Game {
 		public override void FireEnd() {
 			base.FireEnd();
 
-			this._fireEndWaitFlag = true;
+			_currentBehaviourCondition &= ~eBehaviourCondition.Firing;
 		}
 
 		protected override IEnumerator AutoFireRoutine() {
 
 			// 현재 장착중인 무기
-			ePlayerSlotType currentEquipSlot = ePlayerSlotType.Holster;
+			ePlayerSlotType currentEquipSlot = _currentEquipSlot;
 
 			Data_Item fireTarget = this.ActorInventory.Get((int)currentEquipSlot);
 
 			// 무기가 없음
-			if (null == fireTarget) {
+			if (null == fireTarget || false == fireTarget.StatusData.Fireable) {
 				yield break;
 			}
 
@@ -97,7 +107,7 @@ namespace EFN.Game {
 
 				Graphic_GameCamera.Shake(5);
 
-				yield return new WaitForSeconds(fireTarget.StatusData.UseCoolTime);
+				yield return new WaitForSeconds(fireTarget.StatusData.FireRate);
 
 				if (null == fireTarget) {
 					break;
@@ -107,7 +117,8 @@ namespace EFN.Game {
 					break;
 				}
 
-				if (true == _fireEndWaitFlag) {
+				// 발사 상태가 아니면 나감.
+				if (false == _currentBehaviourCondition.HasFlag(eBehaviourCondition.Firing)) {
 					break;
 				}
 			}

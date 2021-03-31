@@ -5,30 +5,47 @@ using UnityEngine;
 namespace EFN {
     public class Status_Base {
 
+		private static Dictionary<eItemType, Status_Base> _statusList = new Dictionary<eItemType, Status_Base>();
+
         /// <summary>
         /// 원래 status 는 엑셀같은 외부정보로 받아와야 하지만 간단하게 하기 위해 이런 방식을 취한다.
         /// 게임이 더 커진다면 좋겟지만 안되면 이상태로 냅둔다.
         /// </summary>
         public static Status_Base GetStatus(eItemType item) {
-			switch (item) {
-				case eItemType.Weapon_MP443:
-					return new Status_MP443();
 
-				case eItemType.Armor_6B3TM:
-					return new Status_6B3TM();
+			if (false == _statusList.ContainsKey(item)) {
+				Status_Base status;
 
-				case eItemType.AMMO_9X19AP:
-					return new Status_9X19AP();
+				switch (item) {
+					case eItemType.Weapon_MP443:
+						status = new Status_MP443();
+						break;
 
-				case eItemType.WEAPON_ASVAL:
-					return new Status_ASVAL();
+					case eItemType.Armor_6B3TM:
+						status = new Status_6B3TM();
+						break;
 
-				case eItemType.AMMO_9X39SP5:
-					return new Status_9X39SP5();
+					case eItemType.AMMO_9X19AP:
+						status = new Status_9X19AP();
+						break;
 
-				default:
-					return null;
+					case eItemType.WEAPON_ASVAL:
+						status = new Status_ASVAL();
+						break;
+
+					case eItemType.AMMO_9X39SP5:
+						status = new Status_9X39SP5();
+						break;
+
+					default:
+						status = null;
+						break;
+				}
+
+				_statusList.Add(item, status);
 			}
+
+			return _statusList[item];
 		}
 
 		/// <summary>
@@ -51,8 +68,11 @@ namespace EFN {
 		// 사용 할 수 있음?
         public virtual bool Useable { get { return false; } }
 
+		// 사용시 쿨타임, 총의 경우 스왑시간 쿨타임
+		public virtual float UseCoolTime { get { return 0; } }
+
 		// 쏘거나 사용할 때 필요한 부가아이템?
-        public virtual eItemType[] RequireItem { get { return null; } }
+		public virtual eItemType[] RequireItem { get { return null; } }
 
 		/// <summary>
 		/// 무기 관련 정보
@@ -61,11 +81,11 @@ namespace EFN {
 		// 쏠 수 있음?
 		public virtual bool Fireable { get { return false; } }
 
-		// 발사 / 사용시 쿨타임
-		public virtual float UseCoolTime { get { return 0; } }
-
 		// 연사 가능?
 		public virtual bool ContinuousFire { get { return false; } }
+
+		// 발사 시간
+		public virtual float FireRate { get { return 0; } }
 	}
 
 	/// <summary>
@@ -83,7 +103,7 @@ namespace EFN {
 	public class Status_ASVAL : Status_Base {
 		public override bool Fireable { get { return true; } }
 		public override bool ContinuousFire { get { return true; } }
-		public override float UseCoolTime { get { return 0.11f; } }
+		public override float FireRate { get { return 0.11f; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X39SP5 }; } }
 	}
 
@@ -93,6 +113,6 @@ namespace EFN {
 	public class Status_MP443 : Status_Base {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP }; } }
 		public override bool Fireable { get { return true; } }
-		public override float UseCoolTime { get { return 0.2f; } }
+		public override float FireRate { get { return 0.2f; } }
 	}
 }

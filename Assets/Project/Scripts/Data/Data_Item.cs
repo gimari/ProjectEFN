@@ -55,6 +55,7 @@ namespace EFN {
 		protected override void InitStatusData() {
 			base.InitStatusData();
 			_statusData = Status_Base.GetStatus(_itemType);
+			_key = (int)_itemType;
 		}
 
 		public override void OnDiscard() {

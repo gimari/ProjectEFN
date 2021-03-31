@@ -34,7 +34,11 @@ namespace EFN.Game {
 		/// <summary>
 		/// 현재 이 플레이어가 취하고 있는 행동
 		/// </summary>
-		protected eBehaviourCondition _currentBehaviourCondition;
+		protected eBehaviourCondition _currentBehaviourCondition = eBehaviourCondition.None;
+		public eBehaviourCondition CurrentBehaviourCondition {
+			get { return _currentBehaviourCondition; }
+			set { _currentBehaviourCondition = value; } 
+		}
 
 		private void Update() {
 			PlayerMovementProcess();
