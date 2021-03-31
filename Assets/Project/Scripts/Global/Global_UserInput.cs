@@ -106,5 +106,16 @@ namespace EFN.Game {
 
 			Global_Common.LoadScene(eSceneName.SceneMain.ToString());
 		}
+
+		public void Run(InputAction.CallbackContext context) {
+			if (null == Global_Actor.SelfPlayer) { return; }
+
+			if (context.phase == InputActionPhase.Started) {
+				Global_Actor.SelfPlayer.RunStart();
+
+			} else if (context.phase == InputActionPhase.Disabled || context.phase == InputActionPhase.Canceled) {
+				Global_Actor.SelfPlayer.RunEnd();
+			}
+		}
 	}
 }

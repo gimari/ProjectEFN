@@ -81,6 +81,14 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Run"",
+                    ""type"": ""Button"",
+                    ""id"": ""7e8444ba-29b5-4481-9fbd-1db2f22a81e7"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -314,6 +322,17 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Exit"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""859048d1-5c5a-4c48-9734-b32f6582fe95"",
+                    ""path"": ""<Keyboard>/leftShift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Run"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -330,6 +349,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         m_Actor_Inventory = m_Actor.FindAction("Inventory", throwIfNotFound: true);
         m_Actor_QuickSlot = m_Actor.FindAction("QuickSlot", throwIfNotFound: true);
         m_Actor_Exit = m_Actor.FindAction("Exit", throwIfNotFound: true);
+        m_Actor_Run = m_Actor.FindAction("Run", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -387,6 +407,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Actor_Inventory;
     private readonly InputAction m_Actor_QuickSlot;
     private readonly InputAction m_Actor_Exit;
+    private readonly InputAction m_Actor_Run;
     public struct ActorActions
     {
         private @EFNInputAction m_Wrapper;
@@ -399,6 +420,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         public InputAction @Inventory => m_Wrapper.m_Actor_Inventory;
         public InputAction @QuickSlot => m_Wrapper.m_Actor_QuickSlot;
         public InputAction @Exit => m_Wrapper.m_Actor_Exit;
+        public InputAction @Run => m_Wrapper.m_Actor_Run;
         public InputActionMap Get() { return m_Wrapper.m_Actor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -432,6 +454,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Exit.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnExit;
                 @Exit.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnExit;
                 @Exit.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnExit;
+                @Run.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnRun;
+                @Run.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnRun;
+                @Run.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnRun;
             }
             m_Wrapper.m_ActorActionsCallbackInterface = instance;
             if (instance != null)
@@ -460,6 +485,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Exit.started += instance.OnExit;
                 @Exit.performed += instance.OnExit;
                 @Exit.canceled += instance.OnExit;
+                @Run.started += instance.OnRun;
+                @Run.performed += instance.OnRun;
+                @Run.canceled += instance.OnRun;
             }
         }
     }
@@ -474,5 +502,6 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnQuickSlot(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
+        void OnRun(InputAction.CallbackContext context);
     }
 }

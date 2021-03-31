@@ -86,4 +86,13 @@ namespace EFN {
 		public override float UseCoolTime { get { return 0.11f; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X39SP5 }; } }
 	}
+
+	/// <summary>
+	/// 권총 mp443
+	/// </summary>
+	public class Status_MP443 : Status_Base {
+		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP }; } }
+		public override bool Fireable { get { return true; } }
+		public override float UseCoolTime { get { return 0.2f; } }
+	}
 }

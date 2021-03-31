@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace EFN {
 
 	[RequireComponent(typeof(Button))]
-	public class Graphic_ItemSlot : MonoBehaviour {
+	public class Graphic_ItemSlot : MonoBehaviour, IBeginDragHandler, IEndDragHandler {
 
 		[Header("Config")]
 		[SerializeField] private bool _useEmptyImage = true;
@@ -92,6 +93,14 @@ namespace EFN {
 		/// 슬롯 클릭시..
 		/// </summary>
 		public virtual void OnClickSlot() {
+			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
+		}
+
+		public void OnBeginDrag(PointerEventData eventData) {
+			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
+		}
+
+		public void OnEndDrag(PointerEventData eventData) {
 			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
 		}
 	}

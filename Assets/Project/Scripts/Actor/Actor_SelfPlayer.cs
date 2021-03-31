@@ -42,8 +42,9 @@ namespace EFN.Game {
 
 			this._fireEndWaitFlag = false;
 
-			if (null == this._fireRoutine) {
-				this._fireRoutine = StartCoroutine(AutoFireRoutine());
+			// 발사 안하고 있을때만 돌려주자.
+			if (false == this._currentBehaviourCondition.HasFlag(eBehaviourCondition.Firing)) {
+				StartCoroutine(AutoFireRoutine());
 			}
 		}
 
@@ -60,9 +61,12 @@ namespace EFN.Game {
 
 			Data_Item fireTarget = this.ActorInventory.Get((int)currentEquipSlot);
 
+			// 무기가 없음
 			if (null == fireTarget) {
 				yield break;
 			}
+
+			_currentBehaviourCondition |= eBehaviourCondition.Firing;
 
 			while (null != fireTarget) {
 
@@ -70,11 +74,11 @@ namespace EFN.Game {
 #if EFN_DEBUG
 				// 무한총알 치트 체크
 				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot) && false == Global_DebugConfig.InfiniteBullet) {
-					yield break;
+					break;
 				}
 #else
 				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot)) {
-					yield break;
+					break;
 				}
 #endif
 
@@ -96,17 +100,19 @@ namespace EFN.Game {
 				yield return new WaitForSeconds(fireTarget.StatusData.UseCoolTime);
 
 				if (null == fireTarget) {
-					yield break;
+					break;
 				}
 
 				if (false == fireTarget.StatusData.ContinuousFire) {
-					yield break;
+					break;
 				}
 
 				if (true == _fireEndWaitFlag) {
-					yield break;
+					break;
 				}
 			}
+
+			_currentBehaviourCondition &= ~eBehaviourCondition.Firing;
 		}
 	}
 }
