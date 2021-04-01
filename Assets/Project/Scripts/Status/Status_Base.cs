@@ -4,7 +4,19 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace EFN {
-    public class Status_Base {
+
+	public enum eItemType {
+		None = 0,
+
+		Armor_6B3TM,
+		Weapon_MP443,
+		AMMO_9X19AP,
+		WEAPON_ASVAL,
+		AMMO_9X39SP5,
+		CONS_FIRSTAID,
+	}
+
+	public class Status_Base {
 
 		private static Dictionary<eItemType, Status_Base> _statusList = new Dictionary<eItemType, Status_Base>();
 
@@ -85,6 +97,9 @@ namespace EFN {
 		// 이 아이템이 사용되었을 경우
 		public virtual void OnEndItemUsed(Actor_Player actor) { }
 
+		// 적을 때렸을 때 대미지
+		public virtual float DmgAmount { get { return 0; } }
+
 		/// <summary>
 		/// 무기 관련 정보
 		/// </summary>
@@ -107,6 +122,17 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 20; } }
 		public override bool DisplayStack { get { return true; } }
+		public override float DmgAmount { get { return 10; } }
+	}
+
+	/// <summary>
+	/// 9x19 탄
+	/// </summary>
+	public class Status_9X19AP : Status_Base {
+		public override bool Stackable { get { return true; } }
+		public override int MaxStackSize { get { return 11; } }
+		public override bool DisplayStack { get { return true; } }
+		public override float DmgAmount { get { return 10; } }
 	}
 
 	/// <summary>

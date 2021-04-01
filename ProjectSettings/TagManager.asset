@@ -14,8 +14,8 @@ TagManager:
   - 
   - 
   - Interactable
-  - Wall
-  - 
+  - OtherHittable
+  - UserHitbox
   - 
   - 
   - 

@@ -63,8 +63,9 @@ namespace EFN {
 			}
 		}
 
-		public override eErrorCode TryFire(int idx) {
+		public override eErrorCode TryFire(int idx, out eItemType firedItem) {
 			Data_Item targetFireItem = Get(idx);
+			firedItem = eItemType.None;
 
 			if (null == targetFireItem) {
 				return eErrorCode.Fail;
@@ -90,7 +91,13 @@ namespace EFN {
 
 					// 필요한 아이템이 있으면 소비체크하고 성공 처리
 					if (itemType == quickItem.ItemType) {
+
+#if EFN_DEBUG
+						if (true == Global_DebugConfig.InfiniteBullet || quickItem.DecreaseItem() == eErrorCode.Success) {
+#else
 						if (quickItem.DecreaseItem() == eErrorCode.Success) {
+#endif
+							firedItem = quickItem.ItemType;
 							return eErrorCode.Success;
 						}
 					}
@@ -98,7 +105,7 @@ namespace EFN {
 			}
 
 			// 여기까지오면 실패
-			return base.TryFire(idx);
+			return base.TryFire(idx, out firedItem);
 		}
 	}
 }

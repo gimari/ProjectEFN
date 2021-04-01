@@ -14,6 +14,13 @@ namespace EFN.Game {
 		[Tooltip("Time in seconds without the target in the view cone before the target is considered lost from sight")]
 		public float _timeBeforeTargetLost = 3.0f;
 
+		[Header("Enemy Status")]
+		[SerializeField] private eItemType _wearingArmor = default;
+		public eItemType WearingArmor { get { return this._wearingArmor; } }
+
+		[SerializeField] private eItemType _usingBullet = default;
+		public eItemType UsingBullet { get { return this._usingBullet; } }
+
 		private void Update() {
 			ScanForPlayer();
 		}

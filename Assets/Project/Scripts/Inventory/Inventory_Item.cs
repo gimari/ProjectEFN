@@ -50,7 +50,8 @@ namespace EFN {
 		/// <summary>
 		/// 특정한 인덱스의 녀석을 발사하려 한다.
 		/// </summary>
-		public virtual eErrorCode TryFire(int idx) {
+		public virtual eErrorCode TryFire(int idx, out eItemType firedItem) {
+			firedItem = eItemType.None;
 			return eErrorCode.Fail;
 		}
 

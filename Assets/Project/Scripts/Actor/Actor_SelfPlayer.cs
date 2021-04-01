@@ -134,20 +134,20 @@ namespace EFN.Game {
 			while (null != fireTarget) {
 
 				// 먼저 발사 가능한지 체크.
-#if EFN_DEBUG
-				// 무한총알 치트 체크
-				if (eErrorCode.Fail == this.ActorInventory.TryFire(currentEquipSlot) && false == Global_DebugConfig.InfiniteBullet) {
+				eItemType firedItem = eItemType.None;
+				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot, out firedItem)) {
 					break;
 				}
-#else
-				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot)) {
-					break;
-				}
-#endif
 
-				RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.Wall);
+				RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.OtherHittable);
 
 				if (rays) {
+
+					// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
+					Damageable dmgable = rays.transform.GetComponent<Damageable>();
+					if (null != dmgable) {
+						dmgable.Hit(firedItem);
+					}
 
 					EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
 					info.Pos = rays.point;

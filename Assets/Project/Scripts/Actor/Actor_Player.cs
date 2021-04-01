@@ -36,6 +36,11 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] protected ActorUI_Base _actorui = default;
 
+		/// <summary>
+		/// 이 액터의 체력을 관장해줄 컴포넌트
+		/// </summary>
+		[SerializeField] protected Damageable _dmgable = default;
+
 		private Coroutine _behaviourRoutine = null;
 
 		/// <summary>
@@ -47,9 +52,20 @@ namespace EFN.Game {
 			set { _currentBehaviourCondition = value; } 
 		}
 
+		protected override void OnAwake() {
+			base.OnAwake();
+
+			_dmgable.Init(this);
+			_dmgable.OnDieInAction = this.OnDieInAction;
+		}
+
 		private void Update() {
 			PlayerMovementProcess();
 			PlayerLookingProcess();
+		}
+
+		protected virtual void OnDieInAction() {
+			Destroy(this.gameObject);
 		}
 
 		protected virtual void PlayerMovementProcess() {

@@ -17,7 +17,8 @@ namespace EFN {
 		Default = 0,
 		UI = 5,
 		Interactable = 8,
-		Wall = 9,
+		OtherHittable = 9,			// 유저 말고 다른 때릴곳 (벽, AI 등)
+		UserHitbox = 10,			// 유저 히트박스
 	}
 
 	public class Global_Common {

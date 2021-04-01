@@ -6,17 +6,6 @@ using UnityEngine;
 
 namespace EFN {
 
-	public enum eItemType {
-		None = 0,
-
-		Armor_6B3TM,
-		Weapon_MP443,
-		AMMO_9X19AP,
-		WEAPON_ASVAL,
-		AMMO_9X39SP5,
-		CONS_FIRSTAID,
-	}
-
 	[Flags]
 	public enum eItemStatus {
 		None = 0,
