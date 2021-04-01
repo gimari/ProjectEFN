@@ -24,13 +24,9 @@ namespace EFN.Game {
 		/// <summary>
 		/// 시야방향에 따라 움직여줄 팔 부분.
 		/// </summary>
-		[SerializeField] protected GameObject _playerArmObject = default;
-
-		/// <summary>
-		/// 총알 실제로 날라갈 총구부분
-		/// </summary>
-		[SerializeField] protected Transform _muzzle = default;
-
+		[SerializeField] protected Graphic_PlayerArm _playerArmObject = default;
+		public Graphic_PlayerArm PlayerArmObject { get { return _playerArmObject; } }
+		
 		/// <summary>
 		/// 이 액터에 붙어있는 액터UI
 		/// </summary>
@@ -95,7 +91,7 @@ namespace EFN.Game {
 			// 원래 하던거 멈춤!!
 			BehaviourStop();
 
-			this._behaviourRoutine = StartCoroutine(PlayerBehaviourRoutine(item, null));
+			this._behaviourRoutine = StartCoroutine(PlayerBehaviourRoutine(item));
 		}
 
 		public virtual void BehaviourStop() {
@@ -105,7 +101,7 @@ namespace EFN.Game {
 			}
 		}
 
-		protected virtual IEnumerator PlayerBehaviourRoutine(Data_Item item, Action onEndAction) {
+		protected virtual IEnumerator PlayerBehaviourRoutine(Data_Item item) {
 
 			if (null == item) {
 				yield break;
@@ -128,6 +124,8 @@ namespace EFN.Game {
 
 				// 정상적으로 타이머가 다 돌았을 때..
 				if (targetTimer < 0) {
+
+					// 아이템 사용이 정상적으로 이루어 지면 관련 처리 해준다.
 					if (true == item.UseValidate(this)) {
 						item.StatusData.OnEndItemUsed(this);
 						item.OnUse();

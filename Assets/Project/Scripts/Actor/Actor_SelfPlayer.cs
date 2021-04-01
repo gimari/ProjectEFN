@@ -49,6 +49,11 @@ namespace EFN.Game {
 			_currentEquipItem = null;
 
 			Data_Item targetItem = ActorInventory.Get(targetSlot);
+
+			// target item 을 넘겨주면 알아서 체크해가지고 맨손처리 할것
+			_playerArmObject.SetItem(targetItem);
+
+			// 교체할 아이템이 없으면 맨손으로
 			if (null == targetItem || false == targetItem.UseValidate(this)) {
 				return;
 			}
@@ -71,9 +76,15 @@ namespace EFN.Game {
 			int targetSlot = Inventory_SelfPlayer.ConvertQuickSlotIndexToSlotIndex(index);
 
 			Data_Item targetItem = ActorInventory.Get(targetSlot);
+
+			// 사용 아이템은 UseValidate 를 한번 꼭 거쳐야 하기 때문에 arm object 에 item 세팅 부분을 이렇게 처리한다.
 			if (null == targetItem || false == targetItem.UseValidate(this)) {
+				_playerArmObject.SetBareHand();
 				return;
 			}
+
+			// target item 을 넘겨주면 알아서 체크해가지고 맨손처리 할것
+			_playerArmObject.SetItem(targetItem);
 
 			BehaviourStart(targetItem);
 		}
@@ -133,13 +144,18 @@ namespace EFN.Game {
 
 			while (null != fireTarget) {
 
+				// 달리는 중이라면 나감
+				if (true == _currentBehaviourCondition.HasFlag(eBehaviourCondition.Running)) {
+					break;
+				}
+
 				// 먼저 발사 가능한지 체크.
 				eItemType firedItem = eItemType.None;
 				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot, out firedItem)) {
 					break;
 				}
 
-				RaycastHit2D rays = Physics2D.Raycast(_muzzle.position, _sightDirection, 10, 1 << (int)eLayerMask.OtherHittable);
+				RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 10, 1 << (int)eLayerMask.OtherHittable);
 
 				if (rays) {
 
@@ -158,6 +174,7 @@ namespace EFN.Game {
 					Global_Effect.ShowEffect(info);
 				}
 
+				_playerArmObject.Fire();
 				Graphic_GameCamera.Shake(5);
 
 				yield return new WaitForSeconds(fireTarget.StatusData.FireRate);

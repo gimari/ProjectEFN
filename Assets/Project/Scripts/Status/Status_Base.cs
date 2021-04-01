@@ -16,6 +16,14 @@ namespace EFN {
 		CONS_FIRSTAID,
 	}
 
+	public enum eItemCategory {
+		None = 0,
+
+		Weapon = 1,
+		Ammo = 2,
+		Consumable = 3,
+	}
+
 	public class Status_Base {
 
 		private static Dictionary<eItemType, Status_Base> _statusList = new Dictionary<eItemType, Status_Base>();
@@ -64,6 +72,13 @@ namespace EFN {
 
 			return _statusList[item];
 		}
+
+		/// <summary>
+		/// 기본 정보 관련
+		/// </summary>
+		
+		// 아이템의 공통분류?
+		public virtual eItemCategory ItemCategory { get { return eItemCategory.None; } }
 
 		/// <summary>
 		/// 스택 관련
@@ -119,6 +134,7 @@ namespace EFN {
 	/// 9x39 탄
 	/// </summary>
 	public class Status_9X39SP5 : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 20; } }
 		public override bool DisplayStack { get { return true; } }
@@ -129,6 +145,7 @@ namespace EFN {
 	/// 9x19 탄
 	/// </summary>
 	public class Status_9X19AP : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 11; } }
 		public override bool DisplayStack { get { return true; } }
@@ -139,18 +156,20 @@ namespace EFN {
 	/// 돌격소총 아스발
 	/// </summary>
 	public class Status_ASVAL : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
 		public override bool ContinuousFire { get { return true; } }
 		public override float FireRate { get { return 0.11f; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X39SP5 }; } }
-		public override float UseCoolTime { get { return 1.2f; } }
+		public override float UseCoolTime { get { return 0.8f; } }
 	}
 
 	/// <summary>
 	/// 권총 mp443
 	/// </summary>
 	public class Status_MP443 : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP }; } }
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
@@ -162,12 +181,18 @@ namespace EFN {
 	/// 힐킷
 	/// </summary>
 	public class Status_FIRSTAID : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Consumable; } }
 		public override bool Useable { get { return true; } }
 		public override float UseCoolTime { get { return 3; } }
 		public override eBehaviourCondition CancelCondition { get { return eBehaviourCondition.Running | eBehaviourCondition.Damaging | eBehaviourCondition.Firing; } }
 
 		public override void OnEndItemUsed(Actor_Player actor) {
 			Debug.LogError("I USED!!! : " + actor.name);
+
+			// 팔도 맨손으로 바꿔준다.
+			if (null != actor.PlayerArmObject) {
+				actor.PlayerArmObject.SetBareHand();
+			}
 		}
 	}
 }

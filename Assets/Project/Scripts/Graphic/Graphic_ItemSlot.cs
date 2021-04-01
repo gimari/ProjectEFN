@@ -67,7 +67,7 @@ namespace EFN {
 
 			this._itemImage.gameObject.SetActive(true);
 
-			this._itemImage.sprite = Global_ItemIcon.GetSprite(data.ItemType.ToString());
+			this._itemImage.sprite = Global_ResourceContainer.GetSprite(data.ItemType.ToString());
 			this._itemImage.SetNativeSize();
 			this._itemImage.transform.localPosition = Vector2.zero;
 			this._itemImage.transform.localScale = Vector3.one * (this.GetComponent<RectTransform>().rect.height / DEFAULT_ITEMSLOT_SIZE);

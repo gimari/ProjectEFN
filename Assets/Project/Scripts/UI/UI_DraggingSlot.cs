@@ -100,7 +100,7 @@ namespace EFN {
 				return;
 			}
 
-			this._pickingImage.sprite = Global_ItemIcon.GetSprite(data.ItemType.ToString());
+			this._pickingImage.sprite = Global_ResourceContainer.GetSprite(data.ItemType.ToString());
 			this._pickingImage.SetNativeSize();
 		}
 
