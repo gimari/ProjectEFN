@@ -39,6 +39,8 @@ namespace EFN.Game {
 
 			// selfplayer 가 잇으면?
 			if (null != Global_Actor.SelfPlayer) {
+				Global_Actor.SelfPlayer.RefreshEquipItem();
+
 				foreach (Graphic_ItemSlot slot in _indexedSlotList) {
 					slot.StoredInventory = Global_Actor.SelfPlayer.ActorInventory;
 					slot.UpdateItem(Global_Actor.SelfPlayer.ActorInventory.Get(slot.QuickSlotIdx));

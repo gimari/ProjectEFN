@@ -20,23 +20,32 @@ namespace EFN {
 		BackpackSlotStart = 16,
 	}
 
+	/// <summary>
+	/// 플레이어 착용 슬롯 전용. 아래의 4가지 밖에 없으며 기본적으로 ePlayerSlotType 과 할당된 숫자는 같아야 한다.
+	/// 이걸 왜 따로 뒀냐면 ePlayerSlotType 에는 None 을 0 으로 두기 애매한데 -1 로 할순 없어서 그럼
+	/// </summary>
+	public enum ePlayerEquipSlot {
+		None = 0,
+		PrimeWeapon = 1,
+		SecondWeapon = 2,
+		Holster = 3,
+		Knife = 6,
+	}
+
 	[Serializable]
 	public class Inventory_SelfPlayer : Inventory_Item {
 
-		public void UseQuickSlot(int pressedKey) {
+		public static int ConvertQuickSlotIndexToSlotIndex(int QuickIndex) {
 
-			switch (pressedKey) {
+			switch (QuickIndex) {
 				case 1:
-					Use((int)ePlayerSlotType.PrimeWeapon);
-					break;
+					return (int)ePlayerSlotType.PrimeWeapon;
 
 				case 2:
-					Use((int)ePlayerSlotType.SecondWeapon);
-					break;
+					return (int)ePlayerSlotType.SecondWeapon;
 
 				case 3:
-					Use((int)ePlayerSlotType.Holster);
-					break;
+					return (int)ePlayerSlotType.Holster;
 
 				case 4:
 				case 5:
@@ -44,12 +53,13 @@ namespace EFN {
 				case 7:
 				case 8:
 				case 9:
-					Use((int)ePlayerSlotType.QuickSlotStart + pressedKey - 4);
-					break;
+					return (int)ePlayerSlotType.QuickSlotStart + QuickIndex - 4;
 
 				case 0:
-					Use((int)ePlayerSlotType.QuickSlotStart + 6);
-					break;
+					return (int)ePlayerSlotType.QuickSlotStart + 6;
+
+				default:
+					return QuickIndex;
 			}
 		}
 

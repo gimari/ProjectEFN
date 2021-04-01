@@ -24,7 +24,8 @@ namespace EFN.Game {
 
 		public void OnStartBehaviour(float timer) {
 			_slider.gameObject.SetActive(true);
-			_slider.value = 0;
+
+			_slider.DOValue(0, 0);
 			_slider.DOValue(1, timer).OnComplete(() => { this._slider.gameObject.SetActive(false); }).SetEase(Ease.Linear);
 		}
 

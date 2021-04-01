@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using EFN.Game;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,6 +36,10 @@ namespace EFN {
 
 					case eItemType.AMMO_9X39SP5:
 						status = new Status_9X39SP5();
+						break;
+
+					case eItemType.CONS_FIRSTAID:
+						status = new Status_FIRSTAID();
 						break;
 
 					default:
@@ -74,6 +79,12 @@ namespace EFN {
 		// 쏘거나 사용할 때 필요한 부가아이템?
 		public virtual eItemType[] RequireItem { get { return null; } }
 
+		// 사용 시 취소될 수 있는 액터 행동 조건
+		public virtual eBehaviourCondition CancelCondition { get { return eBehaviourCondition.None; } }
+
+		// 이 아이템이 사용되었을 경우
+		public virtual void OnEndItemUsed(Actor_Player actor) { }
+
 		/// <summary>
 		/// 무기 관련 정보
 		/// </summary>
@@ -86,6 +97,7 @@ namespace EFN {
 
 		// 발사 시간
 		public virtual float FireRate { get { return 0; } }
+
 	}
 
 	/// <summary>
@@ -101,6 +113,7 @@ namespace EFN {
 	/// 돌격소총 아스발
 	/// </summary>
 	public class Status_ASVAL : Status_Base {
+		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
 		public override bool ContinuousFire { get { return true; } }
 		public override float FireRate { get { return 0.11f; } }
@@ -113,8 +126,22 @@ namespace EFN {
 	/// </summary>
 	public class Status_MP443 : Status_Base {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP }; } }
+		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
 		public override float FireRate { get { return 0.2f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
+	}
+
+	/// <summary>
+	/// 힐킷
+	/// </summary>
+	public class Status_FIRSTAID : Status_Base {
+		public override bool Useable { get { return true; } }
+		public override float UseCoolTime { get { return 3; } }
+		public override eBehaviourCondition CancelCondition { get { return eBehaviourCondition.Running | eBehaviourCondition.Damaging | eBehaviourCondition.Firing; } }
+
+		public override void OnEndItemUsed(Actor_Player actor) {
+			Debug.LogError("I USED!!! : " + actor.name);
+		}
 	}
 }

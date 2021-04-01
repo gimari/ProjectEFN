@@ -15,8 +15,10 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] private Light2D _playerEnvironmentLight = default;
 
-		private ePlayerSlotType _currentEquipSlot = ePlayerSlotType.PrimeWeapon;
-		public ePlayerSlotType CurrentEquipSlot { get { return this._currentEquipSlot; } }
+		private ePlayerEquipSlot _currentEquipSlot = ePlayerEquipSlot.None;
+		public ePlayerEquipSlot CurrentEquipSlot { get { return this._currentEquipSlot; } }
+
+		private Data_Item _currentEquipItem = null;
 
 		protected override void OnAwake() {
 			Global_Actor.SelfPlayer = this;
@@ -29,21 +31,66 @@ namespace EFN.Game {
 
 		/// <summary>
 		/// 현재 장착중 슬롯 교체
+		/// 퀵슬롯 그냥 사용과 다르게 현재 착용중인 슬롯과 같으면 아무것도 하지 않아야 한다.
 		/// </summary>
 		public void SetCurrentEquipSlot(int slotType) {
+			int targetSlot = Inventory_SelfPlayer.ConvertQuickSlotIndexToSlotIndex(slotType);
 
-			// 교체하면 발사하는거 끝내줘야 한다.
+			// 슬롯타입이 같고 아이템도 같으면 아무것도 안함.
+			if (_currentEquipSlot == (ePlayerEquipSlot)slotType && _currentEquipItem == ActorInventory.Get(targetSlot)) {
+				return;
+			}
+
+			// 발사부터 멈춤
+			FireEnd();
+
+			// 장착 슬롯 교체할때는 slottype 으로 바꿔줘야 한다.
+			_currentEquipSlot = (ePlayerEquipSlot)slotType;
+			_currentEquipItem = null;
+
+			Data_Item targetItem = ActorInventory.Get(targetSlot);
+			if (null == targetItem || false == targetItem.UseValidate(this)) {
+				return;
+			}
+
+			BehaviourStart(targetItem);
+		}
+
+		/// <summary>
+		/// 특정한 인덱스의 퀵슬롯을 사용한다.
+		/// </summary>
+		public void UseQuickSlot(int index) {
+
+			// 발사부터 멈춤
 			FireEnd();
 
 			// 교체
-			_currentEquipSlot = (ePlayerSlotType)slotType;
+			_currentEquipSlot = ePlayerEquipSlot.None;
+			_currentEquipItem = null;
 
-			Data_Item equipItem = _actorInventory.Get((int)_currentEquipSlot);
+			int targetSlot = Inventory_SelfPlayer.ConvertQuickSlotIndexToSlotIndex(index);
 
-			// 교체 쿨타임으로 usecooltime 을 사용한다.
-			if (null != equipItem) {
-				_actorui.CallUIEvent(eActorUIType.StartBehaviour, equipItem.StatusData.UseCoolTime);
+			Data_Item targetItem = ActorInventory.Get(targetSlot);
+			if (null == targetItem || false == targetItem.UseValidate(this)) {
+				return;
 			}
+
+			BehaviourStart(targetItem);
+		}
+
+		public override void ChangeEquipSlotOnBehaviourEnd(int slotType) {
+			ePlayerEquipSlot equipSlot = (ePlayerEquipSlot)slotType;
+
+			// ㅋㅋㅋㅋㅋ
+			if (equipSlot != ePlayerEquipSlot.Holster && 
+				equipSlot != ePlayerEquipSlot.Knife &&
+				equipSlot != ePlayerEquipSlot.PrimeWeapon &&
+				equipSlot != ePlayerEquipSlot.SecondWeapon) {
+				return;
+			}
+
+			_currentEquipItem = ActorInventory.Get(slotType);
+			_currentEquipSlot = equipSlot;
 		}
 
 		protected override void PlayerMovementProcess() {
@@ -74,15 +121,14 @@ namespace EFN.Game {
 		protected override IEnumerator AutoFireRoutine() {
 
 			// 현재 장착중인 무기
-			ePlayerSlotType currentEquipSlot = _currentEquipSlot;
-
-			Data_Item fireTarget = this.ActorInventory.Get((int)currentEquipSlot);
+			Data_Item fireTarget = _currentEquipItem;
 
 			// 무기가 없음
 			if (null == fireTarget || false == fireTarget.StatusData.Fireable) {
 				yield break;
 			}
 
+			int currentEquipSlot = (int)_currentEquipSlot;
 			_currentBehaviourCondition |= eBehaviourCondition.Firing;
 
 			while (null != fireTarget) {
@@ -90,7 +136,7 @@ namespace EFN.Game {
 				// 먼저 발사 가능한지 체크.
 #if EFN_DEBUG
 				// 무한총알 치트 체크
-				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot) && false == Global_DebugConfig.InfiniteBullet) {
+				if (eErrorCode.Fail == this.ActorInventory.TryFire(currentEquipSlot) && false == Global_DebugConfig.InfiniteBullet) {
 					break;
 				}
 #else
@@ -135,7 +181,15 @@ namespace EFN.Game {
 
 		public override void Stop() {
 			base.Stop();
+
+			// 발사도 멈춰
+			FireEnd();
+
 			this._currentBehaviourCondition = eBehaviourCondition.None;
+		}
+
+		public void RefreshEquipItem() {
+			SetCurrentEquipSlot((int)_currentEquipSlot);
 		}
 	}
 }

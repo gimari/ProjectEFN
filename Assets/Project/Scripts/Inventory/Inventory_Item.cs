@@ -24,7 +24,11 @@ namespace EFN {
 		/// </summary>
 		[SerializeField] private List<Data_Item> _serializedList = new List<Data_Item>();
 
+		[NonSerialized]
         protected SortedDictionary<int, Data_Item> _inventoryList = new SortedDictionary<int, Data_Item>();
+
+		protected Action _onChangeInventory = null;
+		public Action OnChangeInventory { set { _onChangeInventory = value; } }
 
 		public virtual string ToJson() {
 			return JsonUtility.ToJson(this);
@@ -47,13 +51,6 @@ namespace EFN {
 		/// 특정한 인덱스의 녀석을 발사하려 한다.
 		/// </summary>
 		public virtual eErrorCode TryFire(int idx) {
-			return eErrorCode.Fail;
-		}
-
-		/// <summary>
-		/// 특정한 인덱스의 녀석을 사용하려 한다.
-		/// </summary>
-		public virtual eErrorCode TryUse(int idx) {
 			return eErrorCode.Fail;
 		}
 
@@ -208,12 +205,14 @@ namespace EFN {
 			return rv;
 		}
 
-		public virtual void Use(int slotIdx) {
+		public virtual eErrorCode TryUse(int slotIdx, out Data_Item targetItem) {
 			if (false == this._inventoryList.ContainsKey(slotIdx)) {
-				return;
+				targetItem = null;
+				return eErrorCode.Fail;
 			}
 
-			this._inventoryList[slotIdx].OnUse();
+			targetItem = this._inventoryList[slotIdx];
+			return this._inventoryList[slotIdx].OnUse();
 		}
 
 		/// <summary>

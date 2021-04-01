@@ -106,7 +106,7 @@ namespace EFN.Game {
 					break;
 
 				default:
-					(Global_Actor.SelfPlayer.ActorInventory as Inventory_SelfPlayer).UseQuickSlot(int.Parse(context.control.name));
+					Global_Actor.SelfPlayer.UseQuickSlot(int.Parse(context.control.name));
 					break;
 			}
 		}

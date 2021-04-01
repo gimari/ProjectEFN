@@ -36,6 +36,8 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] protected ActorUI_Base _actorui = default;
 
+		private Coroutine _behaviourRoutine = null;
+
 		/// <summary>
 		/// 현재 이 플레이어가 취하고 있는 행동
 		/// </summary>
@@ -67,7 +69,64 @@ namespace EFN.Game {
 		public virtual void FireStart() { }
 		public virtual void FireEnd() { }
 		protected virtual IEnumerator AutoFireRoutine() { yield return null; }
-		protected virtual IEnumerator PlayerBehaviourRoutine() { yield return null; }
+
+		public virtual void BehaviourStart(Data_Item item) {
+
+			if (null == item) {
+				return;
+			}
+
+			// 원래 하던거 멈춤!!
+			BehaviourStop();
+
+			this._behaviourRoutine = StartCoroutine(PlayerBehaviourRoutine(item, null));
+		}
+
+		public virtual void BehaviourStop() {
+			if (null != _behaviourRoutine) {
+				_actorui.CallUIEvent(eActorUIType.EndBehaviour);
+				StopCoroutine(_behaviourRoutine);
+			}
+		}
+
+		protected virtual IEnumerator PlayerBehaviourRoutine(Data_Item item, Action onEndAction) {
+
+			if (null == item) {
+				yield break;
+			}
+
+			if (null != _actorui) {
+				_actorui.CallUIEvent(eActorUIType.StartBehaviour, item.StatusData.UseCoolTime);
+			}
+
+			float targetTimer = item.StatusData.UseCoolTime;
+
+			while (null != item && null != this.gameObject) {
+
+				// 현재 행동이 취소될만한 행동이면 나감
+				if (eBehaviourCondition.None != (item.StatusData.CancelCondition & _currentBehaviourCondition)) {
+					break;
+				}
+
+				targetTimer -= Time.deltaTime;
+
+				// 정상적으로 타이머가 다 돌았을 때..
+				if (targetTimer < 0) {
+					if (true == item.UseValidate(this)) {
+						item.StatusData.OnEndItemUsed(this);
+						item.OnUse();
+						ChangeEquipSlotOnBehaviourEnd(item.SlotIndex);
+					}
+					break;
+				}
+
+				yield return null;
+			}
+
+			if (null != _actorui) {
+				_actorui.CallUIEvent(eActorUIType.EndBehaviour);
+			}
+		}
 
 		public virtual void RunStart() {
 			this._currentBehaviourCondition |= eBehaviourCondition.Running;
@@ -76,5 +135,11 @@ namespace EFN.Game {
 		public virtual void RunEnd() {
 			this._currentBehaviourCondition &= ~eBehaviourCondition.Running;
 		}
+
+		/// <summary>
+		/// 행동이 끝날때 행동 대상이 되는 아이템의 슬롯으로 equipslot 를 맞춰주는거
+		/// 사실상 selfplayer 말곤 쓸일이 없다
+		/// </summary>
+		public virtual void ChangeEquipSlotOnBehaviourEnd(int slotType) { }
 	}
 }
