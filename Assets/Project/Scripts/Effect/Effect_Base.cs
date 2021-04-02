@@ -7,7 +7,7 @@ namespace EFN {
 
 		[SerializeField] private eEffectType _type = default;
 
-		public void SetInfo(EffectInstanceInfo info) {
+		public virtual void SetInfo(EffectInstanceInfo info) {
 			this.transform.position = info.Pos;
 
 			switch (info.RotateType) {
@@ -19,7 +19,7 @@ namespace EFN {
 			StartCoroutine(this.AutoDestroyRoutine(info.Duration));
 		}
 
-		private IEnumerator AutoDestroyRoutine(float timer) {
+		protected IEnumerator AutoDestroyRoutine(float timer) {
 			yield return new WaitForSeconds(timer);
 
 			Destroy(this.gameObject);

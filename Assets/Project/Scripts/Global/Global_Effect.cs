@@ -8,6 +8,7 @@ namespace EFN {
 	public enum eEffectType {
 		None = 0,
 		BulletSpark = 1,
+		BulletLine,
 	}
 
 	public enum eEffectRotateType {
@@ -29,6 +30,13 @@ namespace EFN {
 		public float Duration {
 			get { return _duration; }
 			set { _duration = value; }
+		}
+
+		// 끝나는 포지션
+		private Vector2 _endPos;
+		public Vector2 EndPos {
+			get { return _endPos; }
+			set { _endPos = value; }
 		}
 
 		// 회전각 뭘로 돌릴건지
@@ -61,6 +69,7 @@ namespace EFN {
 			this._duration = 0;
 			this._targetNormal = default;
 			this._rotateType = eEffectRotateType.None;
+			this._endPos = default;
 		}
 	}
 

@@ -66,16 +66,20 @@ namespace EFN.Game {
 		/// </summary>
 		public void UseQuickSlot(int index) {
 
+			int targetSlot = Inventory_SelfPlayer.ConvertQuickSlotIndexToSlotIndex(index);
+
+			// 일단 아이템이 있는지부터 알아야..
+			Data_Item targetItem = ActorInventory.Get(targetSlot);
+			if (null == targetItem || false == targetItem.UseValidate(this)) {
+				return;
+			}
+
 			// 발사부터 멈춤
 			FireEnd();
 
 			// 교체
 			_currentEquipSlot = ePlayerEquipSlot.None;
 			_currentEquipItem = null;
-
-			int targetSlot = Inventory_SelfPlayer.ConvertQuickSlotIndexToSlotIndex(index);
-
-			Data_Item targetItem = ActorInventory.Get(targetSlot);
 
 			// 사용 아이템은 UseValidate 를 한번 꼭 거쳐야 하기 때문에 arm object 에 item 세팅 부분을 이렇게 처리한다.
 			if (null == targetItem || false == targetItem.UseValidate(this)) {
@@ -155,7 +159,15 @@ namespace EFN.Game {
 					break;
 				}
 
-				RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 10, 1 << (int)eLayerMask.OtherHittable);
+				// 떄려야하는 타겟들
+				int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
+				RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 10, targetLayer);
+
+				// 총알 날라가는 이펙트 부터..
+				EffectInstanceInfo lineinfo = new EffectInstanceInfo(eEffectType.BulletLine);
+				lineinfo.Pos = _playerArmObject.GetMuzzlePos;
+				lineinfo.Duration = 0.1f;
+				lineinfo.EndPos = lineinfo.Pos + ((Vector2)_sightDirection.normalized * 10);
 
 				if (rays) {
 
@@ -165,6 +177,7 @@ namespace EFN.Game {
 						dmgable.Hit(firedItem);
 					}
 
+					// 맞은곳에 탄흔 이펙트
 					EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
 					info.Pos = rays.point;
 					info.RotateType = eEffectRotateType.Normal;
@@ -172,7 +185,13 @@ namespace EFN.Game {
 					info.Duration = 1f;
 
 					Global_Effect.ShowEffect(info);
+
+					// 총알 라인이펙트 목적지를 맞은곳으로 수정해준다.
+					lineinfo.EndPos = rays.point;
 				}
+
+				// 총알 라인이펙트
+				Global_Effect.ShowEffect(lineinfo);
 
 				_playerArmObject.Fire();
 				Graphic_GameCamera.Shake(5);

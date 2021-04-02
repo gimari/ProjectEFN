@@ -19,6 +19,8 @@ namespace EFN {
 		Interactable = 8,
 		OtherHittable = 9,			// 유저 말고 다른 때릴곳 (벽, AI 등)
 		UserHitbox = 10,			// 유저 히트박스
+		ShowBlockable = 11,			// 때릴수는 없는데 시야를 방해할 수 있는 것 (풀, 바위 등)
+		EnemyHittable = 12,			// 적군
 	}
 
 	public class Global_Common {
@@ -31,6 +33,11 @@ namespace EFN {
 		[Conditional("EFN_DEBUG")]
 		public static void LogError(string str) {
 			UnityEngine.Debug.LogError(str);
+		}
+
+		[Conditional("EFN_DEBUG")]
+		public static void DrawLine(Vector3 start, Vector3 end) {
+			UnityEngine.Debug.DrawLine(start, end, Color.red, 0.2f);
 		}
 
 		public static AsyncOperation LoadSceneAsync(string sceneName) {
@@ -49,6 +56,19 @@ namespace EFN {
 #else
 			Application.Quit();
 #endif
+		}
+	}
+
+	public static class Vector2Extension {
+		public static Vector2 Rotate(this Vector2 v, float degrees) {
+			float sin = Mathf.Sin(degrees * Mathf.Deg2Rad);
+			float cos = Mathf.Cos(degrees * Mathf.Deg2Rad);
+
+			float tx = v.x;
+			float ty = v.y;
+			v.x = (cos * tx) - (sin * ty);
+			v.y = (sin * tx) + (cos * ty);
+			return v;
 		}
 	}
 }
