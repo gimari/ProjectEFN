@@ -14,6 +14,8 @@ namespace EFN {
 		WEAPON_ASVAL,
 		AMMO_9X39SP5,
 		CONS_FIRSTAID,
+		WEAPON_RECORDER,
+		HEAD_STAR,
 	}
 
 	public enum eItemCategory {
@@ -22,6 +24,7 @@ namespace EFN {
 		Weapon = 1,
 		Ammo = 2,
 		Consumable = 3,
+		Head = 4,
 	}
 
 	public class Status_Base {
@@ -60,6 +63,14 @@ namespace EFN {
 
 					case eItemType.CONS_FIRSTAID:
 						status = new Status_FIRSTAID();
+						break;
+
+					case eItemType.WEAPON_RECORDER:
+						status = new Weapon_RECORDER();
+						break;
+
+					case eItemType.HEAD_STAR:
+						status = new Status_HeadStar();
 						break;
 
 					default:
@@ -115,6 +126,9 @@ namespace EFN {
 		// 적을 때렸을 때 대미지
 		public virtual float DmgAmount { get { return 0; } }
 
+		// 장착 가능한 놈이라면 가능한 슬롯.
+		public virtual ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.None; } }
+
 		/// <summary>
 		/// 무기 관련 정보
 		/// </summary>
@@ -127,6 +141,9 @@ namespace EFN {
 
 		// 발사 시간
 		public virtual float FireRate { get { return 0; } }
+
+		// 근접무기인가?
+		public virtual bool IsKnifeWeapon { get { return false; } }
 
 	}
 
@@ -163,6 +180,7 @@ namespace EFN {
 		public override float FireRate { get { return 0.11f; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X39SP5 }; } }
 		public override float UseCoolTime { get { return 0.8f; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 	}
 
 	/// <summary>
@@ -175,6 +193,7 @@ namespace EFN {
 		public override bool Fireable { get { return true; } }
 		public override float FireRate { get { return 0.2f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Holster; } }
 	}
 
 	/// <summary>
@@ -194,5 +213,34 @@ namespace EFN {
 				actor.PlayerArmObject.SetBareHand();
 			}
 		}
+	}
+
+	/// <summary>
+	/// 근접무기 리코더
+	/// </summary>
+	public class Weapon_RECORDER : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
+		public override bool Useable { get { return true; } }
+		public override bool Fireable { get { return true; } }
+		public override float FireRate { get { return 0.3f; } }
+		public override float UseCoolTime { get { return 0.3f; } }
+		public override bool IsKnifeWeapon { get { return true; } }
+		public override float DmgAmount { get { return 100; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Knife; } }
+	}
+
+	/// <summary>
+	/// 갑옷 6B3TM
+	/// </summary>
+	public class Status_6B3TM : Status_Base {
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Armor; } }
+	}
+
+	/// <summary>
+	/// 별달린모자
+	/// </summary>
+	public class Status_HeadStar : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
 	}
 }

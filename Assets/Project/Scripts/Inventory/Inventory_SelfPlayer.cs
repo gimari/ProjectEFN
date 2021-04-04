@@ -6,6 +6,7 @@ using UnityEngine;
 namespace EFN {
 
 	public enum ePlayerSlotType {
+		None = 0,
 		PrimeWeapon = 1,
 		SecondWeapon = 2,
 		Holster = 3,
@@ -50,6 +51,8 @@ namespace EFN {
 				case 4:
 				case 5:
 				case 6:
+					return (int)ePlayerSlotType.Knife;
+
 				case 7:
 				case 8:
 				case 9:
@@ -106,6 +109,34 @@ namespace EFN {
 
 			// 여기까지오면 실패
 			return base.TryFire(idx, out firedItem);
+		}
+
+		protected override bool CheckSlotIndex(Data_Item fromItem, int targetIdx) {
+			// ㅋㅋ
+			if (targetIdx != (int)ePlayerSlotType.Head &&
+				targetIdx != (int)ePlayerSlotType.Holster &&
+				targetIdx != (int)ePlayerSlotType.Backpack &&
+				targetIdx != (int)ePlayerSlotType.Armor &&
+				targetIdx != (int)ePlayerSlotType.Knife &&
+				targetIdx != (int)ePlayerSlotType.PrimeWeapon &&
+				targetIdx != (int)ePlayerSlotType.Rig &&
+				targetIdx != (int)ePlayerSlotType.SecondWeapon) {
+				return true;
+			}
+
+			if (fromItem.StatusData.TargetEquipSlot == ePlayerSlotType.None) {
+				return false;
+			}
+
+			if (fromItem.StatusData.TargetEquipSlot == ePlayerSlotType.PrimeWeapon && targetIdx == (int)ePlayerSlotType.SecondWeapon) {
+				return true;
+			}
+
+			if ((int)fromItem.StatusData.TargetEquipSlot != targetIdx) {
+				return false;
+			}
+
+			return true;
 		}
 	}
 }

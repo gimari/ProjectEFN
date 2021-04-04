@@ -26,7 +26,14 @@ namespace EFN.Game {
 			// 공통데이터랑 연동해줌
 			_actorInventory = Global_SelfPlayerData.SelfInventory;
 
+			UpdateHatObject();
+
 			base.OnAwake();
+		}
+
+		protected void UpdateHatObject() {
+			// 모자 갱신
+			_playerHatObject.SetItem(_actorInventory.Get((int)ePlayerSlotType.Head));
 		}
 
 		/// <summary>
@@ -34,12 +41,20 @@ namespace EFN.Game {
 		/// 퀵슬롯 그냥 사용과 다르게 현재 착용중인 슬롯과 같으면 아무것도 하지 않아야 한다.
 		/// </summary>
 		public void SetCurrentEquipSlot(int slotType) {
+
+			if (0 == slotType) {
+				return;
+			}
+
 			int targetSlot = Inventory_SelfPlayer.ConvertQuickSlotIndexToSlotIndex(slotType);
 
 			// 슬롯타입이 같고 아이템도 같으면 아무것도 안함.
 			if (_currentEquipSlot == (ePlayerEquipSlot)slotType && _currentEquipItem == ActorInventory.Get(targetSlot)) {
 				return;
 			}
+
+			// 원래 하던거 멈춤!!
+			BehaviourStop();
 
 			// 발사부터 멈춤
 			FireEnd();
@@ -110,7 +125,23 @@ namespace EFN.Game {
 
 		protected override void PlayerMovementProcess() {
 			base.PlayerMovementProcess();
+
 			Graphic_GameCamera.UserTrackProcess(this._sightDirection, Graphic.Pos);
+
+			// 간단하게 애니메이션 함..
+			if (_movDirection == Vector2.zero) {
+				Graphic.PlayIdle();
+			} else if (true == _currentBehaviourCondition.HasFlag(eBehaviourCondition.Running)) {
+				Graphic.PlayRun();
+			} else {
+				Graphic.PlayWalk();
+			}
+
+			if (true == _currentBehaviourCondition.HasFlag(eBehaviourCondition.Running)) {
+				SoundGeneratingData sgd = new SoundGeneratingData();
+				sgd.Radius = 5f;
+				this._soundGenerator.MakeSound(sgd);
+			}
 		}
 
 		protected override void PlayerLookingProcess() {
@@ -159,49 +190,24 @@ namespace EFN.Game {
 					break;
 				}
 
-				// 떄려야하는 타겟들
-				int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
-				RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 10, targetLayer);
-
-				// 총알 날라가는 이펙트 부터..
-				EffectInstanceInfo lineinfo = new EffectInstanceInfo(eEffectType.BulletLine);
-				lineinfo.Pos = _playerArmObject.GetMuzzlePos;
-				lineinfo.Duration = 0.1f;
-				lineinfo.EndPos = lineinfo.Pos + ((Vector2)_sightDirection.normalized * 10);
-
-				if (rays) {
-
-					// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
-					Damageable dmgable = rays.transform.GetComponent<Damageable>();
-					if (null != dmgable) {
-						dmgable.Hit(firedItem);
-					}
-
-					// 맞은곳에 탄흔 이펙트
-					EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
-					info.Pos = rays.point;
-					info.RotateType = eEffectRotateType.Normal;
-					info.TargetNormal = rays.normal;
-					info.Duration = 1f;
-
-					Global_Effect.ShowEffect(info);
-
-					// 총알 라인이펙트 목적지를 맞은곳으로 수정해준다.
-					lineinfo.EndPos = rays.point;
+				if (true == fireTarget.StatusData.IsKnifeWeapon) {
+					this.ShootKnifeWeapon(fireTarget.ItemType);
+				} else {
+					this.ShootGunWeapon(firedItem);
 				}
-
-				// 총알 라인이펙트
-				Global_Effect.ShowEffect(lineinfo);
-
+				
+				// arm 에서 발사 애니메이션 재생해야함
 				_playerArmObject.Fire();
-				Graphic_GameCamera.Shake(5);
 
+				// 연사속도 기다린다.
 				yield return new WaitForSeconds(fireTarget.StatusData.FireRate);
 
+				// 지금 쏠 총이 없으면 나감
 				if (null == fireTarget) {
 					break;
 				}
 
+				// 총이 자동발사 안되면 나감
 				if (false == fireTarget.StatusData.ContinuousFire) {
 					break;
 				}
@@ -215,17 +221,122 @@ namespace EFN.Game {
 			_currentBehaviourCondition &= ~eBehaviourCondition.Firing;
 		}
 
+		/// <summary>
+		/// 총알 안쓰는 무기를 발사한다!
+		/// </summary>
+		private void ShootKnifeWeapon(eItemType firedItem) {
+
+			// 떄려야하는 타겟들
+			int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
+			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 1.5f, targetLayer);
+			
+			// ray 를 쏴서 맞을 놈이 있는지 검사.
+			if (rays) {
+
+				// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
+				Damageable dmgable = rays.transform.GetComponent<Damageable>();
+				if (null != dmgable) {
+					dmgable.Hit(firedItem, this);
+				}
+
+				// 맞은곳에 탄흔 이펙트
+				EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
+				info.Pos = rays.point;
+				info.RotateType = eEffectRotateType.Normal;
+				info.TargetNormal = rays.normal;
+				info.Duration = 1f;
+
+				Global_Effect.ShowEffect(info);
+			}
+			
+			// 카메라 반동
+			Graphic_GameCamera.Shake(3);
+		}
+
+		/// <summary>
+		/// 총알 쓰는 무기를 발사한다!!
+		/// </summary>
+		private void ShootGunWeapon(eItemType firedItem) {
+
+			// 떄려야하는 타겟들
+			int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
+			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 10, targetLayer);
+
+			// 총알 날라가는 이펙트 부터 우선 생성
+			EffectInstanceInfo lineinfo = new EffectInstanceInfo(eEffectType.BulletLine);
+			lineinfo.Pos = _playerArmObject.GetMuzzlePos;
+			lineinfo.Duration = 0.1f;
+			lineinfo.EndPos = lineinfo.Pos + ((Vector2)_sightDirection.normalized * 10);
+
+			// ray 를 쏴서 맞을 놈이 있는지 검사.
+			if (rays) {
+
+				// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
+				Damageable dmgable = rays.transform.GetComponent<Damageable>();
+				if (null != dmgable) {
+					dmgable.Hit(firedItem, this);
+				}
+
+				// 맞은곳에 탄흔 이펙트
+				EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
+				info.Pos = rays.point;
+				info.RotateType = eEffectRotateType.Normal;
+				info.TargetNormal = rays.normal;
+				info.Duration = 1f;
+
+				Global_Effect.ShowEffect(info);
+
+				// 총알 라인이펙트 목적지를 맞은곳으로 수정해준다.
+				lineinfo.EndPos = rays.point;
+			}
+
+			// 총알 라인이펙트
+			Global_Effect.ShowEffect(lineinfo);
+
+			// 총 사운드
+			SoundGeneratingData sgd = new SoundGeneratingData();
+			sgd.Radius = 10f;
+			sgd.EndTimer = 0.1f;
+			_soundGenerator.MakeSound(sgd);
+
+			// 카메라 반동
+			Graphic_GameCamera.Shake(5);
+		}
+
+		/// <summary>
+		/// selfplayer의 죽음
+		/// </summary>
+		protected override void OnDieInAction(DamageInfo hitinfo) {
+
+#if EFN_DEBUG
+			if (true == Global_DebugConfig.Invinsible) {
+				return;
+			}
+#endif
+
+			Destroy(this.gameObject);
+		}
+
 		public override void Stop() {
 			base.Stop();
 
 			// 발사도 멈춰
 			FireEnd();
 
+			// idle 재생
+			Graphic.PlayIdle();
+
 			this._currentBehaviourCondition = eBehaviourCondition.None;
 		}
 
+		/// <summary>
+		/// 현재 이큅슬롯으로 현재 장착중인 아이템을 갱신해준다.
+		/// </summary>
 		public void RefreshEquipItem() {
 			SetCurrentEquipSlot((int)_currentEquipSlot);
+
+			// 모자도 갱신해준다.
+			UpdateHatObject();
 		}
 	}
 }

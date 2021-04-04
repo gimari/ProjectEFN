@@ -19,6 +19,10 @@ namespace EFN.Game {
 				return 0 < _interactableActors.Count;
 			}
 
+			public static bool IsExist(GameObject Actor) {
+				return _interactableActors.Contains(Actor);
+			}
+
 			public static void Add(GameObject Actor) {
 				_interactableActors.Add(Actor);
 			}

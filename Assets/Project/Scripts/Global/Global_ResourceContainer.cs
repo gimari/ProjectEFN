@@ -8,6 +8,7 @@ namespace EFN {
 
 		[SerializeField] private Sprite[] _iconSpriteList = default;
 		[SerializeField] private GameObject[] _armPrefabList = default;
+		[SerializeField] private GameObject[] _hatPrefabList = default;
 
 		private static Global_ResourceContainer _instance = null;
 
@@ -40,6 +41,24 @@ namespace EFN {
 			}
 
 			var rv = from list in _instance._armPrefabList
+					 where list.name == spriteName
+					 select list;
+
+			if (rv.Count() <= 0) {
+				EFN.Global_Common.LogError("CANNOT FIND PREFAB : NO RESULT");
+				return null;
+			}
+
+			return rv.First();
+		}
+
+		public static GameObject GetHatPrefab(string spriteName) {
+			if (null == _instance) {
+				EFN.Global_Common.LogError("CANNOT FIND PREFAB : NO INSTANCE");
+				return null;
+			}
+
+			var rv = from list in _instance._hatPrefabList
 					 where list.name == spriteName
 					 select list;
 

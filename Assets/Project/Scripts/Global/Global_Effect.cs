@@ -9,6 +9,8 @@ namespace EFN {
 		None = 0,
 		BulletSpark = 1,
 		BulletLine,
+		SpikyBurst,
+		ExplosionNova,
 	}
 
 	public enum eEffectRotateType {

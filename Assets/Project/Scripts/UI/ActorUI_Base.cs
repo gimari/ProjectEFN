@@ -10,6 +10,8 @@ namespace EFN.Game {
 
 		StartBehaviour,
 		EndBehaviour,
+
+		DisplayDamage,
 	}
 
 	public class ActorUI_Base : MonoBehaviour {

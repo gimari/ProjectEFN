@@ -128,6 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8cacd490bc0ff4f46bc390bb6df8188b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _actorAnim: {fileID: 0}
 --- !u!210 &4731128413373288353
 SortingGroup:
   m_ObjectHideFlags: 0
@@ -281,6 +282,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _graphic: {fileID: 4731128413373288352}
+  _boxDropTable:
+  - ItemType: 6
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 1
+  - ItemType: 4
+    DropRate: 5
+    MinCount: 1
+    MaxCount: 1
 --- !u!50 &4731128414640339060
 Rigidbody2D:
   serializedVersion: 4

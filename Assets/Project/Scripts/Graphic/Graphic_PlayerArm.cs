@@ -10,7 +10,7 @@ namespace EFN.Game {
 
 	public class Graphic_PlayerArm : MonoBehaviour {
 
-		private Graphic_Gun _targetGun = null;
+		[SerializeField] private Graphic_Gun _targetGun = null;
 		private eArmGraphicStatus _currentStatus = eArmGraphicStatus.BareHand;
 
 		public Vector2 GetMuzzlePos {

@@ -38,6 +38,10 @@ namespace EFN {
 			return _inventoryList.GetEnumerator();
 		}
 
+		public int Count {
+			get { return _inventoryList.Count(); }
+		}
+
 		public Data_Item Get(int idx) {
 
 			if (false == _inventoryList.ContainsKey(idx)) {
@@ -98,6 +102,11 @@ namespace EFN {
 				return eErrorCode.Success;
 			}
 
+			// 이 슬롯에 들어갈 수 있는지 체크.
+			if (false == CheckSlotIndex(fromItem, targetIdx)) {
+				return eErrorCode.Fail;
+			}
+
 			int fromIdx = fromItem.SlotIndex;
 
 			Data_Item target = null;
@@ -118,6 +127,12 @@ namespace EFN {
 
 			// 키가 다르거나, 이미 있는애가 스택이 안되거나, 스택이 꽉차있으면 서로 교체
             if (target.ItemType != fromItem.ItemType || target.StatusData.Stackable == false || target.IsFullStack == true) {
+
+				// 바뀌는 대상이 되는 놈이 해당 슬롯에 들어갈 수 있는지 체크 해야한다.
+				if (false == CheckSlotIndex(target, fromItem.SlotIndex)) {
+					return eErrorCode.Fail;
+				}
+
 				int swapIndex = target.SlotIndex;
 
 				this._inventoryList[fromItem.SlotIndex] = target;
@@ -144,6 +159,8 @@ namespace EFN {
 			return rv;
 		}
 
+		protected virtual bool CheckSlotIndex(Data_Item fromItem, int targetIdx) { return true; }
+
 		/// <summary>
 		/// 각기 다른 두개의 인벤토리에서 슬롯을 서로 옮길 때!!
 		/// </summary>
@@ -155,6 +172,11 @@ namespace EFN {
 
 			if (externalInven == this) {
 				return AddInventory(fromItem, targetIdx);
+			}
+
+			// 이 슬롯에 들어갈 수 있는지 체크.
+			if (false == CheckSlotIndex(fromItem, targetIdx)) {
+				return eErrorCode.Fail;
 			}
 
 			int fromIdx = fromItem.SlotIndex;
@@ -178,6 +200,12 @@ namespace EFN {
 
 			// 키가 다르거나, 이미 있는애가 스택이 안되거나, 스택이 꽉차있으면 서로 교체
 			if (target.ItemType != fromItem.ItemType || target.StatusData.Stackable == false || target.IsFullStack == true) {
+
+				// 바뀌는 대상이 되는 놈이 해당 슬롯에 들어갈 수 있는지 체크 해야한다.
+				if (false == CheckSlotIndex(target, fromItem.SlotIndex)) {
+					return eErrorCode.Fail;
+				}
+
 				int swapIndex = target.SlotIndex;
 
 				externalInven._inventoryList[fromItem.SlotIndex] = target;

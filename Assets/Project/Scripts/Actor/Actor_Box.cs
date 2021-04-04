@@ -2,40 +2,65 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using System;
 
 namespace EFN.Game {
-    public class Actor_Box : Actor_Base {
-        protected override void OnAwake() {
-            base.OnAwake();
+	[Serializable]
+	public class DropTableInfo {
+		public eItemType ItemType;  // 드랍 아이템
+		public float DropRate;      // 0 ~ 100
+		public int MinCount;        // 최소 개수
+		public int MaxCount;        // 최대 개수
+	}
 
-            _actorInventory = new Inventory_Item();
-            _actorInventory.MaxDisplayIndex = 4;
+	public class Actor_Box : Actor_Base {
 
-            Data_Item item1 = new Data_Item(eItemType.WEAPON_ASVAL);
-            item1.StoredInventory = _actorInventory;
+		[SerializeField] private DropTableInfo[] _boxDropTable = default;
 
-            Data_Item item2 = new Data_Item(eItemType.Weapon_MP443);
-            item2.StoredInventory = _actorInventory;
+		protected override void OnAwake() {
+			base.OnAwake();
 
-            Data_Item item3 = new Data_Item(eItemType.CONS_FIRSTAID);
-            item3.StoredInventory = _actorInventory;
+			List<Data_Item> _container = new List<Data_Item>();
 
-            Data_Item item4 = new Data_Item(eItemType.AMMO_9X39SP5);
-            item4.StoredInventory = _actorInventory;
-            item4.StackCount = 20;
+			foreach (DropTableInfo info in _boxDropTable) {
+				float rand = UnityEngine.Random.Range(0, 100f);
 
-            _actorInventory.AddInventory(item1);
-            _actorInventory.AddInventory(item2);
-            _actorInventory.AddInventory(item3);
-            _actorInventory.AddInventory(item4);
-        }
+				// 드랍 됬음?
+				if (info.DropRate < rand) {
+					continue;
+				}
 
-        protected override void OnTriggerEnter2D(Collider2D other) {
+				Data_Item dropped = new Data_Item(info.ItemType);
+
+				dropped.StackCount = UnityEngine.Random.Range(info.MinCount, info.MaxCount + 1);
+
+				_container.Add(dropped);
+			}
+
+			_actorInventory = new Inventory_Item();
+			_actorInventory.MaxDisplayIndex = _container.Count;
+
+			for (int length = _container.Count; 0 < length; length--) {
+				int index = UnityEngine.Random.Range(0, length);
+				_actorInventory.AddInventory(_container[index]);
+				_container.RemoveAt(index);
+			}
+		}
+
+		protected override void OnTriggerEnter2D(Collider2D other) {
+			if (other.name != "Collider_Closechecker") {
+				return;
+			}
+
             Global_Actor.Interactable.Add(this.gameObject);
         }
 
         protected override void OnTriggerExit2D(Collider2D other) {
-            Global_Actor.Interactable.Remove(this.gameObject);
+			if (other.name != "Collider_Closechecker") {
+				return;
+			}
+
+			Global_Actor.Interactable.Remove(this.gameObject);
         }
     }
 }

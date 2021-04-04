@@ -5,12 +5,20 @@ using UnityEngine;
 using UnityEngine.Events;
 
 namespace EFN.Game {
+
+	public class DamageInfo {
+		public float Damage;
+		public Actor_Base HittedActor;
+		public Vector2 Pos;
+	}
+
     public class Damageable : MonoBehaviour {
 
         [SerializeField] private float _maxHitPoint = 0;
+		[SerializeField] private bool _showFloatingDamage = true;
 
-        public Action OnDieInAction = null;
-        public Action OnReceiveDamage = null;
+        public Action<DamageInfo> OnDieInAction = null;
+        public Action<DamageInfo> OnReceiveDamage = null;
         public Action OnOnResetDamageDieInAction = null;
         public Action OnResetDamage = null;
 
@@ -31,7 +39,7 @@ namespace EFN.Game {
             OnResetDamage?.Invoke();
         }
 
-        public void Hit(eItemType firedItem) {
+        public void Hit(eItemType firedItem, Actor_Base hittedActor) {
 
             Status_Base firedStatus = Status_Base.GetStatus(firedItem);
             if (null == firedStatus) {
@@ -40,13 +48,24 @@ namespace EFN.Game {
             }
 
             _currentHitPoint = _currentHitPoint - firedStatus.DmgAmount;
-            if (_currentHitPoint <= 0) {
-                DieInAction();
-            }
-        }
 
-        protected void DieInAction() {
-            this.OnDieInAction?.Invoke();
+			DamageInfo info = new DamageInfo();
+			info.Damage = firedStatus.DmgAmount;
+			info.HittedActor = hittedActor;
+			info.Pos = this.transform.position;
+
+			if (true == _showFloatingDamage) {
+				Global_UIEvent.CallUIEvent<DamageInfo>(eEventType.ShowFloatingDamage, info);
+			}
+
+			// 이번 일격으로 죽는다면 dia 만 호출된다.
+			if (_currentHitPoint <= 0) {
+				this.OnDieInAction?.Invoke(info);
+				return;
+            }
+
+			// 안죽는다면 아프다고 알려줌.
+			this.OnReceiveDamage?.Invoke(info);
         }
     }
 }

@@ -89,6 +89,14 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Knife"",
+                    ""type"": ""Button"",
+                    ""id"": ""663877ef-4490-4726-a554-8caa4c41b71e"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -333,6 +341,17 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Run"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e692511e-5c4f-4be2-8719-04924b844f90"",
+                    ""path"": ""<Keyboard>/v"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Knife"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -350,6 +369,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         m_Actor_QuickSlot = m_Actor.FindAction("QuickSlot", throwIfNotFound: true);
         m_Actor_Exit = m_Actor.FindAction("Exit", throwIfNotFound: true);
         m_Actor_Run = m_Actor.FindAction("Run", throwIfNotFound: true);
+        m_Actor_Knife = m_Actor.FindAction("Knife", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -408,6 +428,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Actor_QuickSlot;
     private readonly InputAction m_Actor_Exit;
     private readonly InputAction m_Actor_Run;
+    private readonly InputAction m_Actor_Knife;
     public struct ActorActions
     {
         private @EFNInputAction m_Wrapper;
@@ -421,6 +442,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         public InputAction @QuickSlot => m_Wrapper.m_Actor_QuickSlot;
         public InputAction @Exit => m_Wrapper.m_Actor_Exit;
         public InputAction @Run => m_Wrapper.m_Actor_Run;
+        public InputAction @Knife => m_Wrapper.m_Actor_Knife;
         public InputActionMap Get() { return m_Wrapper.m_Actor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -457,6 +479,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Run.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnRun;
                 @Run.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnRun;
                 @Run.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnRun;
+                @Knife.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnKnife;
+                @Knife.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnKnife;
+                @Knife.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnKnife;
             }
             m_Wrapper.m_ActorActionsCallbackInterface = instance;
             if (instance != null)
@@ -488,6 +513,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Run.started += instance.OnRun;
                 @Run.performed += instance.OnRun;
                 @Run.canceled += instance.OnRun;
+                @Knife.started += instance.OnKnife;
+                @Knife.performed += instance.OnKnife;
+                @Knife.canceled += instance.OnKnife;
             }
         }
     }
@@ -503,5 +531,6 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         void OnQuickSlot(InputAction.CallbackContext context);
         void OnExit(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
+        void OnKnife(InputAction.CallbackContext context);
     }
 }

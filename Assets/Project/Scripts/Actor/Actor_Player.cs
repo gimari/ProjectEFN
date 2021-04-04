@@ -26,6 +26,11 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] protected Graphic_PlayerArm _playerArmObject = default;
 		public Graphic_PlayerArm PlayerArmObject { get { return _playerArmObject; } }
+
+		/// <summary>
+		/// HAT 탈부탁 해주는 부분.
+		/// </summary>
+		[SerializeField] protected Graphic_PlayerHat _playerHatObject = default;
 		
 		/// <summary>
 		/// 이 액터에 붙어있는 액터UI
@@ -36,6 +41,11 @@ namespace EFN.Game {
 		/// 이 액터의 체력을 관장해줄 컴포넌트
 		/// </summary>
 		[SerializeField] protected Damageable _dmgable = default;
+
+		/// <summary>
+		/// 액터가 소리를 낼 때 주변에 전파해줄 generator
+		/// </summary>
+		[SerializeField] protected SoundGenerator _soundGenerator = default;
 
 		private Coroutine _behaviourRoutine = null;
 
@@ -53,6 +63,7 @@ namespace EFN.Game {
 
 			_dmgable.Init(this);
 			_dmgable.OnDieInAction = this.OnDieInAction;
+			_dmgable.OnReceiveDamage = this.OnReceiveDamage;
 		}
 
 		private void Update() {
@@ -60,14 +71,16 @@ namespace EFN.Game {
 			PlayerLookingProcess();
 		}
 
-		protected virtual void OnDieInAction() {
+		protected virtual void OnDieInAction(DamageInfo hitinfo) {
 			Destroy(this.gameObject);
 		}
+
+		protected virtual void OnReceiveDamage(DamageInfo hitinfo) { }
 
 		protected virtual void PlayerMovementProcess() {
 
 			// 간단하게 달리기 상태 구현
-			float moveSpeed = this._currentBehaviourCondition.HasFlag(eBehaviourCondition.Running) ? 5 : 2;
+			float moveSpeed = this._currentBehaviourCondition.HasFlag(eBehaviourCondition.Running) ? 5 : 3;
 
 			this.transform.position = (Vector2)this.transform.position + (_movDirection.normalized * Time.deltaTime * moveSpeed);
 		}

@@ -81,6 +81,10 @@ namespace EFN.Game {
 					return;
 				}
 
+				if (false == Global_Actor.Interactable.IsExist(actor.gameObject)) {
+					return;
+				}
+
 				Global_UIEvent.CallUIEvent<Actor_Base>(eEventType.TryInteractWith, actor);
 			}
 		}
@@ -126,6 +130,14 @@ namespace EFN.Game {
 			} else if (context.phase == InputActionPhase.Disabled || context.phase == InputActionPhase.Canceled) {
 				Global_Actor.SelfPlayer.RunEnd();
 			}
+		}
+
+		public void EquipKnife(InputAction.CallbackContext context) {
+			if (context.phase != InputActionPhase.Started) { return; }
+
+			if (null == Global_Actor.SelfPlayer) { return; }
+
+			Global_Actor.SelfPlayer.SetCurrentEquipSlot((int)ePlayerSlotType.Knife);
 		}
 	}
 }

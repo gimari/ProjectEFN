@@ -11,5 +11,6 @@ namespace EFN {
 
 	public class Global_Constant {
 		public const int MAX_QUICKSLOT_SIZE = 10;
+		public const string TAG_SOUNDCOLLIDER = "SoundCollider";
 	}
 }

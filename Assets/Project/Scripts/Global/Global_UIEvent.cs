@@ -23,6 +23,8 @@ namespace EFN {
 		TryInteractWith,			// 특정한 액터랑 인터렉트 시도
 		UpdateUserInventory,		// 인벤토리 업데이트됨
 
+		ShowFloatingDamage,
+
 		OnEndFocus,
 	}
 
