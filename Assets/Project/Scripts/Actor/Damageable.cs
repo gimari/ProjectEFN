@@ -21,6 +21,7 @@ namespace EFN.Game {
         public Action<DamageInfo> OnReceiveDamage = null;
         public Action OnOnResetDamageDieInAction = null;
         public Action OnResetDamage = null;
+		public Action OnReceiveHeal = null;
 
         private float _currentHitPoint = 100;
         public float CurrentHitPoint {
@@ -38,6 +39,11 @@ namespace EFN.Game {
             _currentHitPoint = _maxHitPoint;
             OnResetDamage?.Invoke();
         }
+
+		public void Heal(float amount) {
+			_currentHitPoint = Math.Min(_maxHitPoint, _currentHitPoint + amount);
+			this.OnReceiveHeal?.Invoke();
+		}
 
         public void Hit(eItemType firedItem, Actor_Base hittedActor) {
 

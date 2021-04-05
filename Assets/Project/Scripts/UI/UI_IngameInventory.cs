@@ -9,7 +9,7 @@ namespace EFN.Game {
 		[SerializeField] private GameObject _interactPanel = default;
 
 		// 특정한 인덱스가 정해져 있는 슬롯 리스트.
-		[SerializeField] private Graphic_ItemSlot[] _indexedSlotList = null;
+		[SerializeField] private Content_ItemSlot[] _indexedSlotList = null;
 
 		// 유저 백팩 슬롯 리스트.
 		[SerializeField] private Graphic_LayoutList _backpackSlotList = default;
@@ -33,17 +33,31 @@ namespace EFN.Game {
 			// 일단 초기화
 			this._interactPanel.SetActive(false);
 
-			foreach (Graphic_ItemSlot slot in _indexedSlotList) {
+			this._backpackSlotList.Init();
+			foreach (Content_ItemSlot slot in _indexedSlotList) {
 				slot.ClearImage();
+				slot.gameObject.SetActive(false);
 			}
 
 			// selfplayer 가 잇으면?
 			if (null != Global_Actor.SelfPlayer) {
 				Global_Actor.SelfPlayer.RefreshEquipItem();
 
-				foreach (Graphic_ItemSlot slot in _indexedSlotList) {
-					slot.StoredInventory = Global_Actor.SelfPlayer.ActorInventory;
-					slot.UpdateItem(Global_Actor.SelfPlayer.ActorInventory.Get(slot.QuickSlotIdx));
+				int selfinvenCount = Global_Actor.SelfPlayer.ActorInventory.MaxDisplayIndex;
+				int idx = (int)ePlayerSlotType.PrimeWeapon;
+
+				// 퀵슬롯 부분부터 갱신
+				for (; idx < selfinvenCount && idx < (int)ePlayerSlotType.BackpackSlotStart; idx++) {
+					_indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon].gameObject.SetActive(true);
+
+					_indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon].UpdateItem(
+						Global_Actor.SelfPlayer.ActorInventory.Get(idx), idx, Global_Actor.SelfPlayer.ActorInventory);
+				}
+
+				// 퀵슬롯 다음 부분 갱신
+				for (; idx < selfinvenCount; idx++) {
+					Content_ItemSlot content = _backpackSlotList.AddWith<Content_ItemSlot>();
+					content.UpdateItem(Global_Actor.SelfPlayer.ActorInventory.Get(idx), idx, Global_Actor.SelfPlayer.ActorInventory);
 				}
 			}
 

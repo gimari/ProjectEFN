@@ -12,5 +12,9 @@ namespace EFN {
             _slot.UpdateItem(data);
             _slot.StoredInventory = inven;
         }
+
+		public void ClearImage() {
+			_slot.ClearImage();
+		}
     }
 }

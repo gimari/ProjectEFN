@@ -46,10 +46,8 @@ namespace EFN.Game {
 				return;
 			}
 
-			int targetSlot = Inventory_SelfPlayer.ConvertQuickSlotIndexToSlotIndex(slotType);
-
 			// 슬롯타입이 같고 아이템도 같으면 아무것도 안함.
-			if (_currentEquipSlot == (ePlayerEquipSlot)slotType && _currentEquipItem == ActorInventory.Get(targetSlot)) {
+			if (_currentEquipSlot == (ePlayerEquipSlot)slotType && _currentEquipItem == ActorInventory.Get(slotType)) {
 				return;
 			}
 
@@ -63,7 +61,7 @@ namespace EFN.Game {
 			_currentEquipSlot = (ePlayerEquipSlot)slotType;
 			_currentEquipItem = null;
 
-			Data_Item targetItem = ActorInventory.Get(targetSlot);
+			Data_Item targetItem = ActorInventory.Get(slotType);
 
 			// target item 을 넘겨주면 알아서 체크해가지고 맨손처리 할것
 			_playerArmObject.SetItem(targetItem);
@@ -121,6 +119,7 @@ namespace EFN.Game {
 
 			_currentEquipItem = ActorInventory.Get(slotType);
 			_currentEquipSlot = equipSlot;
+			Global_UIEvent.CallUIEvent(eEventType.OnPlayerSwapWeapon);
 		}
 
 		protected override void PlayerMovementProcess() {
@@ -211,6 +210,8 @@ namespace EFN.Game {
 				if (eErrorCode.Fail == this.ActorInventory.TryFire((int)currentEquipSlot, out firedItem)) {
 					break;
 				}
+
+				Global_UIEvent.CallUIEvent(eEventType.OnPlayerShoot);
 
 				if (true == fireTarget.StatusData.IsKnifeWeapon) {
 					this.ShootKnifeWeapon(fireTarget.ItemType);
@@ -359,6 +360,16 @@ namespace EFN.Game {
 
 			// 모자도 갱신해준다.
 			UpdateHatObject();
+		}
+
+		protected override void OnReceiveDamage(DamageInfo hitinfo) {
+			base.OnReceiveDamage(hitinfo);
+			Global_UIEvent.CallUIEvent(eEventType.OnPlayerDamageTaken);
+		}
+
+		protected override void OnReceiveHeal() {
+			base.OnReceiveHeal();
+			Global_UIEvent.CallUIEvent(eEventType.OnPlayerDamageTaken);
 		}
 	}
 }

@@ -121,7 +121,7 @@ namespace EFN {
 		public virtual eBehaviourCondition CancelCondition { get { return eBehaviourCondition.None; } }
 
 		// 이 아이템이 사용되었을 경우
-		public virtual void OnEndItemUsed(Actor_Player actor) { }
+		public virtual void OnEndItemUsed(Actor_Player actor, Data_Item usedItem) { }
 
 		// 적을 때렸을 때 대미지
 		public virtual float DmgAmount { get { return 0; } }
@@ -149,7 +149,7 @@ namespace EFN {
 		public virtual float ReloadTime { get { return 0; } }
 
 		// 최대 탄창
-		public virtual int MaxRoundAmound { get { return 0; } }
+		public virtual int MaxRoundAmount { get { return 0; } }
 	}
 
 	/// <summary>
@@ -171,7 +171,7 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 11; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 10; } }
+		public override float DmgAmount { get { return 1; } }
 	}
 
 	/// <summary>
@@ -179,7 +179,7 @@ namespace EFN {
 	/// </summary>
 	public class Status_ASVAL : Status_Base {
 		public override float ReloadTime { get { return 0.5f; } }
-		public override int MaxRoundAmound { get { return 20; } }
+		public override int MaxRoundAmount { get { return 20; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
@@ -195,7 +195,7 @@ namespace EFN {
 	/// </summary>
 	public class Status_MP443 : Status_Base {
 		public override float ReloadTime { get { return 0.3f; } }
-		public override int MaxRoundAmound { get { return 11; } }
+		public override int MaxRoundAmount { get { return 11; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP }; } }
 		public override bool Useable { get { return true; } }
@@ -209,18 +209,30 @@ namespace EFN {
 	/// 힐킷
 	/// </summary>
 	public class Status_FIRSTAID : Status_Base {
+		public override bool Stackable { get { return true; } }
+		public override int MaxStackSize { get { return 5; } }
+		public override bool DisplayStack { get { return true; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Consumable; } }
 		public override bool Useable { get { return true; } }
 		public override float UseCoolTime { get { return 3; } }
 		public override eBehaviourCondition CancelCondition { get { return eBehaviourCondition.Running | eBehaviourCondition.Damaging | eBehaviourCondition.Firing; } }
 
-		public override void OnEndItemUsed(Actor_Player actor) {
+		public override void OnEndItemUsed(Actor_Player actor, Data_Item usedItem) {
 			Debug.LogError("I USED!!! : " + actor.name);
 
 			// 팔도 맨손으로 바꿔준다.
 			if (null != actor.PlayerArmObject) {
 				actor.PlayerArmObject.SetBareHand();
 			}
+
+			actor.Dmgable.Heal(30);
+
+			if (null != usedItem) {
+				usedItem.DecreaseItem();
+			}
+
+			// 통보
+			Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
 		}
 	}
 

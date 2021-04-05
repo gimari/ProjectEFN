@@ -70,6 +70,8 @@ namespace EFN {
 			_stashInventory.MaxDisplayIndex = 40;
 
 			Load();
+
+			_selfInventory.MaxDisplayIndex = (int)ePlayerSlotType.QuickSlotStart + 5;
 		}
 	}
 }

@@ -13,7 +13,7 @@ namespace EFN {
 		/// <summary>
 		/// 이 인벤토리 max size
 		/// </summary>
-		[SerializeField] protected int _maxDisplayIndex = 0;
+		protected int _maxDisplayIndex = 0;
 		public int MaxDisplayIndex {
 			get { return this._maxDisplayIndex; }
 			set { this._maxDisplayIndex = value; }

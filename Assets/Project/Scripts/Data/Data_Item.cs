@@ -105,6 +105,10 @@ namespace EFN {
 				return false;
 			}
 
+			if (StackCount < 0) {
+				return false;
+			}
+
 			return true;
 		}
 	}
@@ -119,7 +123,7 @@ namespace EFN {
 
 		public void Reload(eItemType loadedAmmo, int ammoCount) {
 			_loadedAmmo = loadedAmmo;
-			_ammoCount = ammoCount;
+			_ammoCount += ammoCount;
 		}
 
 		public eErrorCode TryFire() {

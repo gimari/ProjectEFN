@@ -48,8 +48,6 @@ namespace EFN {
 				case 4:
 				case 5:
 				case 6:
-					return (int)ePlayerSlotType.Knife;
-
 				case 7:
 				case 8:
 				case 9:
@@ -97,9 +95,10 @@ namespace EFN {
 					if (itemType == quickItem.ItemType) {
 
 						int usedCount = 0;
+						int roundCount = targetReloadItem.StatusData.MaxRoundAmount - targetReloadItem.FireModule.AmmoCount;
 
-						// 탄창 용량만큼 사용하고 장전해준다.
-						if (quickItem.DecreaseItem(targetReloadItem.StatusData.MaxRoundAmound, out usedCount) == eErrorCode.Success) {
+						// 충전해줘야하는 용량만큼 사용해준다.
+						if (quickItem.DecreaseItem(roundCount, out usedCount) == eErrorCode.Success) {
 							targetReloadItem.FireModule.Reload(quickItem.ItemType, usedCount);
 
 							// 콜백 ㅎㅎ
@@ -123,9 +122,9 @@ namespace EFN {
 			}
 
 			eErrorCode rv = targetFireItem.TryFire();
+
 			if (rv == eErrorCode.Success) {
 				firedItem = targetFireItem.FireModule.LoadedAmmo;
-				return eErrorCode.Success;
 			}
 
 			return rv;

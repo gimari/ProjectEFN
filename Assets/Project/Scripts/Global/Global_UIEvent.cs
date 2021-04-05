@@ -21,7 +21,10 @@ namespace EFN {
 		RegistQuickSlot,			// 퀵슬롯 등록
 
 		TryInteractWith,			// 특정한 액터랑 인터렉트 시도
-		UpdateUserInventory,		// 인벤토리 업데이트됨
+		UpdateUserInventory,        // 인벤토리 업데이트됨
+		OnPlayerShoot,
+		OnPlayerSwapWeapon,
+		OnPlayerDamageTaken,
 
 		ShowFloatingDamage,
 

@@ -47,6 +47,7 @@ namespace EFN.Game {
 		/// 이 액터의 체력을 관장해줄 컴포넌트
 		/// </summary>
 		[SerializeField] protected Damageable _dmgable = default;
+		public Damageable Dmgable { get { return _dmgable; } }
 
 		/// <summary>
 		/// 액터가 소리를 낼 때 주변에 전파해줄 generator
@@ -70,6 +71,7 @@ namespace EFN.Game {
 			_dmgable.Init(this);
 			_dmgable.OnDieInAction = this.OnDieInAction;
 			_dmgable.OnReceiveDamage = this.OnReceiveDamage;
+			_dmgable.OnReceiveHeal = this.OnReceiveHeal;
 		}
 
 		private void Update() {
@@ -82,6 +84,8 @@ namespace EFN.Game {
 		}
 
 		protected virtual void OnReceiveDamage(DamageInfo hitinfo) { }
+
+		protected virtual void OnReceiveHeal() { }
 
 		protected virtual void PlayerMovementProcess() {
 
@@ -116,8 +120,7 @@ namespace EFN.Game {
 			behaviourData.OnSuccessBehaviour = () => {
 				// 아이템 사용이 정상적으로 이루어 지면 관련 처리 해준다.
 				if (true == item.UseValidate(this)) {
-					item.StatusData.OnEndItemUsed(this);
-					item.OnUse();
+					item.StatusData.OnEndItemUsed(this, item);
 					ChangeEquipSlotOnBehaviourEnd(item.SlotIndex);
 				}
 			};
