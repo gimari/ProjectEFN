@@ -97,6 +97,14 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """"
+                },
+                {
+                    ""name"": ""Reload"",
+                    ""type"": ""Button"",
+                    ""id"": ""9f542405-62db-4a8b-8a53-b2e83d70bd79"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """"
                 }
             ],
             ""bindings"": [
@@ -352,6 +360,17 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                     ""action"": ""Knife"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d43d25d5-bc66-4c33-ba81-54ff893651f4"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -370,6 +389,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         m_Actor_Exit = m_Actor.FindAction("Exit", throwIfNotFound: true);
         m_Actor_Run = m_Actor.FindAction("Run", throwIfNotFound: true);
         m_Actor_Knife = m_Actor.FindAction("Knife", throwIfNotFound: true);
+        m_Actor_Reload = m_Actor.FindAction("Reload", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -429,6 +449,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
     private readonly InputAction m_Actor_Exit;
     private readonly InputAction m_Actor_Run;
     private readonly InputAction m_Actor_Knife;
+    private readonly InputAction m_Actor_Reload;
     public struct ActorActions
     {
         private @EFNInputAction m_Wrapper;
@@ -443,6 +464,7 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         public InputAction @Exit => m_Wrapper.m_Actor_Exit;
         public InputAction @Run => m_Wrapper.m_Actor_Run;
         public InputAction @Knife => m_Wrapper.m_Actor_Knife;
+        public InputAction @Reload => m_Wrapper.m_Actor_Reload;
         public InputActionMap Get() { return m_Wrapper.m_Actor; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -482,6 +504,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Knife.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnKnife;
                 @Knife.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnKnife;
                 @Knife.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnKnife;
+                @Reload.started -= m_Wrapper.m_ActorActionsCallbackInterface.OnReload;
+                @Reload.performed -= m_Wrapper.m_ActorActionsCallbackInterface.OnReload;
+                @Reload.canceled -= m_Wrapper.m_ActorActionsCallbackInterface.OnReload;
             }
             m_Wrapper.m_ActorActionsCallbackInterface = instance;
             if (instance != null)
@@ -516,6 +541,9 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
                 @Knife.started += instance.OnKnife;
                 @Knife.performed += instance.OnKnife;
                 @Knife.canceled += instance.OnKnife;
+                @Reload.started += instance.OnReload;
+                @Reload.performed += instance.OnReload;
+                @Reload.canceled += instance.OnReload;
             }
         }
     }
@@ -532,5 +560,6 @@ public class @EFNInputAction : IInputActionCollection, IDisposable
         void OnExit(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnKnife(InputAction.CallbackContext context);
+        void OnReload(InputAction.CallbackContext context);
     }
 }

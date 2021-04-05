@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2e792b8eed9541a2ec6654374ca68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _infiniteBullet: 1
+  _infiniteBullet: 0
   _invinsible: 1
 --- !u!1 &1920013111682018128
 GameObject:

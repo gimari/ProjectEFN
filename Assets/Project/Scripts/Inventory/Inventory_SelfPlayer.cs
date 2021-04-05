@@ -14,11 +14,8 @@ namespace EFN {
 		Armor = 5,
 		Knife = 6,
 
-		Rig = 7,
-		Backpack = 8,
-
-		QuickSlotStart = 9,
-		BackpackSlotStart = 16,
+		QuickSlotStart = 7,
+		BackpackSlotStart = 14,
 	}
 
 	/// <summary>
@@ -66,6 +63,57 @@ namespace EFN {
 			}
 		}
 
+		public override eErrorCode TryReload(int idx) {
+			Data_Item targetReloadItem = Get(idx);
+
+			if (null == targetReloadItem) {
+				return eErrorCode.Fail;
+			}
+
+			// 칼이면 아무것도 안한다.
+			if (true == targetReloadItem.StatusData.IsKnifeWeapon) {
+				return eErrorCode.Fail;
+			}
+
+			eItemType[] requireList = targetReloadItem.StatusData.RequireItem;
+
+			// 필요한게 없으면 아무것도 안한다.
+			if (null == requireList) {
+				return eErrorCode.Fail;
+			}
+
+			// 뭐든지 사용할려면 퀵슬롯에 잇는 애들만 대상이다.
+			for (int quickIdx = (int)ePlayerSlotType.QuickSlotStart; quickIdx < (int)ePlayerSlotType.BackpackSlotStart; quickIdx++) {
+				Data_Item quickItem = null;
+
+				_inventoryList.TryGetValue(quickIdx, out quickItem);
+				if (null == quickItem) {
+					continue;
+				}
+
+				foreach (eItemType itemType in requireList) {
+
+					// 필요한 아이템이 있으면 소비체크하고 성공 처리
+					if (itemType == quickItem.ItemType) {
+
+						int usedCount = 0;
+
+						// 탄창 용량만큼 사용하고 장전해준다.
+						if (quickItem.DecreaseItem(targetReloadItem.StatusData.MaxRoundAmound, out usedCount) == eErrorCode.Success) {
+							targetReloadItem.FireModule.Reload(quickItem.ItemType, usedCount);
+
+							// 콜백 ㅎㅎ
+							Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
+							return eErrorCode.Success;
+						}
+					}
+				}
+			}
+
+			// 여기까지오면 실패
+			return eErrorCode.Fail;
+		}
+
 		public override eErrorCode TryFire(int idx, out eItemType firedItem) {
 			Data_Item targetFireItem = Get(idx);
 			firedItem = eItemType.None;
@@ -74,6 +122,15 @@ namespace EFN {
 				return eErrorCode.Fail;
 			}
 
+			eErrorCode rv = targetFireItem.TryFire();
+			if (rv == eErrorCode.Success) {
+				firedItem = targetFireItem.FireModule.LoadedAmmo;
+				return eErrorCode.Success;
+			}
+
+			return rv;
+
+			/*
 			eItemType[] requireList = targetFireItem.StatusData.RequireItem;
 
 			// 필요한게 없으면 나간다.. fire 인데 필요한게 없으면 무한총알인가?
@@ -108,18 +165,16 @@ namespace EFN {
 			}
 
 			// 여기까지오면 실패
-			return base.TryFire(idx, out firedItem);
+			return base.TryFire(idx, out firedItem);*/
 		}
 
 		protected override bool CheckSlotIndex(Data_Item fromItem, int targetIdx) {
 			// ㅋㅋ
 			if (targetIdx != (int)ePlayerSlotType.Head &&
 				targetIdx != (int)ePlayerSlotType.Holster &&
-				targetIdx != (int)ePlayerSlotType.Backpack &&
 				targetIdx != (int)ePlayerSlotType.Armor &&
 				targetIdx != (int)ePlayerSlotType.Knife &&
 				targetIdx != (int)ePlayerSlotType.PrimeWeapon &&
-				targetIdx != (int)ePlayerSlotType.Rig &&
 				targetIdx != (int)ePlayerSlotType.SecondWeapon) {
 				return true;
 			}

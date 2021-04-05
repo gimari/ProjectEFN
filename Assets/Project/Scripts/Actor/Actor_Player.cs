@@ -17,6 +17,12 @@ namespace EFN.Game {
 		Walking = 1 << 3,		// 걷고 있음
 	}
 
+	public class PlayerBehaviourData {
+		public float UseCoolTime = 0;
+		public eBehaviourCondition CancelCondition = eBehaviourCondition.None;
+		public Action OnSuccessBehaviour = null;
+	}
+
 	public class Actor_Player : Actor_Base {
 
 		[Header("Components")]
@@ -47,7 +53,7 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] protected SoundGenerator _soundGenerator = default;
 
-		private Coroutine _behaviourRoutine = null;
+		protected Coroutine _behaviourRoutine = null;
 
 		/// <summary>
 		/// 현재 이 플레이어가 취하고 있는 행동
@@ -104,7 +110,19 @@ namespace EFN.Game {
 			// 원래 하던거 멈춤!!
 			BehaviourStop();
 
-			this._behaviourRoutine = StartCoroutine(PlayerBehaviourRoutine(item));
+			PlayerBehaviourData behaviourData = new PlayerBehaviourData();
+			behaviourData.UseCoolTime = item.StatusData.UseCoolTime;
+			behaviourData.CancelCondition = item.StatusData.CancelCondition;
+			behaviourData.OnSuccessBehaviour = () => {
+				// 아이템 사용이 정상적으로 이루어 지면 관련 처리 해준다.
+				if (true == item.UseValidate(this)) {
+					item.StatusData.OnEndItemUsed(this);
+					item.OnUse();
+					ChangeEquipSlotOnBehaviourEnd(item.SlotIndex);
+				}
+			};
+
+			this._behaviourRoutine = StartCoroutine(PlayerBehaviourRoutine(behaviourData));
 		}
 
 		public virtual void BehaviourStop() {
@@ -114,22 +132,22 @@ namespace EFN.Game {
 			}
 		}
 
-		protected virtual IEnumerator PlayerBehaviourRoutine(Data_Item item) {
+		protected virtual IEnumerator PlayerBehaviourRoutine(PlayerBehaviourData behaviourData) {
 
-			if (null == item) {
+			if (null == behaviourData) {
 				yield break;
 			}
 
 			if (null != _actorui) {
-				_actorui.CallUIEvent(eActorUIType.StartBehaviour, item.StatusData.UseCoolTime);
+				_actorui.CallUIEvent(eActorUIType.StartBehaviour, behaviourData.UseCoolTime);
 			}
 
-			float targetTimer = item.StatusData.UseCoolTime;
+			float targetTimer = behaviourData.UseCoolTime;
 
-			while (null != item && null != this.gameObject) {
+			while (null != behaviourData && null != this.gameObject) {
 
 				// 현재 행동이 취소될만한 행동이면 나감
-				if (eBehaviourCondition.None != (item.StatusData.CancelCondition & _currentBehaviourCondition)) {
+				if (eBehaviourCondition.None != (behaviourData.CancelCondition & _currentBehaviourCondition)) {
 					break;
 				}
 
@@ -137,13 +155,7 @@ namespace EFN.Game {
 
 				// 정상적으로 타이머가 다 돌았을 때..
 				if (targetTimer < 0) {
-
-					// 아이템 사용이 정상적으로 이루어 지면 관련 처리 해준다.
-					if (true == item.UseValidate(this)) {
-						item.StatusData.OnEndItemUsed(this);
-						item.OnUse();
-						ChangeEquipSlotOnBehaviourEnd(item.SlotIndex);
-					}
+					behaviourData.OnSuccessBehaviour?.Invoke();
 					break;
 				}
 

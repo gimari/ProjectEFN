@@ -59,6 +59,11 @@ namespace EFN {
 			return eErrorCode.Fail;
 		}
 
+		/// <summary>
+		/// 특정한 인덱스의 녀석을 재장전 한다.
+		/// </summary>
+		public virtual eErrorCode TryReload(int idx) { return eErrorCode.Fail; }
+
         public virtual void AddInventory(Data_Item item) {
             int firstIdx = GetFirstIdx();
 

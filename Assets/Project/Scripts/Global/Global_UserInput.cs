@@ -139,5 +139,13 @@ namespace EFN.Game {
 
 			Global_Actor.SelfPlayer.SetCurrentEquipSlot((int)ePlayerSlotType.Knife);
 		}
+
+		public void Reload(InputAction.CallbackContext context) {
+			if (context.phase != InputActionPhase.Started) { return; }
+
+			if (null == Global_Actor.SelfPlayer) { return; }
+
+			Global_Actor.SelfPlayer.ReloadEquipWeapon();
+		}
 	}
 }

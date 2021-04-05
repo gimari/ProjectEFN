@@ -145,6 +145,11 @@ namespace EFN {
 		// 근접무기인가?
 		public virtual bool IsKnifeWeapon { get { return false; } }
 
+		// 재장전 속도
+		public virtual float ReloadTime { get { return 0; } }
+
+		// 최대 탄창
+		public virtual int MaxRoundAmound { get { return 0; } }
 	}
 
 	/// <summary>
@@ -173,6 +178,8 @@ namespace EFN {
 	/// 돌격소총 아스발
 	/// </summary>
 	public class Status_ASVAL : Status_Base {
+		public override float ReloadTime { get { return 0.5f; } }
+		public override int MaxRoundAmound { get { return 20; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
@@ -187,6 +194,8 @@ namespace EFN {
 	/// 권총 mp443
 	/// </summary>
 	public class Status_MP443 : Status_Base {
+		public override float ReloadTime { get { return 0.3f; } }
+		public override int MaxRoundAmound { get { return 11; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP }; } }
 		public override bool Useable { get { return true; } }

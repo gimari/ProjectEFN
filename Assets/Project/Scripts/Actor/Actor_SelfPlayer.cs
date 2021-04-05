@@ -158,6 +158,28 @@ namespace EFN.Game {
 			}
 		}
 
+		public void ReloadEquipWeapon() {
+
+			// 현재 장착중인 무기
+			Data_Item fireTarget = _currentEquipItem;
+
+			// 무기가 없음
+			if (null == fireTarget) {
+				return;
+			}
+
+			// 원래 하던거 멈춤!!
+			BehaviourStop();
+
+			PlayerBehaviourData behaviourData = new PlayerBehaviourData();
+			behaviourData.UseCoolTime = fireTarget.StatusData.ReloadTime;
+			behaviourData.OnSuccessBehaviour = () => {
+				this.ActorInventory.TryReload(fireTarget.SlotIndex);
+			};
+
+			this._behaviourRoutine = StartCoroutine(PlayerBehaviourRoutine(behaviourData));
+		}
+
 		public override void FireEnd() {
 			base.FireEnd();
 

@@ -93,6 +93,26 @@ namespace EFN {
 			return eErrorCode.Success;
 		}
 
+		public virtual eErrorCode DecreaseItem(int count, out int usecount) {
+			usecount = 0;
+
+			if (this._stackCount <= 0) {
+				return eErrorCode.Fail;
+			}
+
+			// 지금 스택보다 많이쓰면?
+			usecount = this._stackCount;
+			this._stackCount -= count;
+			if (this._stackCount <= 0) {
+				OnDiscard();
+				return eErrorCode.Success;
+			}
+
+			// 남은게 있으면?
+			usecount = count;
+			return eErrorCode.Success;
+		}
+
 		public virtual void OnDiscard() { }
 	}
 }
