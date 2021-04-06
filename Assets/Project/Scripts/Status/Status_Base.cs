@@ -218,7 +218,6 @@ namespace EFN {
 		public override eBehaviourCondition CancelCondition { get { return eBehaviourCondition.Running | eBehaviourCondition.Damaging | eBehaviourCondition.Firing; } }
 
 		public override void OnEndItemUsed(Actor_Player actor, Data_Item usedItem) {
-			Debug.LogError("I USED!!! : " + actor.name);
 
 			// 팔도 맨손으로 바꿔준다.
 			if (null != actor.PlayerArmObject) {
