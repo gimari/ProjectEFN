@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace EFN {
 
 	[RequireComponent(typeof(Button))]
-	public class Graphic_ItemSlot : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler {
+	public class Graphic_ItemSlot : MonoBehaviour, IBeginDragHandler, IEndDragHandler, IDragHandler, IPointerClickHandler {
 
 		[Header("Config")]
 		[SerializeField] private bool _useEmptyImage = true;
@@ -22,6 +22,7 @@ namespace EFN {
 		[SerializeField] private GameObject _emptyImage = default;
 		[SerializeField] private Image _itemImage = default;
 		[SerializeField] private Text _txtItemCount = default;
+		[SerializeField] private Image _raycastTarget = default;
 
 		private Data_Item _targetData = null;
 		public Data_Item TargetData {
@@ -65,6 +66,10 @@ namespace EFN {
 				this._emptyImage.SetActive(false);
 			}
 
+			if (null != _raycastTarget) {
+				_raycastTarget.raycastTarget = true;
+			}
+
 			this._itemImage.gameObject.SetActive(true);
 
 			this._itemImage.sprite = Global_ResourceContainer.GetSprite(data.ItemType.ToString());
@@ -80,6 +85,10 @@ namespace EFN {
 			_targetData = null;
 			this._itemImage.gameObject.SetActive(false);
 
+			if (null != _raycastTarget) {
+				// _raycastTarget.raycastTarget = false;
+			}
+
 			if (null != _emptyImage) {
 				_emptyImage.SetActive(true);
 			}
@@ -92,11 +101,15 @@ namespace EFN {
 		/// <summary>
 		/// 슬롯 클릭시..
 		/// </summary>
-		public virtual void OnClickSlot() {
-			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
-		}
+		// public virtual void OnClickSlot() {
+			// Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
+		// }
 
 		public void OnBeginDrag(PointerEventData eventData) {
+			if (null == _targetData) {
+				return;
+			}
+
 			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
 		}
 
@@ -114,5 +127,18 @@ namespace EFN {
 		}
 
 		public void OnDrag(PointerEventData eventData) { }
+
+		public void OnPointerClick(PointerEventData eventData) {
+			if (null == _targetData) {
+				return;
+			}
+
+			if (eventData.button == PointerEventData.InputButton.Right) {
+				Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, this);
+
+			} else if (eventData.button == PointerEventData.InputButton.Left) {
+				Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
+			}
+		}
 	}
 }

@@ -208,6 +208,7 @@ MonoBehaviour:
   _emptyImage: {fileID: 852848664643506587}
   _itemImage: {fileID: 6579955792160493375}
   _txtItemCount: {fileID: 1059936387660679493}
+  _raycastTarget: {fileID: 2481022272598691732}
 --- !u!114 &2867988985464517653
 MonoBehaviour:
   m_ObjectHideFlags: 0

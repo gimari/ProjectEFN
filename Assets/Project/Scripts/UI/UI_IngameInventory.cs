@@ -5,7 +5,7 @@ using UnityEngine;
 namespace EFN.Game {
 	public class UI_IngameInventory : UI_Ingame {
 
-		[SerializeField] private GameObject _panel = default;
+		[SerializeField] private Graphic_FadePop _panel = default;
 		[SerializeField] private GameObject _interactPanel = default;
 
 		// 특정한 인덱스가 정해져 있는 슬롯 리스트.
@@ -79,7 +79,7 @@ namespace EFN.Game {
 		}
 
 		public void ToggleIngameInven() {
-			if (true == this._panel.activeSelf) {
+			if (true == this._panel.gameObject.activeSelf) {
 				Close();
 			} else {
 				Open();
@@ -88,7 +88,7 @@ namespace EFN.Game {
 
 		public void Close() {
 			_interactingInven = null;
-			this._panel.SetActive(false);
+			this._panel.Hide();
 			this.EndFocus();
 		}
 
@@ -96,7 +96,7 @@ namespace EFN.Game {
 			this.OnFocus();
 			this.UpdateUserInventory();
 
-			this._panel.SetActive(true);
+			this._panel.Show();
 		}
 	}
 }

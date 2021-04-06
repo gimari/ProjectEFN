@@ -291,6 +291,10 @@ MonoBehaviour:
     DropRate: 5
     MinCount: 1
     MaxCount: 1
+  - ItemType: 7
+    DropRate: 100
+    MinCount: 1
+    MaxCount: 1
 --- !u!50 &4731128414640339060
 Rigidbody2D:
   serializedVersion: 4

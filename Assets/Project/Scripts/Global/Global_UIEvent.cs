@@ -18,7 +18,8 @@ namespace EFN {
 
 		TryPickSlot,				// 아이템 슬롯 픽킹햇음.
 		EndPickSlot,				// 아이템 슬롯 픽 끝
-		RegistQuickSlot,			// 퀵슬롯 등록
+		RegistQuickSlot,            // 퀵슬롯 등록
+		TryModifySlot,				// 특정한 슬롯 우클릭햇음.
 
 		TryInteractWith,			// 특정한 액터랑 인터렉트 시도
 		UpdateUserInventory,        // 인벤토리 업데이트됨

@@ -55,7 +55,6 @@ public class Graphic_SimplePopUp : MonoBehaviour
         }
 
         _isPopUpShow = false;
-        this.gameObject.SetActive(false);
 
         HideAnimation(callback);
     }

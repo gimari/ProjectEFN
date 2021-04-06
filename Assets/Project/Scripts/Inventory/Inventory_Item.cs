@@ -67,10 +67,7 @@ namespace EFN {
         public virtual void AddInventory(Data_Item item) {
             int firstIdx = GetFirstIdx();
 
-            this._inventoryList.Add(firstIdx, item);
-            item.SlotIndex = firstIdx;
-			item.StoredInventory = this;
-
+			this.AddInventory(item, firstIdx);
 		}
 
 		public virtual void Remove(int slotIdx) {
@@ -195,8 +192,10 @@ namespace EFN {
 				fromItem.SlotIndex = targetIdx;
 				fromItem.StoredInventory = this;
 
-				// 성공적으로 자리 바꿈. 기존거에서 지우고 나감
-				externalInven._inventoryList.Remove(fromIdx);
+				// 성공적으로 자리 바꿈. 기존거에서 지우고 나감 external inven 은 충분히 null 일 수 있다.
+				if (null != externalInven) {
+					externalInven._inventoryList.Remove(fromIdx);
+				}
 
 				// 콜백 ㅎㅎ
 				Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
@@ -213,7 +212,10 @@ namespace EFN {
 
 				int swapIndex = target.SlotIndex;
 
-				externalInven._inventoryList[fromItem.SlotIndex] = target;
+				if (null != externalInven) {
+					externalInven._inventoryList[fromItem.SlotIndex] = target;
+				}
+
 				target.SlotIndex = fromItem.SlotIndex;
 				target.StoredInventory = externalInven;
 
@@ -230,7 +232,7 @@ namespace EFN {
 			eErrorCode rv = target.AddStack(fromItem);
 
 			// 성공시에만 기존 자리에서 지운다.
-			if (rv == eErrorCode.Success) {
+			if (rv == eErrorCode.Success && null != externalInven) {
 				externalInven._inventoryList.Remove(fromIdx);
 			}
 

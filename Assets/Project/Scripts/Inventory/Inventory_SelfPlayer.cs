@@ -192,5 +192,16 @@ namespace EFN {
 
 			return true;
 		}
+
+		public override int GetFirstIdx() {
+			int rv = (int)ePlayerSlotType.QuickSlotStart;
+
+			while (true == _inventoryList.ContainsKey(rv)) {
+				rv++;
+			}
+
+			return rv;
+		}
+
 	}
 }

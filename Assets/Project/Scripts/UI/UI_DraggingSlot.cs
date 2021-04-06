@@ -10,6 +10,7 @@ namespace EFN {
 
 		[SerializeField] private Image _pickingImage = default;
 		[SerializeField] private Sprite _emptyImage = default;
+		[SerializeField] private Panel_ItemModify _modifyPanel = default;
 
 		private Coroutine _pickingRoutine = null;
 		private Graphic_ItemSlot _fromSlot = null;
@@ -18,6 +19,7 @@ namespace EFN {
 			Global_UIEvent.RegisterUIEvent<Graphic_ItemSlot>(eEventType.TryPickSlot, TryPickSlot);
 			Global_UIEvent.RegisterUIEvent(eEventType.EndPickSlot, EndPickSlot);
 			Global_UIEvent.RegisterUIEvent(eEventType.OnEndFocus, EndPickSlot);
+			Global_UIEvent.RegisterUIEvent<Graphic_ItemSlot>(eEventType.TryModifySlot, TryModifySlot);
 		}
 		
 		public void EndPickSlot() {
@@ -28,6 +30,8 @@ namespace EFN {
 
 			this._fromSlot = null;
 			this._pickingImage.sprite = _emptyImage;
+
+			EndModifySlot();
 		}
 
 		/*
@@ -47,6 +51,8 @@ namespace EFN {
 		*/
 
 		public void TryPickSlot(Graphic_ItemSlot target) {
+
+			EndModifySlot();
 
 			// 빈 곳을 눌렀을 때..
 			if (null == target.TargetData) {
@@ -111,6 +117,14 @@ namespace EFN {
 				this._pickingImage.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
 				yield return null;
 			}
+		}
+
+		public void TryModifySlot(Graphic_ItemSlot target) {
+			_modifyPanel.SetInfo(target);
+		}
+
+		public void EndModifySlot() {
+			_modifyPanel.EndInfo();
 		}
 	}
 }

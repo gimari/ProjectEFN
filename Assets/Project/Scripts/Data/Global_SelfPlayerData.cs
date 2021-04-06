@@ -65,13 +65,12 @@ namespace EFN {
 			_instance = this;
 
 			_selfInventory = new Inventory_SelfPlayer();
-
 			_stashInventory = new Inventory_Item();
-			_stashInventory.MaxDisplayIndex = 40;
 
 			Load();
 
 			_selfInventory.MaxDisplayIndex = (int)ePlayerSlotType.QuickSlotStart + 5;
+			_stashInventory.MaxDisplayIndex = 40;
 		}
 	}
 }
