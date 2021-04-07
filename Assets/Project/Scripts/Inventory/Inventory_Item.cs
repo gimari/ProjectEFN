@@ -64,14 +64,22 @@ namespace EFN {
 		/// </summary>
 		public virtual eErrorCode TryReload(int idx) { return eErrorCode.Fail; }
 
-        public virtual void AddInventory(Data_Item item) {
+        public virtual eErrorCode AddInventory(Data_Item item) {
             int firstIdx = GetFirstIdx();
 
-			this.AddInventory(item, firstIdx);
+			if (_maxDisplayIndex <= firstIdx) {
+				Global_UIEvent.CallUIEvent(ePermanetEventType.ShowNakMsg, "더 이상 가질 수 없습니다!");
+				return eErrorCode.InventoryFull;
+			}
+
+			return this.AddInventory(item, firstIdx);
 		}
 
 		public virtual void Remove(int slotIdx) {
 			this._inventoryList.Remove(slotIdx);
+
+			// 콜백 ㅎㅎ
+			Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
 		}
 
         public virtual int GetFirstIdx() {

@@ -10,7 +10,9 @@ namespace EFN {
 		Success = 0,				// 단순 성공
 		Fail = 1,					// 예외처리가 필요 없는 단순실패. 해당 상황이 절대 일어나면 안되는 경우.
 
-		StackOverflow = 10,
+		StackOverflow,
+		InventoryFull,				// 인벤 꽉참
+		NotenoughCoke,				// 돈없음
 	}
 
 	public enum eLayerMask {

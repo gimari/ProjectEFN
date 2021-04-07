@@ -11,6 +11,7 @@ namespace EFN {
 		OpenTradeSelectPanel,
 		OpenDealerPanel,
 
+		UpdateCoke,
 		OpenMainInven,				// 메인 씬에서 인벤 열음
 
 		ToggleIngameInven,			// 인게임 인벤토리 열음
@@ -34,6 +35,8 @@ namespace EFN {
 
 	public enum ePermanetEventType {
 		None = 0,
+
+		ShowNakMsg,
 	}
 
 	/// <summary>

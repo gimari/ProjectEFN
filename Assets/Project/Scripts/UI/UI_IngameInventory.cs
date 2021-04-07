@@ -48,16 +48,23 @@ namespace EFN.Game {
 
 				// 퀵슬롯 부분부터 갱신
 				for (; idx < selfinvenCount && idx < (int)ePlayerSlotType.BackpackSlotStart; idx++) {
-					_indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon].gameObject.SetActive(true);
+					Content_ItemSlot slot = _indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon];
 
-					_indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon].UpdateItem(
-						Global_Actor.SelfPlayer.ActorInventory.Get(idx), idx, Global_Actor.SelfPlayer.ActorInventory);
+					slot.gameObject.SetActive(true);
+					slot.TargetSlot.QuickSlotIdx = idx;
+					slot.TargetSlot.UpdateItem(Global_Actor.SelfPlayer.ActorInventory.Get(idx));
+					slot.TargetSlot.StoredInventory = Global_Actor.SelfPlayer.ActorInventory;
+					slot.TargetSlot.OnRightClickAction = OnRightClickUserInven;
 				}
 
 				// 퀵슬롯 다음 부분 갱신
 				for (; idx < selfinvenCount; idx++) {
-					Content_ItemSlot content = _backpackSlotList.AddWith<Content_ItemSlot>();
-					content.UpdateItem(Global_Actor.SelfPlayer.ActorInventory.Get(idx), idx, Global_Actor.SelfPlayer.ActorInventory);
+					Content_ItemSlot slot = _backpackSlotList.AddWith<Content_ItemSlot>();
+
+					slot.TargetSlot.QuickSlotIdx = idx;
+					slot.TargetSlot.UpdateItem(Global_Actor.SelfPlayer.ActorInventory.Get(idx));
+					slot.TargetSlot.StoredInventory = Global_Actor.SelfPlayer.ActorInventory;
+					slot.TargetSlot.OnRightClickAction = OnRightClickUserInven;
 				}
 			}
 
@@ -68,9 +75,52 @@ namespace EFN.Game {
 				_lootSlotList.Init();
 
 				for (int idx = 0; idx < _interactingInven.MaxDisplayIndex; idx++) {
-					_lootSlotList.AddWith<Content_ItemSlot>().UpdateItem(_interactingInven.Get(idx), idx, _interactingInven);
+					Content_ItemSlot slot = _lootSlotList.AddWith<Content_ItemSlot>();
+
+					slot.TargetSlot.QuickSlotIdx = idx;
+					slot.TargetSlot.UpdateItem(_interactingInven.Get(idx));
+					slot.TargetSlot.StoredInventory = _interactingInven;
+					slot.TargetSlot.OnRightClickAction = OnRightClickInteractInven;
 				}
 			}
+		}
+
+		/// <summary>
+		/// 유저 인게임 인벤토리에서 우클릭을 한다면 
+		/// DISCARD : 아이템 부수기
+		/// 의 행동이 가능해야 한다.
+		/// </summary>
+		public void OnRightClickUserInven(Graphic_ItemSlot clickedSlot) {
+			ModifyPanelData mpd = new ModifyPanelData();
+
+			ModifyPanelInfo info = new ModifyPanelInfo();
+			info.BtnName = "DISCARD";
+			info.OnClickAction = () => {
+				clickedSlot.TargetData.OnDiscard();
+			};
+
+			mpd.InfoList.Add(info);
+
+			Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, mpd);
+		}
+
+		/// <summary>
+		/// 다른 인벤과 같이 열었을 때 다른 인벤에서 우클릭을 한다면
+		/// COLLECT : 내 인벤으로 획득
+		/// 의 행동이 가능해야 한다.
+		/// </summary>
+		public void OnRightClickInteractInven(Graphic_ItemSlot clickedSlot) {
+			ModifyPanelData mpd = new ModifyPanelData();
+
+			ModifyPanelInfo info = new ModifyPanelInfo();
+			info.BtnName = "COLLECT";
+			info.OnClickAction = () => {
+				Global_Actor.SelfPlayer.ActorInventory.AddInventory(clickedSlot.TargetData);
+			};
+
+			mpd.InfoList.Add(info);
+
+			Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, mpd);
 		}
 
 		public void TryInteractWith(Actor_Base targetActor) {

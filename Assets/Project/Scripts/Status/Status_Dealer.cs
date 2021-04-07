@@ -43,9 +43,22 @@ namespace EFN {
 
 			return _statusList[dealer];
 		}
+
+		public virtual long GetDefaultCost(eItemType item) { return 10; }
 	}
 
 	public class Status_Prapor : Status_Dealer {
+		public override long GetDefaultCost(eItemType item) {
+			switch (item) {
+				case eItemType.Armor_6B3TM:		return 67320;
+				case eItemType.Weapon_MP443:	return 8230;
+				case eItemType.AMMO_9X19AP:		return 23;
+				case eItemType.WEAPON_ASVAL:	return 10234;
+				case eItemType.AMMO_9X39SP5:	return 110;
+				case eItemType.CONS_FIRSTAID:	return 360;
+				default: return base.GetDefaultCost(item);
+			}
+		}
 	}
 
 	public class Status_Therapist : Status_Dealer {

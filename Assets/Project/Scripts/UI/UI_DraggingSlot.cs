@@ -19,7 +19,7 @@ namespace EFN {
 			Global_UIEvent.RegisterUIEvent<Graphic_ItemSlot>(eEventType.TryPickSlot, TryPickSlot);
 			Global_UIEvent.RegisterUIEvent(eEventType.EndPickSlot, EndPickSlot);
 			Global_UIEvent.RegisterUIEvent(eEventType.OnEndFocus, EndPickSlot);
-			Global_UIEvent.RegisterUIEvent<Graphic_ItemSlot>(eEventType.TryModifySlot, TryModifySlot);
+			Global_UIEvent.RegisterUIEvent<ModifyPanelData>(eEventType.TryModifySlot, TryModifySlot);
 		}
 		
 		public void EndPickSlot() {
@@ -34,42 +34,13 @@ namespace EFN {
 			EndModifySlot();
 		}
 
-		/*
-		/// <summary>
-		/// 픽을 끝내는데 현재 들고 있는 놈을 마지막 슬롯으로 되돌려 보낸다.
-		/// </summary>
-		public void UndoPickSlot() {
-			// 만약 아직 들고잇는게 남아있다면 원래 있던 슬롯으로 다시 줘야 한다.
-			if (null != _fromSlot && null != this._currentPicking) {
-				this._fromSlot.SetImage(this._currentPicking);
-			}
-
-			this._fromSlot = null;
-
-			this.EndPickSlot();
-		}
-		*/
-
 		public void TryPickSlot(Graphic_ItemSlot target) {
 
 			EndModifySlot();
 
 			// 빈 곳을 눌렀을 때..
 			if (null == target.TargetData) {
-
-				// 집은게 없으면 나감
-				if (null == _fromSlot) {
-					return;
-				}
-
-				// 사실 이 경우가 되면 그대로 바닥에 떨어져야 한다.
-				if (null == target.StoredInventory) {
-					Global_Common.LogError("CANT MOVE TO NULL INVEN");
-					return;
-				}
-
-				// 스왑
-				target.StoredInventory.AddInventory(_fromSlot.TargetData, target.QuickSlotIdx);
+				target.OnSlotDropDowned(_fromSlot);
 				EndPickSlot();
 
 			} else if (null == _fromSlot) {
@@ -85,18 +56,7 @@ namespace EFN {
 				this._fromSlot = target;
 
 			} else {
-				// 사실 이 경우가 되면 그대로 바닥에 떨어져야 한다.
-				if (null == target.StoredInventory) {
-					Global_Common.LogError("CANT MOVE TO NULL INVEN");
-					return;
-				}
-
-				// 스왑하는데 뭔가 제대로 교체가 안됬으면 아무것도 하지 않음.
-				eErrorCode rv = target.StoredInventory.AddInventory(_fromSlot.TargetData, target.QuickSlotIdx);
-				if (rv != eErrorCode.Success) {
-					return;
-				}
-
+				target.OnSlotDropDowned(_fromSlot);
 				EndPickSlot();
 			}
 		}
@@ -119,7 +79,7 @@ namespace EFN {
 			}
 		}
 
-		public void TryModifySlot(Graphic_ItemSlot target) {
+		public void TryModifySlot(ModifyPanelData target) {
 			_modifyPanel.SetInfo(target);
 		}
 

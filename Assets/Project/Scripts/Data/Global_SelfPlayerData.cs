@@ -20,6 +20,41 @@ namespace EFN {
 			get { return _instance._stashInventory; }
 		}
 
+		/// <summary>
+		/// COKE 관련 처리 부분
+		/// </summary>
+		private long _cokeAmount = 0;
+		public static long CokeAmount {
+			get { 
+				return _instance._cokeAmount; 
+			}
+
+			set {
+				// 간단하게 바로 써버림
+				_instance._cokeAmount = value;
+
+				Global_UIEvent.CallUIEvent(eEventType.UpdateCoke);
+				PlayerPrefs.SetString("_cokeAmount", value.ToString());
+				PlayerPrefs.Save();
+			}
+		}
+
+		public static eErrorCode ConsumeCoke(long amount) {
+			if (_instance._cokeAmount < amount) {
+				return eErrorCode.InventoryFull;
+			}
+
+			_instance._cokeAmount -= amount;
+			return eErrorCode.Success;
+		}
+
+		private void LoadCoke() {
+			long amount = 0;
+			if (long.TryParse(PlayerPrefs.GetString("_cokeAmount"), out amount)) {
+				_cokeAmount = amount;
+			}
+		}
+
 		private static Global_SelfPlayerData _instance = null;
 
 		public static void Save() {
@@ -40,9 +75,12 @@ namespace EFN {
 			PlayerPrefs.Save();
 		}
 
-		public void Load() {
+		public void LoadInventory() {
 
 			EFNEncrypt enc = new EFNEncrypt();
+
+			// self inventory
+			_selfInventory = new Inventory_SelfPlayer();
 
 			string load = PlayerPrefs.GetString("_selfInventory");
 
@@ -52,6 +90,11 @@ namespace EFN {
 				_selfInventory = parsed;
 			}
 
+			_selfInventory.MaxDisplayIndex = (int)ePlayerSlotType.QuickSlotStart + 5;
+
+			// stash inventory
+			_stashInventory = new Inventory_Item();
+
 			load = PlayerPrefs.GetString("_stashInventory");
 
 			if (false == string.IsNullOrEmpty(load)) {
@@ -59,18 +102,64 @@ namespace EFN {
 				Inventory_Item parsed = JsonUtility.FromJson<Inventory_Item>(first);
 				_stashInventory = parsed;
 			}
+
+			_stashInventory.MaxDisplayIndex = 40;
+
+			// dealer inventory (예정)
 		}
 
 		public void Init() {
 			_instance = this;
 
-			_selfInventory = new Inventory_SelfPlayer();
-			_stashInventory = new Inventory_Item();
-
-			Load();
-
-			_selfInventory.MaxDisplayIndex = (int)ePlayerSlotType.QuickSlotStart + 5;
-			_stashInventory.MaxDisplayIndex = 40;
+			LoadInventory();
+			LoadCoke();
 		}
+
+		/*
+		/// <summary>
+		/// 현재 기록되어있는 config 불러오기
+		/// 올바르지 않는 config 존재시 null 반환.
+		/// </summary>
+		private Dictionary<string, string> LoadDownloadConfig() {
+
+			Dictionary<string, string> rv = new Dictionary<string, string>();
+			rv.Clear();
+
+			if (false == File.Exists(LNP.Constant.GetDirectory + LNP.Constant.ConfigName)) {
+				return rv;
+			}
+
+			FileStream fileStream = new FileStream(LNP.Constant.GetDirectory + LNP.Constant.ConfigName, FileMode.Open);
+			StreamReader streamReader = new StreamReader(fileStream);
+
+			while (!streamReader.EndOfStream) {
+
+				string line = streamReader.ReadLine();
+				string[] array = line.Split(',');
+
+				if (array.Length < 2 || array.Length > 3) {
+					break;
+				}
+
+				rv.Add(array[0], array[1]);
+			}
+
+			streamReader.Close();
+			fileStream.Close();
+
+			return rv;
+		}
+
+		private void SaveDownloadConfig() {
+
+			FileStream fileStream = new FileStream(LNP.Constant.GetDirectory + LNP.Constant.ConfigName, FileMode.Create, FileAccess.Write);
+			StreamWriter streamReader = new StreamWriter(fileStream, System.Text.Encoding.Unicode);
+
+			foreach (string line in this._downloadedConfig) {
+				streamReader.WriteLine(line);
+			}
+
+			streamReader.Close();
+		}*/
 	}
 }

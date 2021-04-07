@@ -203,5 +203,12 @@ namespace EFN {
 			return rv;
 		}
 
+		public override void Remove(int slotIdx) {
+			base.Remove(slotIdx);
+
+			// 콜백 ㅎㅎ
+			Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
+		}
+
 	}
 }

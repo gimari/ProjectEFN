@@ -52,16 +52,23 @@ namespace EFN.Main {
 
 			// 퀵슬롯 부분부터 갱신
 			for (; idx < selfinvenCount && idx < (int)ePlayerSlotType.BackpackSlotStart; idx++) {
-				_indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon].gameObject.SetActive(true);
+				Content_ItemSlot slot = _indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon];
 
-				_indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon].UpdateItem(
-					Global_SelfPlayerData.SelfInventory.Get(idx), idx, Global_SelfPlayerData.SelfInventory);
+				slot.gameObject.SetActive(true);
+				slot.TargetSlot.QuickSlotIdx = idx;
+				slot.TargetSlot.UpdateItem(Global_SelfPlayerData.SelfInventory.Get(idx));
+				slot.TargetSlot.StoredInventory = Global_SelfPlayerData.SelfInventory;
+				slot.TargetSlot.OnRightClickAction = OnRightClickUserInven;
 			}
 
 			// 퀵슬롯 다음 부분 갱신
 			for (; idx < selfinvenCount; idx++) {
-				Content_ItemSlot content = _backpackSlotList.AddWith<Content_ItemSlot>();
-				content.UpdateItem(Global_SelfPlayerData.SelfInventory.Get(idx), idx, Global_SelfPlayerData.SelfInventory);
+				Content_ItemSlot slot = _backpackSlotList.AddWith<Content_ItemSlot>();
+
+				slot.TargetSlot.QuickSlotIdx = idx;
+				slot.TargetSlot.UpdateItem(Global_SelfPlayerData.SelfInventory.Get(idx));
+				slot.TargetSlot.StoredInventory = Global_SelfPlayerData.SelfInventory;
+				slot.TargetSlot.OnRightClickAction = OnRightClickUserInven;
 			}
 
 			// 인터렉션중인 inven 이 잇으면?
@@ -71,9 +78,68 @@ namespace EFN.Main {
 				_lootSlotList.Init();
 
 				for (int otherInvenIdx = 0; otherInvenIdx < _interactingInven.MaxDisplayIndex; otherInvenIdx++) {
-					_lootSlotList.AddWith<Content_ItemSlot>().UpdateItem(_interactingInven.Get(otherInvenIdx), otherInvenIdx, _interactingInven);
+					Content_ItemSlot slot = _lootSlotList.AddWith<Content_ItemSlot>();
+
+					slot.TargetSlot.QuickSlotIdx = otherInvenIdx;
+					slot.TargetSlot.UpdateItem(_interactingInven.Get(otherInvenIdx));
+					slot.TargetSlot.StoredInventory = _interactingInven;
+					slot.TargetSlot.OnRightClickAction = OnRightClickInteractInven;
 				}
 			}
+		}
+
+		/// <summary>
+		/// 유저 장착 인벤토리에서 우클릭을 한다면 
+		/// DISCARD : 아이템 부수기
+		/// TO STASH : stash 로 이동
+		/// 의 행동이 가능해야 한다.
+		/// </summary>
+		public void OnRightClickUserInven(Graphic_ItemSlot clickedSlot) {
+			ModifyPanelData mpd = new ModifyPanelData();
+
+			ModifyPanelInfo info = new ModifyPanelInfo();
+			info.BtnName = "DISCARD";
+			info.OnClickAction = () => {
+				clickedSlot.TargetData.OnDiscard();
+			};
+
+			ModifyPanelInfo info1 = new ModifyPanelInfo();
+			info1.BtnName = "TO STASH";
+			info1.OnClickAction = () => {
+				Global_SelfPlayerData.StashInventory.AddInventory(clickedSlot.TargetData);
+			};
+
+			mpd.InfoList.Add(info);
+			mpd.InfoList.Add(info1);
+
+			Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, mpd);
+		}
+
+		/// <summary>
+		/// 다른 인벤과 같이 열었을 때 다른 인벤에서 우클릭을 한다면
+		/// DISCARD : 아이템 부수기
+		/// TO Gear : 내 인벤으로 획득
+		/// 의 행동이 가능해야 한다.
+		/// </summary>
+		public void OnRightClickInteractInven(Graphic_ItemSlot clickedSlot) {
+			ModifyPanelData mpd = new ModifyPanelData();
+
+			ModifyPanelInfo info0 = new ModifyPanelInfo();
+			info0.BtnName = "DISCARD";
+			info0.OnClickAction = () => {
+				clickedSlot.TargetData.OnDiscard();
+			};
+
+			ModifyPanelInfo info1 = new ModifyPanelInfo();
+			info1.BtnName = "TO GEAR";
+			info1.OnClickAction = () => {
+				Global_SelfPlayerData.SelfInventory.AddInventory(clickedSlot.TargetData);
+			};
+
+			mpd.InfoList.Add(info0);
+			mpd.InfoList.Add(info1);
+
+			Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, mpd);
 		}
 
 		public void Close() {

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -23,10 +24,16 @@ namespace EFN {
 		[SerializeField] private Image _itemImage = default;
 		[SerializeField] private Text _txtItemCount = default;
 		[SerializeField] private Image _raycastTarget = default;
+		[SerializeField] private GameObject _blockImage = default;
 
 		private Data_Item _targetData = null;
 		public Data_Item TargetData {
 			get { return this._targetData; }
+		}
+
+		private Action<Graphic_ItemSlot> _onrightClickAction = null;
+		public Action<Graphic_ItemSlot> OnRightClickAction {
+			set { this._onrightClickAction = value; }
 		}
 
 		/// <summary>
@@ -44,6 +51,12 @@ namespace EFN {
 			}
 
 			set { _storedInventory = value; }
+		}
+
+		public bool IsEnable {
+			set {
+				_blockImage.SetActive(!value);
+			}
 		}
 
 		public const float DEFAULT_ITEMSLOT_SIZE = 100f;
@@ -105,15 +118,19 @@ namespace EFN {
 			// Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
 		// }
 
-		public void OnBeginDrag(PointerEventData eventData) {
+		public virtual void OnBeginDrag(PointerEventData eventData) {
 			if (null == _targetData) {
+				return;
+			}
+
+			if (true == _blockImage.activeSelf) {
 				return;
 			}
 
 			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
 		}
 
-		public void OnEndDrag(PointerEventData eventData) {
+		public virtual void OnEndDrag(PointerEventData eventData) {
 			if (null == eventData || null == eventData.pointerEnter) { return; }
 
 			Graphic_ItemSlot endTarget = eventData.pointerEnter.GetComponent<Graphic_ItemSlot>();
@@ -128,17 +145,37 @@ namespace EFN {
 
 		public void OnDrag(PointerEventData eventData) { }
 
-		public void OnPointerClick(PointerEventData eventData) {
+		public virtual void OnPointerClick(PointerEventData eventData) {
 			if (null == _targetData) {
 				return;
 			}
 
-			if (eventData.button == PointerEventData.InputButton.Right) {
-				Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, this);
-
-			} else if (eventData.button == PointerEventData.InputButton.Left) {
-				Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, this);
+			if (true == _blockImage.activeSelf) {
+				return;
 			}
+
+			if (eventData.button == PointerEventData.InputButton.Right) {
+				_onrightClickAction?.Invoke(this);
+			}
+		}
+
+		/// <summary>
+		/// 다른 슬롯이 포함된 상태로 이 슬롯 위에 드롭-다운 되었다.
+		/// </summary>
+		public virtual void OnSlotDropDowned(Graphic_ItemSlot fromSlot) {
+			// 집은게 없으면 나감
+			if (null == fromSlot) {
+				return;
+			}
+
+			// 사실 이 경우가 되면 그대로 바닥에 떨어져야 한다.
+			if (null == StoredInventory) {
+				Global_Common.LogError("CANT MOVE TO NULL INVEN");
+				return;
+			}
+
+			// 스왑
+			StoredInventory.AddInventory(fromSlot.TargetData, QuickSlotIdx);
 		}
 	}
 }
