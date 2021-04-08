@@ -7,11 +7,20 @@ namespace EFN.Main {
 	public class UI_Trading : MonoBehaviour {
 
 		[SerializeField] private GameObject _panel = default;
+
 		[SerializeField] private Graphic_LayoutList _stashList = default;
 		[SerializeField] private Graphic_LayoutList _sellSlotLost = default;
+		[SerializeField] private Graphic_LayoutList _dealerList = default;
+
 		[SerializeField] private Graphic_FadePop _sellPanelPopup = default;
 		[SerializeField] private GameObject _btnDeal = default;
 		[SerializeField] private Graphic_NumericText _txtDealExpectResult = default;
+
+		[Header("BuyPanel")]
+		[SerializeField] private Graphic_FadePop _buyPanelPopup = default;
+		[SerializeField] private Graphic_ItemSlot _buyTargetSlot = default;
+		[SerializeField] private Graphic_NumericText _buyCokeCount = default;
+		[SerializeField] private Text _txtBuyCount = default;
 
 		private List<Data_Item> _sellReadyList = new List<Data_Item>();
 		private eDealerType _currentDealer = eDealerType.None;
@@ -26,6 +35,7 @@ namespace EFN.Main {
 		private void OpenDealerPanel(eDealerType dealerType) {
 			_currentDealer = dealerType;
 			_sellPanelPopup.gameObject.SetActive(false);
+			_buyPanelPopup.gameObject.SetActive(false);
 
 			this.Open();
 			InitTradingPanel();
@@ -43,6 +53,19 @@ namespace EFN.Main {
 				Graphic_CustomSlot slot = _sellSlotLost.AddWith<Graphic_CustomSlot>();
 				slot.CustomDropAction = SellSlotDropAction;
 				slot.ClearImage();
+			}
+
+			Status_Dealer dealer = Status_Dealer.GetStatus(_currentDealer);
+
+			// 딜러 리스트 초기화
+			_dealerList.Init();
+			for (int dealerIdx = 0; dealerIdx < dealer.DealerInven.MaxDisplayIndex; dealerIdx++) {
+				Content_ItemSlot slot = _dealerList.AddWith<Content_ItemSlot>();
+
+				slot.TargetSlot.QuickSlotIdx = dealerIdx;
+				slot.TargetSlot.UpdateItem(dealer.DealerInven.Get(dealerIdx));
+				slot.TargetSlot.StoredInventory = dealer.DealerInven;
+				slot.TargetSlot.OnRightClickAction = OnRightClickDealerInven;
 			}
 		}
 
@@ -74,7 +97,7 @@ namespace EFN.Main {
 
 			// 예상되는 판매값 갱신
 			foreach (Data_Item item in _sellReadyList) {
-				resultMoney += dealer.GetDefaultCost(item.ItemType);
+				resultMoney += item.StackCount * dealer.GetDefaultCost(item.ItemType);
 			}
 
 			_txtDealExpectResult.NumberTextAnimate(resultMoney, MoneyFormat.JustComma);
@@ -113,7 +136,7 @@ namespace EFN.Main {
 			// 아이템값을 전부 계산해서 더해주자.
 			foreach (Data_Item item in _sellReadyList) {
 				item.OnDiscard();
-				resultMoney += dealer.GetDefaultCost(item.ItemType);
+				resultMoney += item.StackCount * dealer.GetDefaultCost(item.ItemType);
 			}
 
 			Global_SelfPlayerData.CokeAmount += resultMoney;
@@ -137,6 +160,71 @@ namespace EFN.Main {
 			foreach (Transform child in _stashList) {
 				child.GetComponent<Content_ItemSlot>().IsEnable = true;
 			}
+		}
+
+		public void OnClickBuyBtn(Data_Item item) {
+			_buyPanelPopup.Show();
+
+			_buyTargetSlot.UpdateItem(item);
+			OnModifyCount("1");
+		}
+
+		public void OnClickCloseBuyPanel() {
+			_buyPanelPopup.Hide();
+		}
+
+		public void OnClickConfirmBuy() {
+
+			int count = 0;
+			int.TryParse(_txtBuyCount.text, out count);
+
+			// 개수가 0임..
+			if (0 == count) {
+				_buyPanelPopup.Hide();
+				return;
+			}
+
+			// 살려는게 없음..
+			if (null == this._buyTargetSlot.TargetData) {
+				_buyPanelPopup.Hide();
+				return;
+			}
+
+			_buyPanelPopup.Hide();
+		}
+
+		/// <summary>
+		/// 딜러 인벤토리에서 우클릭을한다면
+		/// BUY : 구매
+		/// 의 행동이 가능해야 한다.
+		/// </summary>
+		public void OnRightClickDealerInven(Graphic_ItemSlot clickedSlot) {
+			ModifyPanelData mpd = new ModifyPanelData();
+
+			ModifyPanelInfo info = new ModifyPanelInfo();
+			info.BtnName = "BUY";
+			info.OnClickAction = () => {
+				OnClickBuyBtn(clickedSlot.TargetData);
+			};
+
+			mpd.InfoList.Add(info);
+
+			Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, mpd);
+		}
+
+		public void OnModifyCount(string input) {
+
+			int count = 0;
+			int.TryParse(input, out count);
+
+			if (null == this._buyTargetSlot.TargetData) {
+				return;
+			}
+
+			Status_Dealer dealer = Status_Dealer.GetStatus(_currentDealer);
+			long resultMoney = count * this._buyTargetSlot.TargetData.StackCount * dealer.GetDefaultCost(this._buyTargetSlot.TargetData.ItemType);
+
+			_buyCokeCount.NumberTextAnimate(resultMoney, MoneyFormat.JustComma);
 		}
 	}
 }

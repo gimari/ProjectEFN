@@ -19,7 +19,11 @@ namespace EFN {
         }
 
         public void UpdateCoke() {
-            _txtcoke.NumberTextAnimate(Global_SelfPlayerData.CokeAmount, MoneyFormat.JustComma);
-        }
+			if (true == _txtcoke.gameObject.activeInHierarchy) {
+				_txtcoke.NumberTextAnimate(Global_SelfPlayerData.CokeAmount, MoneyFormat.JustComma);
+			} else {
+				_txtcoke.SetNumericTextWithOutAnimation(Global_SelfPlayerData.CokeAmount, MoneyFormat.JustComma);
+			}
+		}
     }
 }

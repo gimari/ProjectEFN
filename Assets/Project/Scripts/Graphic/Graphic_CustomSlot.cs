@@ -15,8 +15,5 @@ namespace EFN {
         }
 
         public override void OnBeginDrag(PointerEventData eventData) { }
-
-        public override void OnPointerClick(PointerEventData eventData) { }
-
     }
 }

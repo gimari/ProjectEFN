@@ -14,9 +14,6 @@ namespace EFN {
 	[Serializable]
 	public class Data_Item : Data_Storable {
 
-		private long _price = 0;
-		private float _durability = 0;
-
 		private ItemFireModule _fireModule = null;
 		public ItemFireModule FireModule { get { return this._fireModule; } }
 

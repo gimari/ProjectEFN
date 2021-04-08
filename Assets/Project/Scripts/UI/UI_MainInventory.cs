@@ -109,8 +109,8 @@ namespace EFN.Main {
 				Global_SelfPlayerData.StashInventory.AddInventory(clickedSlot.TargetData);
 			};
 
-			mpd.InfoList.Add(info);
 			mpd.InfoList.Add(info1);
+			mpd.InfoList.Add(info);
 
 			Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, mpd);
 		}
@@ -136,8 +136,8 @@ namespace EFN.Main {
 				Global_SelfPlayerData.SelfInventory.AddInventory(clickedSlot.TargetData);
 			};
 
-			mpd.InfoList.Add(info0);
 			mpd.InfoList.Add(info1);
+			mpd.InfoList.Add(info0);
 
 			Global_UIEvent.CallUIEvent(eEventType.TryModifySlot, mpd);
 		}

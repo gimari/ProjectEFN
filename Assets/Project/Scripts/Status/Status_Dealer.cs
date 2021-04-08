@@ -44,10 +44,50 @@ namespace EFN {
 			return _statusList[dealer];
 		}
 
+		private Inventory_Item _dealerInven = new Inventory_Item();
+		public Inventory_Item DealerInven { get { return this._dealerInven; } }
+
+		public Status_Dealer() {
+			RandomDealerInven();
+		}
+
+		protected void SetDealerInven(List<KeyValuePair<eItemType, int>> table) {
+			_dealerInven.MaxDisplayIndex = table.Count;
+
+			foreach (KeyValuePair<eItemType, int> pair in table) {
+				Data_Item item = new Data_Item(pair.Key);
+				item.StackCount = pair.Value;
+
+				_dealerInven.AddInventory(item);
+			}
+		}
+
+		/// <summary>
+		/// 딜러의 인벤토리를 사전에 정의된 값으로 채워줌.
+		/// </summary>
+		protected virtual void RandomDealerInven() { }
+
+		/// <summary>
+		/// 특정 아이템에 대한 딜러의 기본 지불값 반환
+		/// </summary>
 		public virtual long GetDefaultCost(eItemType item) { return 10; }
 	}
 
 	public class Status_Prapor : Status_Dealer {
+
+		protected override void RandomDealerInven() {
+			base.RandomDealerInven();
+
+			List<KeyValuePair<eItemType, int>> itemDropTable = new List<KeyValuePair<eItemType, int>>();
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 5));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 11));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.Weapon_MP443, 1));
+
+			SetDealerInven(itemDropTable);
+		}
+
 		public override long GetDefaultCost(eItemType item) {
 			switch (item) {
 				case eItemType.Armor_6B3TM:		return 67320;
