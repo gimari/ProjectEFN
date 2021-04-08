@@ -90,18 +90,41 @@ namespace EFN {
 
 		public override long GetDefaultCost(eItemType item) {
 			switch (item) {
-				case eItemType.Armor_6B3TM:		return 67320;
-				case eItemType.Weapon_MP443:	return 8230;
-				case eItemType.AMMO_9X19AP:		return 23;
-				case eItemType.WEAPON_ASVAL:	return 10234;
-				case eItemType.AMMO_9X39SP5:	return 110;
-				case eItemType.CONS_FIRSTAID:	return 360;
+				case eItemType.Armor_6B3TM:		return 6732;
+				case eItemType.Weapon_MP443:	return 823;
+				case eItemType.AMMO_9X19AP:		return 1;
+				case eItemType.WEAPON_ASVAL:	return 1023;
+				case eItemType.AMMO_9X39SP5:	return 2;
+				case eItemType.CONS_FIRSTAID:	return 36;
 				default: return base.GetDefaultCost(item);
 			}
 		}
 	}
 
 	public class Status_Therapist : Status_Dealer {
+
+		protected override void RandomDealerInven() {
+			base.RandomDealerInven();
+
+			List<KeyValuePair<eItemType, int>> itemDropTable = new List<KeyValuePair<eItemType, int>>();
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.CONS_FIRSTAID, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.CONS_FIRSTAID, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_RECORDER, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.HEAD_STAR, 1));
+
+			SetDealerInven(itemDropTable);
+		}
+
+		public override long GetDefaultCost(eItemType item) {
+			switch (item) {
+				case eItemType.Armor_6B3TM: return 1159;
+				case eItemType.CONS_FIRSTAID: return 360;
+				case eItemType.HEAD_STAR: return 4444;
+				case eItemType.WEAPON_RECORDER: return 4444;
+				default: return base.GetDefaultCost(item);
+			}
+		}
 	}
 
 	public class Status_Fence : Status_Dealer {

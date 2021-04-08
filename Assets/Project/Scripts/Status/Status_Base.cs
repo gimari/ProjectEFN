@@ -104,6 +104,9 @@ namespace EFN {
 		// stack 표기 해줄거?
         public virtual bool DisplayStack { get { return false; } }
 
+		// 아이템 기본 가격
+		public virtual long DefaultPrice { get { return 10; } }
+
 		/// <summary>
 		/// 사용 아이템 관련 정보
 		/// </summary>
@@ -161,6 +164,7 @@ namespace EFN {
 		public override int MaxStackSize { get { return 20; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 10; } }
+		public override long DefaultPrice { get { return 23; } }
 	}
 
 	/// <summary>
@@ -172,6 +176,7 @@ namespace EFN {
 		public override int MaxStackSize { get { return 11; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 1; } }
+		public override long DefaultPrice { get { return 11; } }
 	}
 
 	/// <summary>
@@ -188,6 +193,7 @@ namespace EFN {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X39SP5 }; } }
 		public override float UseCoolTime { get { return 0.8f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
+		public override long DefaultPrice { get { return 10234; } }
 	}
 
 	/// <summary>
@@ -203,19 +209,21 @@ namespace EFN {
 		public override float FireRate { get { return 0.2f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Holster; } }
+		public override long DefaultPrice { get { return 8230; } }
 	}
 
 	/// <summary>
 	/// 힐킷
 	/// </summary>
 	public class Status_FIRSTAID : Status_Base {
-		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 5; } }
+		public override bool Stackable { get { return false; } }
+		public override int MaxStackSize { get { return 1; } }
 		public override bool DisplayStack { get { return true; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Consumable; } }
 		public override bool Useable { get { return true; } }
 		public override float UseCoolTime { get { return 3; } }
 		public override eBehaviourCondition CancelCondition { get { return eBehaviourCondition.Running | eBehaviourCondition.Damaging | eBehaviourCondition.Firing; } }
+		public override long DefaultPrice { get { return 1537; } }
 
 		public override void OnEndItemUsed(Actor_Player actor, Data_Item usedItem) {
 
@@ -247,6 +255,7 @@ namespace EFN {
 		public override bool IsKnifeWeapon { get { return true; } }
 		public override float DmgAmount { get { return 100; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Knife; } }
+		public override long DefaultPrice { get { return 44444; } }
 	}
 
 	/// <summary>
@@ -254,6 +263,7 @@ namespace EFN {
 	/// </summary>
 	public class Status_6B3TM : Status_Base {
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Armor; } }
+		public override long DefaultPrice { get { return 67320; } }
 	}
 
 	/// <summary>
@@ -262,5 +272,6 @@ namespace EFN {
 	public class Status_HeadStar : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
+		public override long DefaultPrice { get { return 44444; } }
 	}
 }

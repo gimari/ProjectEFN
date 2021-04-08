@@ -41,10 +41,10 @@ namespace EFN {
 
 		public static eErrorCode ConsumeCoke(long amount) {
 			if (_instance._cokeAmount < amount) {
-				return eErrorCode.InventoryFull;
+				return eErrorCode.NotenoughCoke;
 			}
 
-			_instance._cokeAmount -= amount;
+			CokeAmount = _instance._cokeAmount - amount;
 			return eErrorCode.Success;
 		}
 

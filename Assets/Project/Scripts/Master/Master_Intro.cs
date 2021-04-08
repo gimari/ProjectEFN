@@ -13,7 +13,7 @@ namespace EFN {
 		}
 
 		private void IntroProcess() {
-			Global_Common.LoadScene(eSceneName.SceneMain.ToString());
+			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
 		}
 	}
 }

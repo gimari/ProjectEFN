@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -118,7 +119,7 @@ namespace EFN.Game {
 		public void PressExit(InputAction.CallbackContext context) {
 			if (context.phase != InputActionPhase.Started) { return; }
 
-			Global_Common.LoadScene(eSceneName.SceneMain.ToString());
+			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
 		}
 
 		public void Run(InputAction.CallbackContext context) {

@@ -37,6 +37,11 @@ namespace EFN {
 		None = 0,
 
 		ShowNakMsg,
+
+		ShowFade,
+		HideFade,
+
+		TryChangeScene,
 	}
 
 	/// <summary>

@@ -12,6 +12,7 @@ namespace EFN {
 
 		[Header("Config")]
 		[SerializeField] private bool _useEmptyImage = true;
+		[SerializeField] private bool _blockAnyDrag = false;
 
 		[SerializeField] private int _quickSlotIdx = default;
 		public int QuickSlotIdx {
@@ -119,6 +120,10 @@ namespace EFN {
 		// }
 
 		public virtual void OnBeginDrag(PointerEventData eventData) {
+			if (true == _blockAnyDrag) {
+				return;
+			}
+
 			if (null == _targetData) {
 				return;
 			}
@@ -131,6 +136,10 @@ namespace EFN {
 		}
 
 		public virtual void OnEndDrag(PointerEventData eventData) {
+			if (true == _blockAnyDrag) {
+				return;
+			}
+
 			if (null == eventData || null == eventData.pointerEnter) { return; }
 
 			Graphic_ItemSlot endTarget = eventData.pointerEnter.GetComponent<Graphic_ItemSlot>();
@@ -142,8 +151,6 @@ namespace EFN {
 
 			Global_UIEvent.CallUIEvent(eEventType.TryPickSlot, endTarget);
 		}
-
-		public void OnDrag(PointerEventData eventData) { }
 
 		public virtual void OnPointerClick(PointerEventData eventData) {
 			if (null == _targetData) {
@@ -163,6 +170,10 @@ namespace EFN {
 		/// 다른 슬롯이 포함된 상태로 이 슬롯 위에 드롭-다운 되었다.
 		/// </summary>
 		public virtual void OnSlotDropDowned(Graphic_ItemSlot fromSlot) {
+			if (true == _blockAnyDrag) {
+				return;
+			}
+
 			// 집은게 없으면 나감
 			if (null == fromSlot) {
 				return;
@@ -177,5 +188,7 @@ namespace EFN {
 			// 스왑
 			StoredInventory.AddInventory(fromSlot.TargetData, QuickSlotIdx);
 		}
+
+		public void OnDrag(PointerEventData eventData) { }
 	}
 }

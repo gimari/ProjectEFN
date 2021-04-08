@@ -25,7 +25,7 @@ namespace EFN {
 		[SerializeField] private List<Data_Item> _serializedList = new List<Data_Item>();
 
 		[NonSerialized]
-        protected SortedDictionary<int, Data_Item> _inventoryList = new SortedDictionary<int, Data_Item>();
+		protected SortedDictionary<int, Data_Item> _inventoryList = new SortedDictionary<int, Data_Item>();
 
 		protected Action _onChangeInventory = null;
 		public Action OnChangeInventory { set { _onChangeInventory = value; } }
@@ -64,8 +64,8 @@ namespace EFN {
 		/// </summary>
 		public virtual eErrorCode TryReload(int idx) { return eErrorCode.Fail; }
 
-        public virtual eErrorCode AddInventory(Data_Item item) {
-            int firstIdx = GetFirstIdx();
+		public virtual eErrorCode AddInventory(Data_Item item) {
+			int firstIdx = GetFirstIdx();
 
 			if (_maxDisplayIndex <= firstIdx) {
 				Global_UIEvent.CallUIEvent(ePermanetEventType.ShowNakMsg, "더 이상 가질 수 없습니다!");
@@ -82,15 +82,27 @@ namespace EFN {
 			Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
 		}
 
-        public virtual int GetFirstIdx() {
-            int rv = 0;
+		public virtual int GetFirstIdx() {
+			int rv = 0;
 
-            while(true == _inventoryList.ContainsKey(rv)) {
-                rv++;
-            }
+			while (true == _inventoryList.ContainsKey(rv)) {
+				rv++;
+			}
 
-            return rv;
-        }
+			return rv;
+		}
+
+		public virtual int GetRemainEmptySlotCount() {
+			int rv = 0;
+
+			for (int idx = 0; idx < MaxDisplayIndex; idx++) {
+				if (false == _inventoryList.ContainsKey(idx)) {
+					rv++;
+				}
+			}
+
+			return rv;
+		}
 
 		/// <summary>
 		/// 같은 인벤토리 내부에서 특정 아이템을 다른 슬롯으로 옮길 때!!

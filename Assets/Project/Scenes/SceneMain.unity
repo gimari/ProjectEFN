@@ -15530,6 +15530,7 @@ MonoBehaviour:
   _buyPanelPopup: {fileID: 304947128}
   _buyTargetSlot: {fileID: 34815441853006524}
   _buyCokeCount: {fileID: 674288919}
+  _txtBuyCount: {fileID: 658456496}
 --- !u!1 &1639780552
 GameObject:
   m_ObjectHideFlags: 0
@@ -20563,6 +20564,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useEmptyImage: 1
+  _blockAnyDrag: 0
   _quickSlotIdx: 0
   _emptyImage: {fileID: 0}
   _itemImage: {fileID: 5836365827844811961}
@@ -20747,6 +20749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useEmptyImage: 0
+  _blockAnyDrag: 0
   _quickSlotIdx: 0
   _emptyImage: {fileID: 0}
   _itemImage: {fileID: 6579955792814923080}
@@ -20958,6 +20961,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useEmptyImage: 0
+  _blockAnyDrag: 1
   _quickSlotIdx: 0
   _emptyImage: {fileID: 0}
   _itemImage: {fileID: 6579955792313921494}

@@ -20,7 +20,7 @@ namespace EFN.Main {
 		[SerializeField] private Graphic_FadePop _buyPanelPopup = default;
 		[SerializeField] private Graphic_ItemSlot _buyTargetSlot = default;
 		[SerializeField] private Graphic_NumericText _buyCokeCount = default;
-		[SerializeField] private Text _txtBuyCount = default;
+		[SerializeField] private InputField _txtBuyCount = default;
 
 		private List<Data_Item> _sellReadyList = new List<Data_Item>();
 		private eDealerType _currentDealer = eDealerType.None;
@@ -166,6 +166,8 @@ namespace EFN.Main {
 			_buyPanelPopup.Show();
 
 			_buyTargetSlot.UpdateItem(item);
+
+			_txtBuyCount.text = "1";
 			OnModifyCount("1");
 		}
 
@@ -173,6 +175,9 @@ namespace EFN.Main {
 			_buyPanelPopup.Hide();
 		}
 
+		/// <summary>
+		/// buy 패널에서 confirm 버튼을 눌러가지고 지금 올라간 아이템을 살려고 시도함
+		/// </summary>
 		public void OnClickConfirmBuy() {
 
 			int count = 0;
@@ -188,6 +193,28 @@ namespace EFN.Main {
 			if (null == this._buyTargetSlot.TargetData) {
 				_buyPanelPopup.Hide();
 				return;
+			}
+
+			// 너무 많음..
+			if (Global_SelfPlayerData.StashInventory.GetRemainEmptySlotCount() < count) {
+				Global_UIEvent.CallUIEvent(ePermanetEventType.ShowNakMsg, "스태시에 빈 자리가 없습니다!");
+				return;
+			}
+
+			// 실제 돈을 차감해보고 정상적으로 반영되었는지 확인
+			Status_Dealer dealer = Status_Dealer.GetStatus(_currentDealer);
+			long resultMoney = count * this._buyTargetSlot.TargetData.StackCount * this._buyTargetSlot.TargetData.StatusData.DefaultPrice;
+			if (Global_SelfPlayerData.ConsumeCoke(resultMoney) != eErrorCode.Success) {
+				Global_UIEvent.CallUIEvent(ePermanetEventType.ShowNakMsg, "COKE 가 충분하지 않습니다!");
+				return;
+			}
+
+			// 여기까지 하면 모든 처리가 끝났음. 아이템 실제 생성해주고 추가한다.
+			for (; 0 < count; count--) {
+				Data_Item addedItem = new Data_Item(this._buyTargetSlot.TargetData.ItemType);
+				addedItem.StackCount = this._buyTargetSlot.TargetData.StackCount;
+
+				Global_SelfPlayerData.StashInventory.AddInventory(addedItem);
 			}
 
 			_buyPanelPopup.Hide();
@@ -222,7 +249,7 @@ namespace EFN.Main {
 			}
 
 			Status_Dealer dealer = Status_Dealer.GetStatus(_currentDealer);
-			long resultMoney = count * this._buyTargetSlot.TargetData.StackCount * dealer.GetDefaultCost(this._buyTargetSlot.TargetData.ItemType);
+			long resultMoney = count * this._buyTargetSlot.TargetData.StackCount * this._buyTargetSlot.TargetData.StatusData.DefaultPrice;
 
 			_buyCokeCount.NumberTextAnimate(resultMoney, MoneyFormat.JustComma);
 		}

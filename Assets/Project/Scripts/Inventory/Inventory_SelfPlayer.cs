@@ -210,5 +210,11 @@ namespace EFN {
 			Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
 		}
 
+		/// <summary>
+		/// self 가 죽었을 때 게임 방식에 의해 가지고 있는 인벤을 날려버리는 로직
+		/// </summary>
+		public virtual void ClearInventoryWithDie() {
+
+		}
 	}
 }

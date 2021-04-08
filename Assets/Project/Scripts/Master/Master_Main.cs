@@ -10,5 +10,8 @@ namespace EFN.Main {
 			Cursor.lockState = CursorLockMode.None;
 #endif
 		}
+
+		private void Start() {
+		}
 	}
 }

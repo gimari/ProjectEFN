@@ -205,6 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _useEmptyImage: 1
+  _blockAnyDrag: 0
   _quickSlotIdx: 0
   _emptyImage: {fileID: 852848664643506587}
   _itemImage: {fileID: 6579955792160493375}

@@ -336,8 +336,13 @@ namespace EFN.Game {
 				return;
 			}
 #endif
+			
+			Global_SelfPlayerData.SelfInventory.ClearInventoryWithDie();
 
+			// 할거 다하고 죽는다.
 			Destroy(this.gameObject);
+
+			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
 		}
 
 		public override void Stop() {

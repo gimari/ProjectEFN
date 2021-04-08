@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -19,7 +20,7 @@ namespace EFN.Main {
 		}
 
 		public void OnClickEnterEscape() {
-			Global_Common.LoadScene(eSceneName.SceneGame.ToString());
+			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneGame.ToString());
 		}
 
 		public void OnClickTrading() {

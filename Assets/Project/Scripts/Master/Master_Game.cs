@@ -11,5 +11,7 @@ namespace EFN.Game {
 #endif
 		}
 
+		private void Start() {
+		}
 	}
 }
