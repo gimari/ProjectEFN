@@ -69,7 +69,7 @@ namespace EFN {
 			}
 
 			// 칼이면 아무것도 안한다.
-			if (true == targetReloadItem.StatusData.IsKnifeWeapon) {
+			if (targetReloadItem.StatusData.WeaponType == eWeaponCategory.Knife) {
 				return eErrorCode.Fail;
 			}
 
@@ -91,20 +91,32 @@ namespace EFN {
 
 				foreach (eItemType itemType in requireList) {
 
+					if (itemType != quickItem.ItemType) {
+						continue;
+					}
+
+					// 지금 장전된 애하고 장전할 애하고 다르면 그냥 다 버려버린다.
+					if (targetReloadItem.FireModule.LoadedAmmo != itemType) {
+						targetReloadItem.FireModule.ClearAmmo();
+					}
+
 					// 필요한 아이템이 있으면 소비체크하고 성공 처리
-					if (itemType == quickItem.ItemType) {
+					int usedCount = 0;
+					int roundCount = 0;
 
-						int usedCount = 0;
-						int roundCount = targetReloadItem.StatusData.MaxRoundAmount - targetReloadItem.FireModule.AmmoCount;
+					if (targetReloadItem.StatusData.WeaponType == eWeaponCategory.ShotGun) {
+						roundCount = 1;
+					} else {
+						roundCount = targetReloadItem.StatusData.MaxRoundAmount - targetReloadItem.FireModule.AmmoCount;
+					}
 
-						// 충전해줘야하는 용량만큼 사용해준다.
-						if (quickItem.DecreaseItem(roundCount, out usedCount) == eErrorCode.Success) {
-							targetReloadItem.FireModule.Reload(quickItem.ItemType, usedCount);
+					// 충전해줘야하는 용량만큼 사용해준다.
+					if (quickItem.DecreaseItem(roundCount, out usedCount) == eErrorCode.Success) {
+						targetReloadItem.FireModule.Reload(quickItem.ItemType, usedCount);
 
-							// 콜백 ㅎㅎ
-							Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
-							return eErrorCode.Success;
-						}
+						// 콜백 ㅎㅎ
+						Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
+						return eErrorCode.Success;
 					}
 				}
 			}
@@ -215,6 +227,19 @@ namespace EFN {
 		/// </summary>
 		public virtual void ClearInventoryWithDie() {
 
+			List<KeyValuePair<int, Data_Item>> safeInven = new List<KeyValuePair<int, Data_Item>>();
+
+			foreach (KeyValuePair<int, Data_Item> pair in _inventoryList) {
+				if (pair.Key == (int)ePlayerSlotType.Head || pair.Key == (int)ePlayerSlotType.Knife) {
+					safeInven.Add(pair);
+				}
+			}
+
+			_inventoryList.Clear();
+
+			foreach (KeyValuePair<int, Data_Item> pair in safeInven) {
+				_inventoryList.Add(pair.Key, pair.Value);
+			}
 		}
 	}
 }

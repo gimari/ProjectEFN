@@ -12,6 +12,11 @@ namespace EFN.Main {
 		}
 
 		private void Start() {
+			if (null == Global_SelfPlayerData.GameEndData) {
+				Global_UIEvent.CallUIEvent(eEventType.OpenStartMenu);
+			} else {
+				Global_UIEvent.CallUIEvent(eEventType.OpenGameResult);
+			}
 		}
 	}
 }

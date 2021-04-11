@@ -31,6 +31,12 @@ namespace EFN.Game {
 			base.OnAwake();
 		}
 
+		protected override void Update() {
+			base.Update();
+
+			this.transform.rotation = Quaternion.Euler(90, 0, 0);
+		}
+
 		protected void UpdateHatObject() {
 			// 모자 갱신
 			_playerHatObject.SetItem(_actorInventory.Get((int)ePlayerSlotType.Head));
@@ -167,6 +173,11 @@ namespace EFN.Game {
 				return;
 			}
 
+			// 꽉 차있으면 안함
+			if (fireTarget.StatusData.MaxRoundAmount <= fireTarget.FireModule.AmmoCount) {
+				return;
+			}
+
 			// 원래 하던거 멈춤!!
 			BehaviourStop();
 
@@ -213,10 +224,16 @@ namespace EFN.Game {
 
 				Global_UIEvent.CallUIEvent(eEventType.OnPlayerShoot);
 
-				if (true == fireTarget.StatusData.IsKnifeWeapon) {
-					this.ShootKnifeWeapon(fireTarget.ItemType);
-				} else {
-					this.ShootGunWeapon(firedItem);
+				switch (fireTarget.StatusData.WeaponType) {
+					case eWeaponCategory.Common:
+						this.ShootGunWeapon(firedItem);
+						break;
+					case eWeaponCategory.Knife:
+						this.ShootKnifeWeapon(fireTarget.ItemType);
+						break;
+					case eWeaponCategory.ShotGun:
+						this.ShootShotGunWeapon(fireTarget.StatusData, firedItem);
+						break;
 				}
 				
 				// arm 에서 발사 애니메이션 재생해야함
@@ -327,6 +344,62 @@ namespace EFN.Game {
 		}
 
 		/// <summary>
+		/// 샷건 발사!!
+		/// </summary>
+		private void ShootShotGunWeapon(Status_Base gunStatus, eItemType firedItem) {
+
+			// 떄려야하는 타겟들
+			int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
+
+			// 샷건은 한번에 여러발을 쏴야 한다.
+			for (int idx = 0; idx < gunStatus.FireRoundsInSingle; idx++) {
+
+				Vector2 rayDir = Vector2Extension.Rotate(_sightDirection, Random.Range(-15f, 15f));
+				RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, rayDir, 10, targetLayer);
+
+				// 총알 날라가는 이펙트 부터 우선 생성
+				EffectInstanceInfo lineinfo = new EffectInstanceInfo(eEffectType.BulletLine);
+				lineinfo.Pos = _playerArmObject.GetMuzzlePos;
+				lineinfo.Duration = 0.1f;
+				lineinfo.EndPos = lineinfo.Pos + (rayDir.normalized * 10);
+
+				// ray 를 쏴서 맞을 놈이 있는지 검사.
+				if (rays) {
+
+					// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
+					Damageable dmgable = rays.transform.GetComponent<Damageable>();
+					if (null != dmgable) {
+						dmgable.Hit(firedItem, this);
+					}
+
+					// 맞은곳에 탄흔 이펙트
+					EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.BulletSpark);
+					info.Pos = rays.point;
+					info.RotateType = eEffectRotateType.Normal;
+					info.TargetNormal = rays.normal;
+					info.Duration = 1f;
+
+					Global_Effect.ShowEffect(info);
+
+					// 총알 라인이펙트 목적지를 맞은곳으로 수정해준다.
+					lineinfo.EndPos = rays.point;
+				}
+
+				// 총알 라인이펙트
+				Global_Effect.ShowEffect(lineinfo);
+			}
+
+			// 총 사운드
+			SoundGeneratingData sgd = new SoundGeneratingData();
+			sgd.Radius = 10f;
+			sgd.EndTimer = 0.1f;
+			_soundGenerator.MakeSound(sgd);
+
+			// 카메라 반동
+			Graphic_GameCamera.Shake(5);
+		}
+
+		/// <summary>
 		/// selfplayer의 죽음
 		/// </summary>
 		protected override void OnDieInAction(DamageInfo hitinfo) {
@@ -337,12 +410,10 @@ namespace EFN.Game {
 			}
 #endif
 			
-			Global_SelfPlayerData.SelfInventory.ClearInventoryWithDie();
-
 			// 할거 다하고 죽는다.
 			Destroy(this.gameObject);
 
-			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
+			Global_SelfPlayerData.SetKilledInAction();
 		}
 
 		public override void Stop() {

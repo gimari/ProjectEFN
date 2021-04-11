@@ -73,7 +73,7 @@ namespace EFN {
 			}
 
 			// 근접무기는 그냥 발사됨
-			if (true == _statusData.IsKnifeWeapon) {
+			if (eWeaponCategory.Knife == _statusData.WeaponType) {
 				return eErrorCode.Success;
 			}
 
@@ -121,6 +121,11 @@ namespace EFN {
 		public void Reload(eItemType loadedAmmo, int ammoCount) {
 			_loadedAmmo = loadedAmmo;
 			_ammoCount += ammoCount;
+		}
+
+		public void ClearAmmo() {
+			_ammoCount = 0;
+			_loadedAmmo = eItemType.None;
 		}
 
 		public eErrorCode TryFire() {

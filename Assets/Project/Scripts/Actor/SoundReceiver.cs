@@ -13,11 +13,9 @@ namespace EFN.Game {
 		}
 
 		private void OnTriggerEnter2D(Collider2D collision) {
-			if (collision.tag != Global_Constant.TAG_SOUNDCOLLIDER) {
-				return;
+			if (collision.tag == Global_Constant.TAG_SOUNDCOLLIDER) {
+				_onHearSound?.Invoke();
 			}
-
-			_onHearSound?.Invoke();
 		}
 	}
 }

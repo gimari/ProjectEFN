@@ -66,6 +66,17 @@ namespace EFN.Game {
 			this._soundReceiver.OnHearSound = this.OnHearSound;
 		}
 
+		protected override void OnStart() {
+			base.OnStart();
+
+			// 맞은곳에 탄흔 이펙트
+			EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.RoundExplosion);
+			info.Pos = this.Graphic.transform.position;
+			info.Duration = 1f;
+
+			Global_Effect.ShowEffect(info);
+		}
+
 		private void FixedUpdate() {
 			ScanForPlayerProcess();
 

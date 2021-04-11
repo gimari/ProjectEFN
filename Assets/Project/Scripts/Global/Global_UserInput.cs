@@ -119,7 +119,7 @@ namespace EFN.Game {
 		public void PressExit(InputAction.CallbackContext context) {
 			if (context.phase != InputActionPhase.Started) { return; }
 
-			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
+			Global_SelfPlayerData.SetKilledInAction();
 		}
 
 		public void Run(InputAction.CallbackContext context) {

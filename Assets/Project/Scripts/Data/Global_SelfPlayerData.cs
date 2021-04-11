@@ -5,6 +5,10 @@ using UnityEngine;
 
 namespace EFN {
 
+	public class SelfGameEndData {
+		public bool IsKIA = true;
+	}
+
 	/// <summary>
 	/// Global_SelfPlayerData 는 DD 에 붙어서 유저 데이터 관련해 많은 일을 해야함.
 	/// </summary>
@@ -18,6 +22,38 @@ namespace EFN {
 		private Inventory_Item _stashInventory = null;
 		public static Inventory_Item StashInventory {
 			get { return _instance._stashInventory; }
+		}
+
+		private SelfGameEndData _gameEndData = null;
+		public static SelfGameEndData GameEndData {
+			get { return _instance._gameEndData; }
+		}
+
+		public static void SetKilledInAction() {
+			if (null == _instance) {
+				return;
+			}
+
+			// 인벤토리를 깨끗하게 비워준다.
+			SelfInventory.ClearInventoryWithDie();
+
+			SelfGameEndData data = new SelfGameEndData();
+			data.IsKIA = true;
+
+			_instance._gameEndData = data;
+			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
+		}
+
+		public static void SetExtract() {
+			if (null == _instance) {
+				return;
+			}
+
+			SelfGameEndData data = new SelfGameEndData();
+			data.IsKIA = false;
+
+			_instance._gameEndData = data;
+			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
 		}
 
 		/// <summary>

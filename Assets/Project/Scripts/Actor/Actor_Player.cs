@@ -74,7 +74,7 @@ namespace EFN.Game {
 			_dmgable.OnReceiveHeal = this.OnReceiveHeal;
 		}
 
-		private void Update() {
+		protected virtual void Update() {
 			PlayerMovementProcess();
 			PlayerLookingProcess();
 		}

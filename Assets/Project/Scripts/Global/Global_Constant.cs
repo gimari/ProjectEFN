@@ -18,5 +18,6 @@ namespace EFN {
 
 		public const int MAX_QUICKSLOT_SIZE = 10;
 		public const string TAG_SOUNDCOLLIDER = "SoundCollider";
+		public const string TAG_Closechecker = "ClosecheckerCollider";
 	}
 }

@@ -7,7 +7,7 @@ using UnityEngine.UI;
 namespace EFN.Main {
 	public class UI_StartMenu : MonoBehaviour {
 
-		[SerializeField] private GameObject _panel = default;
+		[SerializeField] private Graphic_FadePop _panel = default;
 
 		private void Awake() {
 			Global_UIEvent.RegisterUIEvent(eEventType.OpenStartMenu, this.OpenMenu);
@@ -34,11 +34,11 @@ namespace EFN.Main {
 		}
 
 		private void CloseMenu() {
-			this._panel.SetActive(false);
+			this._panel.Hide();
 		}
 
 		private void OpenMenu() {
-			this._panel.SetActive(true);
+			this._panel.Show();
 		}
 	}
 }

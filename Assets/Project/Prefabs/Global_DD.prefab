@@ -192,8 +192,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4ff2e792b8eed9541a2ec6654374ca68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _infiniteBullet: 0
-  _invinsible: 0
+  _infiniteBullet: 1
+  _invinsible: 1
 --- !u!1 &1920013111682018128
 GameObject:
   m_ObjectHideFlags: 0
@@ -600,13 +600,58 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 27117ac80142cb041b1cfbe586022ba1, type: 3}
   - {fileID: 21300000, guid: dc6d73e8e4aca2a41a251712ee5f0583, type: 3}
   - {fileID: 21300000, guid: 3faf79a62b6d774449d059f25af6712f, type: 3}
+  - {fileID: 21300000, guid: 32b2ccd02803f314284d26f8e58682c0, type: 3}
+  - {fileID: 21300000, guid: 18812cf112dd8f047af369c3de6ceb80, type: 3}
+  - {fileID: 21300000, guid: fd17f16b35994a94c918d04abc4a42bd, type: 3}
+  - {fileID: 21300000, guid: 4549b331ae13dd64fb4ff0aaae37bfe1, type: 3}
+  - {fileID: 21300000, guid: 28e1c1714e9600340aec42c5bfd3dbe0, type: 3}
+  - {fileID: 21300000, guid: 55cc5919c8df03c4c9e8e30bc6e018db, type: 3}
+  - {fileID: 21300000, guid: 913c55f0589c8b943863c7073c19422b, type: 3}
+  - {fileID: 21300000, guid: c9d96ac650962674ea9071870fb862fa, type: 3}
+  - {fileID: 21300000, guid: 9ba25bb5853ae8840a9951cc64c392b6, type: 3}
+  - {fileID: 21300000, guid: e60785ed6ef485e428bf9e9c414ca633, type: 3}
+  - {fileID: 21300000, guid: 7fc582a1a423900439654299434eb447, type: 3}
+  - {fileID: 21300000, guid: b0921e25fc6e54342acd5971ca488426, type: 3}
+  - {fileID: 21300000, guid: b4a25f7c82733a742886764f0852b120, type: 3}
+  - {fileID: 21300000, guid: a1430431c5fbb9347861b967287ced1b, type: 3}
+  - {fileID: 21300000, guid: 762fa18b8fee5a44d8c4ab1a21f0af75, type: 3}
+  - {fileID: 21300000, guid: df40458cf5225b54f9c1d34e68fabd39, type: 3}
+  - {fileID: 21300000, guid: ddee2471187e9354eb9e53c45dbaf1cc, type: 3}
+  - {fileID: 21300000, guid: 92cf00d171421334584dedd69124def3, type: 3}
+  - {fileID: 21300000, guid: 72ab1076804c5c94082ecd02de5b490c, type: 3}
+  - {fileID: 21300000, guid: 31f80fb3e54571c4aad8c8cdc866863c, type: 3}
+  - {fileID: 21300000, guid: 5d0625ff0cf82024abbc327faa550fc8, type: 3}
+  - {fileID: 21300000, guid: ebb773f0704f2c449b15e13703d8db61, type: 3}
+  - {fileID: 21300000, guid: cb9412f1b93f2b246b4fd684022d0677, type: 3}
+  - {fileID: 21300000, guid: 247c7261661327249965ee79714fe54f, type: 3}
+  - {fileID: 21300000, guid: 51cf1e93eea84b04da99a5ef684bcea5, type: 3}
+  - {fileID: 21300000, guid: 51017cd62ecb3a54fba1a5246972767b, type: 3}
+  - {fileID: 21300000, guid: 0f536dc3a9883e7439669ddb7b3dc6b7, type: 3}
+  - {fileID: 21300000, guid: f225a9f4aba10464e8ca011518713045, type: 3}
+  - {fileID: 21300000, guid: bda7e428e29d28348aa67a38fee2e4ad, type: 3}
+  - {fileID: 21300000, guid: 055498a2d926e6645a7294328c004552, type: 3}
+  - {fileID: 21300000, guid: 10aca70e992436a4ea4a6805b7047300, type: 3}
+  - {fileID: 21300000, guid: 59633438001ac204b8c85654793acd2a, type: 3}
+  - {fileID: 21300000, guid: 4358544193eefde46b096e3491c325df, type: 3}
+  - {fileID: 21300000, guid: e47e17ce7835da747b127a4897c24baf, type: 3}
+  - {fileID: 21300000, guid: 77de3ce33e0bd8e478bb5db89d152b43, type: 3}
+  - {fileID: 21300000, guid: 3f13f308e6dbcc3488bbf0f23d66b615, type: 3}
   _armPrefabList:
   - {fileID: 9102137838674116918, guid: f0b87692a5c17b44cbb7843c12845fa6, type: 3}
   - {fileID: 4832573662863901020, guid: ea729bd8401acaa46bfb3f9306d5b2c7, type: 3}
   - {fileID: 4832573662863901020, guid: d164c09bf6cb03a489a9177700a8ff99, type: 3}
   - {fileID: 4832573662863901020, guid: f85233649b583b14880aca93d640d3b0, type: 3}
+  - {fileID: 9102137838674116918, guid: 72200c3a2a3d13247a653d5be85bd1e1, type: 3}
+  - {fileID: 4832573662863901020, guid: c165fc4d547c9e342b807dc2df77743c, type: 3}
+  - {fileID: 4832573662863901020, guid: 9c50a4699bc1d74409012669b3f0a4b9, type: 3}
+  - {fileID: 4832573662863901020, guid: 1d6266645b1a1d84d8c8fd1e682b2b45, type: 3}
+  - {fileID: 4832573662863901020, guid: f7c26f64b7d9a784ebe580ad97dc8899, type: 3}
+  - {fileID: 4832573662863901020, guid: 129d79d7ce37ed846b703d64b7f2c323, type: 3}
+  - {fileID: 4832573662863901020, guid: fc704bd5fb4eb584aa485faf57d76801, type: 3}
   _hatPrefabList:
   - {fileID: 353663292194956570, guid: e412c33195336f0409b3ac4b2efedb27, type: 3}
+  - {fileID: 353663292194956570, guid: 1e72a1c7c4c78484994aaf9d59d1c21b, type: 3}
+  - {fileID: 353663292194956570, guid: f4077f7e9c819e647bf5dbb301edae2d, type: 3}
 --- !u!1 &8957235324897283008
 GameObject:
   m_ObjectHideFlags: 0

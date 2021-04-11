@@ -4,17 +4,13 @@ using UnityEngine;
 using System.Linq;
 
 namespace EFN {
-	public class Global_ResourceContainer : MonoBehaviour {
+	public class Global_ResourceContainer : MonoBehaviour, IDontDestroy {
 
 		[SerializeField] private Sprite[] _iconSpriteList = default;
 		[SerializeField] private GameObject[] _armPrefabList = default;
 		[SerializeField] private GameObject[] _hatPrefabList = default;
 
 		private static Global_ResourceContainer _instance = null;
-
-		private void Awake() {
-			_instance = this;
-		}
 
 		public static Sprite GetSprite(string spriteName) {
 			if (null == _instance) {
@@ -68,6 +64,10 @@ namespace EFN {
 			}
 
 			return rv.First();
+		}
+
+		public void Init() {
+			_instance = this;
 		}
 	}
 }

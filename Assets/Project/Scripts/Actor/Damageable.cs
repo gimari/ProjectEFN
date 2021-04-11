@@ -53,8 +53,6 @@ namespace EFN.Game {
                 return;
             }
 
-            _currentHitPoint = _currentHitPoint - firedStatus.DmgAmount;
-
 			DamageInfo info = new DamageInfo();
 			info.Damage = firedStatus.DmgAmount;
 			info.HittedActor = hittedActor;
@@ -63,6 +61,13 @@ namespace EFN.Game {
 			if (true == _showFloatingDamage) {
 				Global_UIEvent.CallUIEvent<DamageInfo>(eEventType.ShowFloatingDamage, info);
 			}
+
+			// 데미지 계산 전에 이미 죽어있다면 이후 처리를 안한다.
+			if (_currentHitPoint <= 0) {
+				return;
+			}
+
+			_currentHitPoint = _currentHitPoint - firedStatus.DmgAmount;
 
 			// 이번 일격으로 죽는다면 dia 만 호출된다.
 			if (_currentHitPoint <= 0) {

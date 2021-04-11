@@ -149,6 +149,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxHitPoint: 100
+  _showFloatingDamage: 1
 --- !u!1 &3104976218553127980
 GameObject:
   m_ObjectHideFlags: 0
@@ -304,7 +305,7 @@ GameObject:
   - component: {fileID: 3579644301325833236}
   m_Layer: 0
   m_Name: Collider_Closechecker
-  m_TagString: Untagged
+  m_TagString: ClosecheckerCollider
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -599,14 +600,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6540273158613722355}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 8046698055011512787}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
 --- !u!114 &2837822299304064178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -739,6 +740,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379a05b9ab87cb041a5a2f492a862ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _usingStartPos: 1
+  _startPos: 0.593
   _yTarget: {fileID: 6540273158613722352}
   _setDynamic: 1
 --- !u!95 &2591421409833717359
@@ -864,7 +867,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8912389991396551552}
-  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -876,7 +879,7 @@ Transform:
   - {fileID: 64866719635050784}
   m_Father: {fileID: 6540273158613722352}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!1001 &6829789205983732565
 PrefabInstance:
   m_ObjectHideFlags: 0

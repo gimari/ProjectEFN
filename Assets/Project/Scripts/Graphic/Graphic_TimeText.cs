@@ -27,6 +27,11 @@ namespace EFN {
             Global_Time.Timer.AddTimerObject_OneSecondRefresh(this);
         }
 
+		public void Clear() {
+			Global_Time.Timer.RemoveTimerObject_OneSecondRefresh(this);
+			_onTimeEndCallback = null;
+		}
+
         public virtual void RefreshTime() {
             TimeSpan remainTime = _endTimeUtc - Global_Time.CurrentTime;
 

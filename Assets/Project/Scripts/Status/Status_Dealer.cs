@@ -96,6 +96,30 @@ namespace EFN {
 				case eItemType.WEAPON_ASVAL:	return 1023;
 				case eItemType.AMMO_9X39SP5:	return 2;
 				case eItemType.CONS_FIRSTAID:	return 36;
+
+				case eItemType.NONE_COKE0: return 100;
+				case eItemType.NONE_COKE1: return 600;
+				case eItemType.NONE_COKE2: return 900;
+				case eItemType.NONE_COKE3: return 1200;
+				case eItemType.NONE_COKE4: return 1800;
+				case eItemType.NONE_COKE5: return 2400;
+				case eItemType.NONE_COKE6: return 3000;
+				case eItemType.NONE_COKE7: return 3600;
+				case eItemType.NONE_COKE8: return 4200;
+				case eItemType.NONE_COKE9: return 4800;
+				case eItemType.NONE_COKE10: return 5400;
+				case eItemType.NONE_COKE11: return 6000;
+				case eItemType.NONE_COKE12: return 6600;
+				case eItemType.NONE_COKE13: return 7200;
+				case eItemType.NONE_COKE14: return 7800;
+
+				case eItemType.NONE_TROPHY0: return 15468;
+				case eItemType.NONE_TROPHY1: return 7625;
+				case eItemType.NONE_TROPHY2: return 6728;
+				case eItemType.NONE_TROPHY3: return 11926;
+				case eItemType.NONE_TROPHY4: return 34598;
+				case eItemType.NONE_TROPHY5: return 444444;
+
 				default: return base.GetDefaultCost(item);
 			}
 		}
@@ -112,6 +136,7 @@ namespace EFN {
 			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.CONS_FIRSTAID, 1));
 			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_RECORDER, 1));
 			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.HEAD_STAR, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.HEAD_RABBIT, 1));
 
 			SetDealerInven(itemDropTable);
 		}
@@ -122,6 +147,30 @@ namespace EFN {
 				case eItemType.CONS_FIRSTAID: return 360;
 				case eItemType.HEAD_STAR: return 4444;
 				case eItemType.WEAPON_RECORDER: return 4444;
+
+				case eItemType.NONE_COKE0:	return 100;
+				case eItemType.NONE_COKE1:	return 600;
+				case eItemType.NONE_COKE2:	return 900;
+				case eItemType.NONE_COKE3:	return 1200;
+				case eItemType.NONE_COKE4:	return 1800;
+				case eItemType.NONE_COKE5:	return 2400;
+				case eItemType.NONE_COKE6:	return 3000;
+				case eItemType.NONE_COKE7:	return 3600;
+				case eItemType.NONE_COKE8:	return 4200;
+				case eItemType.NONE_COKE9:	return 4800;
+				case eItemType.NONE_COKE10: return 5400;
+				case eItemType.NONE_COKE11: return 6000;
+				case eItemType.NONE_COKE12: return 6600;
+				case eItemType.NONE_COKE13: return 7200;
+				case eItemType.NONE_COKE14: return 7800;
+
+				case eItemType.NONE_TROPHY0: return 15468;
+				case eItemType.NONE_TROPHY1: return 7625;
+				case eItemType.NONE_TROPHY2: return 6728;
+				case eItemType.NONE_TROPHY3: return 11926;
+				case eItemType.NONE_TROPHY4: return 34598;
+				case eItemType.NONE_TROPHY5: return 444444;
+
 				default: return base.GetDefaultCost(item);
 			}
 		}

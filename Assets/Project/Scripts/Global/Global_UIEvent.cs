@@ -30,6 +30,11 @@ namespace EFN {
 
 		ShowFloatingDamage,
 
+		ShowExtract,
+		HideExtract,
+
+		OpenGameResult,
+
 		OnEndFocus,
 	}
 

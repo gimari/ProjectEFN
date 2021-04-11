@@ -28,7 +28,7 @@ namespace EFN.Game {
 			ePlayerEquipSlot equipslot = Global_Actor.SelfPlayer.CurrentEquipSlot;
 
 			Data_Item item = Global_Actor.SelfPlayer.ActorInventory.Get((int)equipslot);
-			if (null == item || null == item.FireModule || true == item.StatusData.IsKnifeWeapon) {
+			if (null == item || null == item.FireModule || eWeaponCategory.Knife == item.StatusData.WeaponType) {
 				this._txtRemainAmmo.gameObject.SetActive(false);
 				return;
 			}

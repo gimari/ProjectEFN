@@ -5,6 +5,9 @@ using UnityEngine;
 namespace EFN {
 	public class Graphic_DepthFixer : MonoBehaviour {
 
+		[SerializeField] private bool _usingStartPos = false;
+		[SerializeField] private float _startPos = 0;
+
 		[SerializeField] private Transform _yTarget = default;
 		[SerializeField] private bool _setDynamic = false;
 
@@ -27,7 +30,8 @@ namespace EFN {
 
 		protected virtual void DepthFix() {
 			if (null == _yTarget) { return; }
-			this.transform.position = new Vector3(transform.position.x, transform.position.y, _yTarget.position.y * 0.1f);
+
+			this.transform.localPosition = new Vector3(transform.localPosition.x, _usingStartPos ? _startPos : transform.localPosition.y, _yTarget.position.y * 0.1f);
 		}
 	}
 }

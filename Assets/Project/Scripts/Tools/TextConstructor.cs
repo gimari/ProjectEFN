@@ -44,7 +44,7 @@ public enum MoneyFormat {
 /// <para>MS : 분초 (1:23)</para>
 /// <para>Optional_WDHMS : 조건부 주일시분초. 주일시분이 0일경우에 "00:"등을 표현하지 않음.</para>
 /// </summary>
-public enum TimeFormat { WDHMS, DHMS, HMS, MS, Optional_WDHMS }
+public enum TimeFormat { WDHMS, DHMS, HMS, MS, Optional_WDHMS, MilliSeconds }
 
 public enum FileSizeFormat { Auto, Fixed_KB, Fixed_MB }
 
@@ -288,7 +288,11 @@ public static class TextConstructor {
                 hours = target.Hours;
                 if (hours > 0) { return target.ToString(TimeFormat.HMS); }
                 return target.ToString(TimeFormat.MS);
-        }
+
+			case TimeFormat.MilliSeconds: {
+				return ((int)target.TotalSeconds).ToString();
+			}
+		}
 
         return "";
     }
