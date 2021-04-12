@@ -10,6 +10,9 @@ namespace EFN {
 		[SerializeField] private GameObject[] _armPrefabList = default;
 		[SerializeField] private GameObject[] _hatPrefabList = default;
 
+		[EnumNamedArray(typeof(eSkillType))]
+		[SerializeField] private Sprite[] _skillSpriteList = default;
+
 		private static Global_ResourceContainer _instance = null;
 
 		public static Sprite GetSprite(string spriteName) {
@@ -68,6 +71,15 @@ namespace EFN {
 
 		public void Init() {
 			_instance = this;
+		}
+
+		public static Sprite GetSprite(eSkillType skill) {
+			if (null == _instance) {
+				EFN.Global_Common.LogError("CANNOT FIND SPRITE : NO INSTANCE");
+				return null;
+			}
+
+			return _instance._skillSpriteList[(int)skill];
 		}
 	}
 }

@@ -9,6 +9,7 @@ using UnityEngine.EventSystems;
 public class Graphic_ToggleButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler {
 
 	[SerializeField] private GameObject _targetObj = default;
+	[SerializeField] private float _fadeTarget = 1f;
 
 	private MaskableGraphic[] _graphicTargetList = null;
 
@@ -21,7 +22,7 @@ public class Graphic_ToggleButton : MonoBehaviour, IPointerEnterHandler, IPointe
 
 		foreach (MaskableGraphic graphic in this._graphicTargetList) {
 			graphic.DOFade(0, 0);
-			graphic.DOFade(1, 0.2f);
+			graphic.DOFade(_fadeTarget, 0.2f);
 		}
 	}
 

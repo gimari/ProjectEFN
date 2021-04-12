@@ -194,7 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _infiniteBullet: 1
   _invinsible: 1
-  _infiniteMoney: 1
+  _infiniteMoney: 0
 --- !u!1 &1920013111682018128
 GameObject:
   m_ObjectHideFlags: 0
@@ -653,6 +653,20 @@ MonoBehaviour:
   - {fileID: 353663292194956570, guid: e412c33195336f0409b3ac4b2efedb27, type: 3}
   - {fileID: 353663292194956570, guid: 1e72a1c7c4c78484994aaf9d59d1c21b, type: 3}
   - {fileID: 353663292194956570, guid: f4077f7e9c819e647bf5dbb301edae2d, type: 3}
+  _skillSpriteList:
+  - {fileID: 0}
+  - {fileID: 21300000, guid: 1fcd067c9f2073f4d88298e7ff1efdeb, type: 3}
+  - {fileID: 21300000, guid: bb84648d1db97ee4b8be3a1e45fc9642, type: 3}
+  - {fileID: 21300000, guid: 52f9bda5706dad9448cfb2d25d2c8494, type: 3}
+  - {fileID: 21300000, guid: a03a8286a0370eb4c8dc88e69041bbf4, type: 3}
+  - {fileID: 21300000, guid: ebf202e2d711685489e8da0832afa6e2, type: 3}
+  - {fileID: 21300000, guid: 878bf6846d0ed2845850407268c4b00f, type: 3}
+  - {fileID: 21300000, guid: 1cb0893acac6fb24d935b6e00b789513, type: 3}
+  - {fileID: 21300000, guid: b5b38cd1362313d4c98209f56cac7211, type: 3}
+  - {fileID: 21300000, guid: 071e10fb7a0ffca41882dddfca605788, type: 3}
+  - {fileID: 21300000, guid: e02e8a480f63dee4fbc771c7fbfdae9e, type: 3}
+  - {fileID: 21300000, guid: f073b64a376ccc8409c94dd450b69b5b, type: 3}
+  - {fileID: 21300000, guid: 2f3199a5e2a9ed7498575dc05e545e87, type: 3}
 --- !u!1 &8957235324897283008
 GameObject:
   m_ObjectHideFlags: 0

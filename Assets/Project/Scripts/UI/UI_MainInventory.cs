@@ -17,6 +17,9 @@ namespace EFN.Main {
 		// 루팅 슬롯 리스트.
 		[SerializeField] private Graphic_LayoutList _lootSlotList = default;
 
+		[SerializeField] private GameObject _panelGear = default;
+		[SerializeField] private UI_SkillUpPanel _panelSkillUp = default;
+
 		private Inventory_Item _interactingInven = null;
 
 		private void Awake() {
@@ -155,9 +158,17 @@ namespace EFN.Main {
 			this.Close();
 			Global_UIEvent.CallUIEvent(eEventType.OpenStartMenu);
 		}
+		
+		public void OnClickSkillTab() {
+			_panelSkillUp.gameObject.SetActive(true);
+			_panelGear.gameObject.SetActive(false);
 
-		public void OnCLickTest() {
-			Debug.Log(Global_SelfPlayerData.TryAddSkill(eSkillType.Armor));
+			_panelSkillUp.Open();
+		}
+
+		public void OnClickGearTab() {
+			_panelSkillUp.gameObject.SetActive(false);
+			_panelGear.gameObject.SetActive(true);
 		}
 	}
 }

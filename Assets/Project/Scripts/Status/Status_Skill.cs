@@ -34,14 +34,23 @@ namespace EFN {
 			if (false == _statusList.ContainsKey(skill)) {
                 Status_Skill status;
 
-                switch (skill) {
-                    case eSkillType.Armor: { status = new Status_SkillArmor(); } break;
-                    case eSkillType.Health: { status = new Status_SkillHealth(); } break;
-
-                    default:
-                        status = null;
-                        break;
-                }
+				switch (skill) {
+					case eSkillType.Armor: { status = new Status_SkillArmor(); } break;
+					case eSkillType.Health: { status = new Status_SkillHealth(); } break;
+					case eSkillType.Speed: { status = new Status_SkillSpeed(); } break;
+					case eSkillType.Sight: { status = new Status_SkillSight(); } break;
+					case eSkillType.Melee: { status = new Status_SkillMelee(); } break;
+					case eSkillType.Silence: { status = new Status_SkillSilence(); } break;
+					case eSkillType.Recoil: { status = new Status_SkillRecoil(); } break;
+					case eSkillType.Critical: { status = new Status_SkillCritical(); } break;
+					case eSkillType.CritDmg: { status = new Status_SkillCritDmg(); } break;
+					case eSkillType.NormalDmg: { status = new Status_SkillNormalDmg(); } break;
+					case eSkillType.StashSize: { status = new Status_SkillStashSize(); } break;
+					case eSkillType.InvenSize: { status = new Status_SkillInvenSize(); } break;
+					default:
+						status = null;
+						break;
+				}
 
 				_statusList.Add(skill, status);
 			}
@@ -64,19 +73,95 @@ namespace EFN {
         /// </summary>
         public virtual long NextLevelCost(int level) { return 0; }
 
-    }
+		/// <summary>
+		/// 스킬 설명 반환
+		/// </summary>
+		public virtual string Explain { get { return ""; } }
+	}
 
-    public class Status_SkillHealth : Status_Skill {
+	internal class Status_SkillStashSize : Status_Skill {
+		public override int MaxLevel { get { return 30; } }
+		public override float EffectAmount(int level) { return level * 1; }
+		public override long NextLevelCost(int level) { return (level + 1) * 1000; }
+		public override string Explain { get { return "창고 용량이 {0} 만큼 넓어집니다."; } }
+	}
+
+	internal class Status_SkillInvenSize : Status_Skill {
+		public override int MaxLevel { get { return 15; } }
+		public override float EffectAmount(int level) { return level * 1; }
+		public override long NextLevelCost(int level) { return (level + 1) * 1000; }
+		public override string Explain { get { return "전투에 가져갈 수 있는 용량이 {0} 만큼 늘어납니다."; } }
+	}
+
+	internal class Status_SkillNormalDmg : Status_Skill {
+		public override int MaxLevel { get { return 15; } }
+		public override float EffectAmount(int level) { return 1 + (level * 0.01f); }
+		public override long NextLevelCost(int level) { return (level + 1) * 13726; }
+		public override string Explain { get { return "{0}배 더 쎄게 방아쇠를 당깁니다!"; } }
+	}
+
+	internal class Status_SkillCritDmg : Status_Skill {
+		public override int MaxLevel { get { return 50; } }
+		public override float EffectAmount(int level) { return 50 + (level * 1); }
+		public override long NextLevelCost(int level) { return (level + 1) * 208; }
+		public override string Explain { get { return "치명타 데미지가 {0}% 증가합니다."; } }
+	}
+
+	internal class Status_SkillCritical : Status_Skill {
+		public override int MaxLevel { get { return 30; } }
+		public override float EffectAmount(int level) { return level * 1; }
+		public override long NextLevelCost(int level) { return (level + 1) * 208; }
+		public override string Explain { get { return "치명타 확율이 {0}% 증가합니다."; } }
+	}
+
+	internal class Status_SkillRecoil : Status_Skill {
+		public override int MaxLevel { get { return 25; } }
+		public override float EffectAmount(int level) { return 1 - (level * 0.01f); }
+		public override long NextLevelCost(int level) { return (level + 1) * 208; }
+		public override string Explain { get { return "{0}만큼 손을 덜 떨게 됩니다!"; } }
+	}
+
+	internal class Status_SkillSilence : Status_Skill {
+		public override int MaxLevel { get { return 50; } }
+		public override float EffectAmount(int level) { return 1 - (level * 0.01f); }
+		public override long NextLevelCost(int level) { return (level + 1) * 208; }
+		public override string Explain { get { return "{0}만큼 덜 시끄러워 집니다!"; } }
+	}
+
+	internal class Status_SkillMelee : Status_Skill {
+		public override int MaxLevel { get { return 10; } }
+		public override float EffectAmount(int level) { return 1 + (level * 0.1f); }
+		public override long NextLevelCost(int level) { return (level + 1) * 208; }
+		public override string Explain { get { return "{0}배 더 쎈 주먹을 가집니다!"; } }
+	}
+
+	internal class Status_SkillSight : Status_Skill {
+		public override int MaxLevel { get { return 50; } }
+		public override float EffectAmount(int level) { return 1 + (level * 0.01f); }
+		public override long NextLevelCost(int level) { return (level + 1) * 208; }
+		public override string Explain { get { return "{0}배 더 멀리 볼 수 있습니다!"; } }
+	}
+
+	internal class Status_SkillSpeed : Status_Skill {
+		public override int MaxLevel { get { return 20; } }
+		public override float EffectAmount(int level) { return 1 + (level * 0.01f); }
+		public override long NextLevelCost(int level) { return (level + 1) * 208; }
+		public override string Explain { get { return "이동속도가 {0}배 증가합니다!"; } }
+	}
+
+	public class Status_SkillHealth : Status_Skill {
         public override int MaxLevel { get { return 100; } }
         public override float EffectAmount(int level) { return level * 1; }
-        public override long NextLevelCost(int level) { return (level + 1) * 1000; }
-    }
+        public override long NextLevelCost(int level) { return (level + 1) * 142; }
+		public override string Explain { get { return "체력이 {0} 만큼 증가합니다!"; } }
+	}
 
     public class Status_SkillArmor : Status_Skill {
         public override int MaxLevel { get { return 5; } }
         public override float EffectAmount(int level) { return level * 1; }
         public override long NextLevelCost(int level) { return (level + 1) * 20000; }
-    }
+		public override string Explain { get { return "방어도가 {0} 만큼 증가합니다!"; } }
+	}
 
     [Serializable]
     public class Data_Skill {
