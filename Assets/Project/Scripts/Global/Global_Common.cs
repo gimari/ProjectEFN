@@ -13,6 +13,8 @@ namespace EFN {
 		StackOverflow,
 		InventoryFull,				// 인벤 꽉참
 		NotenoughCoke,				// 돈없음
+
+		MaxSkillLevel,
 	}
 
 	public enum eLayerMask {

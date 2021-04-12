@@ -32,7 +32,10 @@ namespace EFN.Game {
 
         public void Init(Actor_Player basePlayer) {
             this._basePlayer = basePlayer;
-            ResetDamage();
+
+			this._maxHitPoint = basePlayer.MaxHealthPoint();
+
+			ResetDamage();
         }
 
         public void ResetDamage() {
@@ -54,7 +57,7 @@ namespace EFN.Game {
             }
 
 			DamageInfo info = new DamageInfo();
-			info.Damage = firedStatus.DmgAmount;
+			info.Damage = Mathf.Max(0, firedStatus.DmgAmount - _basePlayer.ArmorAmount());
 			info.HittedActor = hittedActor;
 			info.Pos = this.transform.position;
 

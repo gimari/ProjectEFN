@@ -183,5 +183,8 @@ namespace EFN.Game {
 		/// 사실상 selfplayer 말곤 쓸일이 없다
 		/// </summary>
 		public virtual void ChangeEquipSlotOnBehaviourEnd(int slotType) { }
+
+		public virtual int ArmorAmount() { return 0; }
+		public virtual int MaxHealthPoint() { return 100; }
 	}
 }

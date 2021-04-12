@@ -12,9 +12,13 @@ namespace EFN {
 		[SerializeField] private bool _invinsible = false;
 		public static bool Invinsible = false;
 
+		[SerializeField] private bool _infiniteMoney = false;
+		public static bool InfiniteMoney = false;
+
 		private void Awake() {
 			InfiniteBullet = _infiniteBullet;
 			Invinsible = _invinsible;
+			InfiniteMoney = _infiniteMoney;
 		}
 #endif
 

@@ -24,11 +24,61 @@ namespace EFN {
 			get { return _instance._stashInventory; }
 		}
 
+		private Inventory_Skill _skillInventory = null;
+		public static Inventory_Skill SkillInventory {
+			get { return _instance._skillInventory; }
+		}
+
 		private SelfGameEndData _gameEndData = null;
 		public static SelfGameEndData GameEndData {
 			get { return _instance._gameEndData; }
 		}
 
+		/// <summary>
+		/// 특정한 스킬 타입의 스킬레벨을 1단계 올리려고 한다.
+		/// coke 소모에 대한 적절한 처리가 동반되어 있다.
+		/// </summary>
+		public static eErrorCode TryAddSkill(eSkillType skillType) {
+			if (null == _instance) {
+				return eErrorCode.Fail;
+			}
+
+			if (skillType == eSkillType.None) {
+				Global_Common.LogError("올바르지 않은 skill type!! : None");
+				return eErrorCode.Fail;
+			}
+
+			Status_Skill status = Status_Skill.GetStatus(skillType);
+			int level = _instance._skillInventory.Get(skillType);
+
+			if (status.MaxLevel <= level) {
+				return eErrorCode.MaxSkillLevel;
+			}
+
+			long cost = status.NextLevelCost(level);
+
+			eErrorCode rv = ConsumeCoke(cost);
+			if (rv != eErrorCode.Success) {
+				return rv;
+			}
+
+			_instance._skillInventory.Add(skillType);
+
+			return eErrorCode.Success;
+		}
+
+		public static float GetSkillAmount(eSkillType skill) {
+			Status_Skill status = Status_Skill.GetStatus(skill);
+			if (null == status) { return 0; }
+
+			int level = _instance._skillInventory.Get(skill);
+			return status.EffectAmount(level);
+		}
+
+		/// <summary>
+		/// 유저가 죽었을때의 처리.
+		/// 인벤토리를 깨끗히 비우고 gameenddata 를 기록한다.
+		/// </summary>
 		public static void SetKilledInAction() {
 			if (null == _instance) {
 				return;
@@ -44,6 +94,9 @@ namespace EFN {
 			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
 		}
 
+		/// <summary>
+		/// 유저가 성공적으로 탈출했을때 처리
+		/// </summary>
 		public static void SetExtract() {
 			if (null == _instance) {
 				return;
@@ -76,6 +129,12 @@ namespace EFN {
 		}
 
 		public static eErrorCode ConsumeCoke(long amount) {
+#if EFN_DEBUG
+			if (Global_DebugConfig.InfiniteMoney) {
+				return eErrorCode.Success;
+			}
+#endif
+
 			if (_instance._cokeAmount < amount) {
 				return eErrorCode.NotenoughCoke;
 			}
@@ -98,27 +157,50 @@ namespace EFN {
 
 			EFNEncrypt enc = new EFNEncrypt();
 
+			// self inventory
 			string parsed = JsonUtility.ToJson(_instance._selfInventory);
 			string first = enc.Encrypt(parsed);
 
 			PlayerPrefs.SetString("_selfInventory", first);
 
+			// stash inventory
 			parsed = JsonUtility.ToJson(_instance._stashInventory);
 			first = enc.Encrypt(parsed);
 
 			PlayerPrefs.SetString("_stashInventory", first);
 
+			//skill inventory
+			parsed = JsonUtility.ToJson(_instance._skillInventory);
+			first = enc.Encrypt(parsed);
+
+			PlayerPrefs.SetString("_skillInventory", first);
+
 			PlayerPrefs.Save();
 		}
 
+		/// <summary>
+		/// 인벤토리 등 정보를 로드한다.
+		/// 정보 로드 순서에 특히 유의.
+		/// </summary>
 		public void LoadInventory() {
 
 			EFNEncrypt enc = new EFNEncrypt();
 
+			// skill inventory. 스킬 인벤토리가 무조건 제일 먼저 로드되어야 한다!
+			_skillInventory = new Inventory_Skill();
+
+			string load = PlayerPrefs.GetString("_skillInventory");
+
+			if (false == string.IsNullOrEmpty(load)) {
+				string first = enc.Decrypt(load);
+				Inventory_Skill parsed = JsonUtility.FromJson<Inventory_Skill>(first);
+				_skillInventory = parsed;
+			}
+
 			// self inventory
 			_selfInventory = new Inventory_SelfPlayer();
 
-			string load = PlayerPrefs.GetString("_selfInventory");
+			load = PlayerPrefs.GetString("_selfInventory");
 
 			if (false == string.IsNullOrEmpty(load)) {
 				string first = enc.Decrypt(load);

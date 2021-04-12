@@ -155,5 +155,9 @@ namespace EFN.Main {
 			this.Close();
 			Global_UIEvent.CallUIEvent(eEventType.OpenStartMenu);
 		}
+
+		public void OnCLickTest() {
+			Debug.Log(Global_SelfPlayerData.TryAddSkill(eSkillType.Armor));
+		}
 	}
 }

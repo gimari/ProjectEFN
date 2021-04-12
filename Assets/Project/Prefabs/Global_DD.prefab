@@ -194,6 +194,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _infiniteBullet: 1
   _invinsible: 1
+  _infiniteMoney: 1
 --- !u!1 &1920013111682018128
 GameObject:
   m_ObjectHideFlags: 0

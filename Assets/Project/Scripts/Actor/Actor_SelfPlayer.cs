@@ -447,5 +447,13 @@ namespace EFN.Game {
 			base.OnReceiveHeal();
 			Global_UIEvent.CallUIEvent(eEventType.OnPlayerDamageTaken);
 		}
+
+		public override int ArmorAmount() {
+			return (int)Global_SelfPlayerData.GetSkillAmount(eSkillType.Armor);
+		}
+
+		public override int MaxHealthPoint() {
+			return 100 + (int)Global_SelfPlayerData.GetSkillAmount(eSkillType.Health);
+		}
 	}
 }
