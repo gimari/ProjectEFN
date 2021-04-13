@@ -80,17 +80,17 @@ namespace EFN {
 	}
 
 	internal class Status_SkillStashSize : Status_Skill {
-		public override int MaxLevel { get { return 30; } }
+		public override int MaxLevel { get { return 20; } }
 		public override float EffectAmount(int level) { return level * 1; }
 		public override long NextLevelCost(int level) { return (level + 1) * 1000; }
 		public override string Explain { get { return "창고 용량이 {0} 만큼 넓어집니다."; } }
 	}
 
 	internal class Status_SkillInvenSize : Status_Skill {
-		public override int MaxLevel { get { return 15; } }
+		public override int MaxLevel { get { return 10; } }
 		public override float EffectAmount(int level) { return level * 1; }
 		public override long NextLevelCost(int level) { return (level + 1) * 1000; }
-		public override string Explain { get { return "전투에 가져갈 수 있는 용량이 {0} 만큼 늘어납니다."; } }
+		public override string Explain { get { return "전투 가방이 {0} 만큼 커집니다."; } }
 	}
 
 	internal class Status_SkillNormalDmg : Status_Skill {

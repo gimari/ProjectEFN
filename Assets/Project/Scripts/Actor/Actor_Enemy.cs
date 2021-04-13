@@ -212,7 +212,8 @@ namespace EFN.Game {
 					Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical);
 
 					DamageInfo damage = new DamageInfo();
-					damage.Damage = Mathf.Max(0, firedStatus.DmgAmount);
+
+					damage.Damage = Mathf.Max(0, firedStatus.DmgAmount - dmgable.Armor);
 					damage.HittedActor = this;
 					damage.Pos = dmgable.transform.position;
 

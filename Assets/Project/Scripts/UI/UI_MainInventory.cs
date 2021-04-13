@@ -169,6 +169,8 @@ namespace EFN.Main {
 		public void OnClickGearTab() {
 			_panelSkillUp.gameObject.SetActive(false);
 			_panelGear.gameObject.SetActive(true);
+
+			UpdateUserInventory();
 		}
 	}
 }

@@ -25,7 +25,7 @@ public class Graphic_LayoutList : Graphic_ListTemplate {
 		if (_layoutGroup.constraint == GridLayoutGroup.Constraint.FixedColumnCount) {
 
 			// 고정 열
-			float currentExpectSize = ((_layoutGroup.spacing.y + _childSize.y) * ((_currentCount / _layoutGroup.constraintCount) + 1)) 
+			float currentExpectSize = ((_layoutGroup.spacing.y + _childSize.y) * ((Mathf.Max(0, _currentCount - 1) / _layoutGroup.constraintCount) + 1)) 
 				- _layoutGroup.spacing.y + _layoutGroup.padding.top + _layoutGroup.padding.bottom;
 
 			// 변하면 크기를 바꿔주자.

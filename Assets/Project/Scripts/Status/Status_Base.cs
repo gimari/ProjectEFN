@@ -212,6 +212,9 @@ namespace EFN {
 
 		// 한번에 발사되는 총알개수
 		public virtual int FireRoundsInSingle { get { return 1; } }
+
+		// 반동 크기
+		public virtual float RecoilRate { get { return 0; } }
 	}
 
 	/// <summary>
@@ -426,6 +429,7 @@ namespace EFN {
 		public override float UseCoolTime { get { return 0.8f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
+		public override float RecoilRate { get { return 8; } }
 	}
 
 	/// <summary>
@@ -455,6 +459,7 @@ namespace EFN {
 		public override float UseCoolTime { get { return 0.8f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
+		public override float RecoilRate { get { return 30; } }
 	}
 
 	/// <summary>

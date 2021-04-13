@@ -18,12 +18,12 @@ namespace EFN {
 		public static Inventory_SelfPlayer SelfInventory {
 			get { return _instance._selfInventory; }
 		}
-
+		
 		private Inventory_Item _stashInventory = null;
 		public static Inventory_Item StashInventory {
 			get { return _instance._stashInventory; }
 		}
-
+		
 		private Inventory_Skill _skillInventory = null;
 		public static Inventory_Skill SkillInventory {
 			get { return _instance._skillInventory; }
@@ -63,6 +63,16 @@ namespace EFN {
 			}
 
 			_instance._skillInventory.Add(skillType);
+
+			switch (skillType) {
+				case eSkillType.StashSize:
+					_instance._stashInventory.MaxDisplayIndex = 20 + (int)GetSkillAmount(eSkillType.StashSize);
+					break;
+
+				case eSkillType.InvenSize:
+					_instance._selfInventory.MaxDisplayIndex = (int)ePlayerSlotType.QuickSlotStart + 5 + (int)GetSkillAmount(eSkillType.InvenSize);
+					break;
+			}
 
 			return eErrorCode.Success;
 		}
@@ -207,8 +217,8 @@ namespace EFN {
 				Inventory_SelfPlayer parsed = JsonUtility.FromJson<Inventory_SelfPlayer>(first);
 				_selfInventory = parsed;
 			}
-
-			_selfInventory.MaxDisplayIndex = (int)ePlayerSlotType.QuickSlotStart + 5;
+			
+			_selfInventory.MaxDisplayIndex = (int)ePlayerSlotType.QuickSlotStart + 5 + (int)GetSkillAmount(eSkillType.InvenSize);
 
 			// stash inventory
 			_stashInventory = new Inventory_Item();
@@ -221,7 +231,7 @@ namespace EFN {
 				_stashInventory = parsed;
 			}
 
-			_stashInventory.MaxDisplayIndex = 40;
+			_stashInventory.MaxDisplayIndex = 20 + (int)GetSkillAmount(eSkillType.StashSize);
 
 			// dealer inventory (예정)
 		}

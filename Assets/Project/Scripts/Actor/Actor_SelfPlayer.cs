@@ -20,6 +20,8 @@ namespace EFN.Game {
 
 		private Data_Item _currentEquipItem = null;
 
+		private float _recoilRate = 0;
+
 		protected override float PlayerMoveSpeed {
 			get { return base.PlayerMoveSpeed * Global_SelfPlayerData.GetSkillAmount(eSkillType.Speed); }
 		}
@@ -39,6 +41,7 @@ namespace EFN.Game {
 			base.Update();
 
 			this.transform.rotation = Quaternion.Euler(90, 0, 0);
+			this._recoilRate = Mathf.Max(0, this._recoilRate - 20 * Time.deltaTime);
 		}
 
 		protected void UpdateHatObject() {
@@ -230,7 +233,7 @@ namespace EFN.Game {
 
 				switch (fireTarget.StatusData.WeaponType) {
 					case eWeaponCategory.Common:
-						this.ShootGunWeapon(firedItem);
+						this.ShootGunWeapon(fireTarget.StatusData, firedItem);
 						break;
 					case eWeaponCategory.Knife:
 						this.ShootKnifeWeapon(fireTarget.ItemType);
@@ -289,7 +292,7 @@ namespace EFN.Game {
 
 					DamageInfo damage = new DamageInfo();
 
-					damage.Damage = (firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.Melee);
+					damage.Damage = Mathf.Max(0, firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.Melee);
 
 					// 치명타 체크
 					if (Random.Range(0, 100f) <= Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical)) {
@@ -320,34 +323,40 @@ namespace EFN.Game {
 		/// <summary>
 		/// 총알 쓰는 무기를 발사한다!!
 		/// </summary>
-		private void ShootGunWeapon(eItemType firedItem) {
+		private void ShootGunWeapon(Status_Base gunStatus, eItemType firedItem) {
+
+			Status_Base firedStatus = Status_Base.GetStatus(firedItem);
+			if (null == firedStatus) {
+				Global_Common.LogError("I DONT KNOW WHAT ITEM IS : " + firedItem);
+				return;
+			}
 
 			// 떄려야하는 타겟들
 			int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
-			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 10, targetLayer);
+
+			Vector2 shootDir = Vector2Extension.Rotate(_sightDirection, Random.Range(-_recoilRate, _recoilRate));
+
+			float recoilRate = gunStatus.RecoilRate * Global_SelfPlayerData.GetSkillAmount(eSkillType.Recoil);
+
+			_recoilRate = Mathf.Min(_recoilRate + recoilRate / 5, recoilRate);
+
+			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, shootDir, 10, targetLayer);
 
 			// 총알 날라가는 이펙트 부터 우선 생성
 			EffectInstanceInfo lineinfo = new EffectInstanceInfo(eEffectType.BulletLine);
 			lineinfo.Pos = _playerArmObject.GetMuzzlePos;
 			lineinfo.Duration = 0.1f;
-			lineinfo.EndPos = lineinfo.Pos + ((Vector2)_sightDirection.normalized * 10);
+			lineinfo.EndPos = lineinfo.Pos + (shootDir.normalized * 10);
 
 			// ray 를 쏴서 맞을 놈이 있는지 검사.
 			if (rays) {
-
 				// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
 				Damageable dmgable = rays.transform.GetComponent<Damageable>();
 				if (null != dmgable) {
 
-					Status_Base firedStatus = Status_Base.GetStatus(firedItem);
-					if (null == firedStatus) {
-						Global_Common.LogError("I DONT KNOW WHAT ITEM IS : " + firedItem);
-						return;
-					}
-
 					DamageInfo damage = new DamageInfo();
 
-					damage.Damage = (firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.NormalDmg);
+					damage.Damage = Mathf.Max(0, firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.NormalDmg);
 
 					// 치명타 체크
 					if (Random.Range(0, 100f) <= Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical)) {
@@ -422,7 +431,7 @@ namespace EFN.Game {
 
 						DamageInfo damage = new DamageInfo();
 
-						damage.Damage = (firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.NormalDmg);
+						damage.Damage = Mathf.Max(0, firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.NormalDmg);
 
 						// 치명타 체크
 						if (Random.Range(0, 100f) <= Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical)) {

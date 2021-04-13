@@ -24,6 +24,9 @@ namespace EFN.Game {
 		public Action OnReceiveHeal = null;
 
 		private float _maxHitPoint = 0;
+		public float MaxHitPoint {
+			get { return _maxHitPoint; }
+		}
 
 		private float _currentHitPoint = 100;
         public float CurrentHitPoint {

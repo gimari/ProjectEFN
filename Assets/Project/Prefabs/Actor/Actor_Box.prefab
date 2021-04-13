@@ -285,22 +285,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _graphic: {fileID: 4731128413373288352}
   _boxDropTable:
-  - ItemType: 14
-    DropRate: 100
-    MinCount: 1
-    MaxCount: 5
-  - ItemType: 21
+  - ItemType: 15
     DropRate: 100
     MinCount: 1
     MaxCount: 1
+  - ItemType: 13
+    DropRate: 100
+    MinCount: 1
+    MaxCount: 1
+  - ItemType: 14
+    DropRate: 100
+    MinCount: 1
+    MaxCount: 20
   - ItemType: 17
     DropRate: 100
     MinCount: 1
     MaxCount: 20
-  - ItemType: 24
-    DropRate: 100
-    MinCount: 1
-    MaxCount: 5
   - ItemType: 25
     DropRate: 100
     MinCount: 1

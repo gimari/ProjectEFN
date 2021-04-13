@@ -10,6 +10,9 @@ namespace EFN.Game {
 		[SerializeField] private Text _txtRemainAmmo = default;
 		[SerializeField] private Image _playerHealthImage = default;
 		[SerializeField] private Image _heartbeatImage = default;
+		[SerializeField] private Text _txtArmor = default;
+		[SerializeField] private Text _txtHealth = default;
+		[SerializeField] private Slider _healthSlider = default;
 
 		private void Awake() {
 			Global_UIEvent.RegisterUIEvent(eEventType.UpdateUserInventory, UpdateAmmo);
@@ -18,6 +21,12 @@ namespace EFN.Game {
 			Global_UIEvent.RegisterUIEvent(eEventType.OnPlayerDamageTaken, OnPlayerDamageTaken);
 
 			StartCoroutine(HeartBeatRoutine());
+		}
+
+		private void Start() {
+			_txtHealth.text = Global_Actor.SelfPlayer.Dmgable.CurrentHitPoint.ToString();
+			_healthSlider.value = Global_Actor.SelfPlayer.Dmgable.CurrentHitPoint / Global_Actor.SelfPlayer.Dmgable.MaxHitPoint;
+			_txtArmor.text = Global_Actor.SelfPlayer.ArmorAmount().ToString();
 		}
 
 		public void UpdateAmmo() {
@@ -59,6 +68,9 @@ namespace EFN.Game {
 			_heartbeatImage.DOFade(0.6f, 0.1f).OnComplete(() => {
 				_heartbeatImage.DOFade(0f, 0.5f).SetEase(Ease.OutCirc);
 			});
+
+			_txtHealth.text = hitpoint.ToString();
+			_healthSlider.value = hitpoint / Global_Actor.SelfPlayer.Dmgable.MaxHitPoint;
 		}
 
 		private IEnumerator HeartBeatRoutine() {
@@ -69,14 +81,15 @@ namespace EFN.Game {
 				if (null != Global_Actor.SelfPlayer && null != Global_Actor.SelfPlayer.Dmgable) {
 
 					float hitpoint = Global_Actor.SelfPlayer.Dmgable.CurrentHitPoint;
+					float maxpoint = Global_Actor.SelfPlayer.Dmgable.MaxHitPoint;
 
-					if (hitpoint < 50) {
+					if (hitpoint < maxpoint / 2) {
 						_heartbeatImage.DOKill();
-						_heartbeatImage.DOFade(0.6f * ( -hitpoint / 50 + 1 ), 0.1f).OnComplete(() => {
+						_heartbeatImage.DOFade(0.6f * ( -hitpoint / ( maxpoint / 2 ) + 1 ), 0.1f).OnComplete(() => {
 							_heartbeatImage.DOFade(0f, 0.5f).SetEase(Ease.OutCirc);
 						});
 
-						yield return new WaitForSeconds((hitpoint / 50) + 0.2f);
+						yield return new WaitForSeconds(0.3f);
 					}
 				}
 
