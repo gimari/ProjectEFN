@@ -202,7 +202,21 @@ namespace EFN.Game {
 				// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
 				Damageable dmgable = rays.transform.GetComponent<Damageable>();
 				if (null != dmgable) {
-					dmgable.Hit(this._usingBullet, this);
+
+					Status_Base firedStatus = Status_Base.GetStatus(this._usingBullet);
+					if (null == firedStatus) {
+						Global_Common.LogError("I DONT KNOW WHAT ITEM IS : " + this._usingBullet);
+						return;
+					}
+
+					Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical);
+
+					DamageInfo damage = new DamageInfo();
+					damage.Damage = Mathf.Max(0, firedStatus.DmgAmount);
+					damage.HittedActor = this;
+					damage.Pos = dmgable.transform.position;
+
+					dmgable.Hit(damage);
 				}
 
 				// 맞은곳에 탄흔 이펙트

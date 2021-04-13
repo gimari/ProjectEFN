@@ -10,8 +10,10 @@ namespace EFN.Game {
 		[SerializeField] private Animator _animator = default;
 		[SerializeField] private Text _txtDmg = default;
 
-		public void PlayDamage(float dmg) {
-			_txtDmg.text = dmg.ToString();
+		public void PlayDamage(float dmg, bool damagedByCrit) {
+			_txtDmg.color = damagedByCrit ? Color.yellow : Color.red;
+
+			_txtDmg.text = string.Format("{0:#.#}", dmg);
 			// _animator.Play("Fire");
 			_txtDmg.rectTransform.DOAnchorPosX(Random.Range(-100, 100), 0.5f);
 

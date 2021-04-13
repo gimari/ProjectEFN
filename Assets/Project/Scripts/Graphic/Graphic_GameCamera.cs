@@ -24,6 +24,10 @@ namespace EFN.Game {
 		private float _targetCameraSize = 5;
 		private bool _isZoom = false;
 
+		public float GetCameraSize() {
+			return this._defaultSize * Global_SelfPlayerData.GetSkillAmount(eSkillType.Sight);
+		}
+
 		private void Awake() {
 			_mainCamera = this;
 			_camera = this.GetComponent<Camera>();
@@ -63,10 +67,10 @@ namespace EFN.Game {
 			// bool 로 대충 때움
 			if (true == _isZoom) {
 				cameraTarget = _sightTarget * 5 + _actorTarget;
-				_camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, this._defaultSize - 1.5f, Time.deltaTime * _cameraTrakingSpeed);
+				_camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, GetCameraSize() - 1.5f, Time.deltaTime * _cameraTrakingSpeed);
 			} else {
 				cameraTarget = _sightTarget + _actorTarget;
-				_camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, this._defaultSize, Time.deltaTime * _cameraTrakingSpeed);
+				_camera.orthographicSize = Mathf.Lerp(_camera.orthographicSize, GetCameraSize(), Time.deltaTime * _cameraTrakingSpeed);
 			}
 
 			// Shake 필요함?

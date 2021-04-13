@@ -20,6 +20,10 @@ namespace EFN.Game {
 
 		private Data_Item _currentEquipItem = null;
 
+		protected override float PlayerMoveSpeed {
+			get { return base.PlayerMoveSpeed * Global_SelfPlayerData.GetSkillAmount(eSkillType.Speed); }
+		}
+
 		protected override void OnAwake() {
 			Global_Actor.SelfPlayer = this;
 
@@ -144,7 +148,7 @@ namespace EFN.Game {
 
 			if (true == _currentBehaviourCondition.HasFlag(eBehaviourCondition.Running)) {
 				SoundGeneratingData sgd = new SoundGeneratingData();
-				sgd.Radius = 5f;
+				sgd.Radius = 5f * Global_SelfPlayerData.GetSkillAmount(eSkillType.Silence);
 				this._soundGenerator.MakeSound(sgd);
 			}
 		}
@@ -276,7 +280,27 @@ namespace EFN.Game {
 				// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
 				Damageable dmgable = rays.transform.GetComponent<Damageable>();
 				if (null != dmgable) {
-					dmgable.Hit(firedItem, this);
+
+					Status_Base firedStatus = Status_Base.GetStatus(firedItem);
+					if (null == firedStatus) {
+						Global_Common.LogError("I DONT KNOW WHAT ITEM IS : " + firedItem);
+						return;
+					}
+
+					DamageInfo damage = new DamageInfo();
+
+					damage.Damage = (firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.Melee);
+
+					// 치명타 체크
+					if (Random.Range(0, 100f) <= Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical)) {
+						damage.Damage = damage.Damage * Global_SelfPlayerData.GetSkillAmount(eSkillType.CritDmg);
+						damage.DamagedByCrit = true;
+					}
+
+					damage.HittedActor = this;
+					damage.Pos = dmgable.transform.position;
+
+					dmgable.Hit(damage);
 				}
 
 				// 맞은곳에 탄흔 이펙트
@@ -314,7 +338,27 @@ namespace EFN.Game {
 				// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
 				Damageable dmgable = rays.transform.GetComponent<Damageable>();
 				if (null != dmgable) {
-					dmgable.Hit(firedItem, this);
+
+					Status_Base firedStatus = Status_Base.GetStatus(firedItem);
+					if (null == firedStatus) {
+						Global_Common.LogError("I DONT KNOW WHAT ITEM IS : " + firedItem);
+						return;
+					}
+
+					DamageInfo damage = new DamageInfo();
+
+					damage.Damage = (firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.NormalDmg);
+
+					// 치명타 체크
+					if (Random.Range(0, 100f) <= Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical)) {
+						damage.Damage = damage.Damage * Global_SelfPlayerData.GetSkillAmount(eSkillType.CritDmg);
+						damage.DamagedByCrit = true;
+					}
+
+					damage.HittedActor = this;
+					damage.Pos = dmgable.transform.position;
+
+					dmgable.Hit(damage);
 				}
 
 				// 맞은곳에 탄흔 이펙트
@@ -335,7 +379,7 @@ namespace EFN.Game {
 
 			// 총 사운드
 			SoundGeneratingData sgd = new SoundGeneratingData();
-			sgd.Radius = 10f;
+			sgd.Radius = 10f * Global_SelfPlayerData.GetSkillAmount(eSkillType.Silence);
 			sgd.EndTimer = 0.1f;
 			_soundGenerator.MakeSound(sgd);
 
@@ -369,7 +413,27 @@ namespace EFN.Game {
 					// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
 					Damageable dmgable = rays.transform.GetComponent<Damageable>();
 					if (null != dmgable) {
-						dmgable.Hit(firedItem, this);
+
+						Status_Base firedStatus = Status_Base.GetStatus(firedItem);
+						if (null == firedStatus) {
+							Global_Common.LogError("I DONT KNOW WHAT ITEM IS : " + firedItem);
+							return;
+						}
+
+						DamageInfo damage = new DamageInfo();
+
+						damage.Damage = (firedStatus.DmgAmount - dmgable.Armor) * Global_SelfPlayerData.GetSkillAmount(eSkillType.NormalDmg);
+
+						// 치명타 체크
+						if (Random.Range(0, 100f) <= Global_SelfPlayerData.GetSkillAmount(eSkillType.Critical)) {
+							damage.Damage = damage.Damage * Global_SelfPlayerData.GetSkillAmount(eSkillType.CritDmg);
+							damage.DamagedByCrit = true;
+						}
+
+						damage.HittedActor = this;
+						damage.Pos = dmgable.transform.position;
+
+						dmgable.Hit(damage);
 					}
 
 					// 맞은곳에 탄흔 이펙트
@@ -391,7 +455,7 @@ namespace EFN.Game {
 
 			// 총 사운드
 			SoundGeneratingData sgd = new SoundGeneratingData();
-			sgd.Radius = 10f;
+			sgd.Radius = 10f * Global_SelfPlayerData.GetSkillAmount(eSkillType.Silence);
 			sgd.EndTimer = 0.1f;
 			_soundGenerator.MakeSound(sgd);
 

@@ -18,7 +18,7 @@ namespace EFN.Game {
 
 			Content_ActorDamage damage = Instantiate(_contentFloatingDamage, this.transform).GetComponent<Content_ActorDamage>();
 			damage.transform.position = info.Pos;
-			damage.PlayDamage(info.Damage);
+			damage.PlayDamage(info.Damage, info.DamagedByCrit);
 		}
 	}
 }

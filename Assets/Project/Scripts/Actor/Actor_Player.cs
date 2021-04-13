@@ -25,6 +25,10 @@ namespace EFN.Game {
 
 	public class Actor_Player : Actor_Base {
 
+		[Header("Status")]
+		[SerializeField] protected int _customArmor = 0;
+		[SerializeField] protected int _customHealth = 100;
+
 		[Header("Components")]
 
 		/// <summary>
@@ -55,6 +59,10 @@ namespace EFN.Game {
 		[SerializeField] protected SoundGenerator _soundGenerator = default;
 
 		protected Coroutine _behaviourRoutine = null;
+
+		protected virtual float PlayerMoveSpeed {
+			get { return this._currentBehaviourCondition.HasFlag(eBehaviourCondition.Running) ? 5 : 3; }
+		}
 
 		/// <summary>
 		/// 현재 이 플레이어가 취하고 있는 행동
@@ -88,17 +96,16 @@ namespace EFN.Game {
 		protected virtual void OnReceiveHeal() { }
 
 		protected virtual void PlayerMovementProcess() {
-
 			// 간단하게 달리기 상태 구현
-			float moveSpeed = this._currentBehaviourCondition.HasFlag(eBehaviourCondition.Running) ? 5 : 3;
-
-			this.transform.position = (Vector2)this.transform.position + (_movDirection.normalized * Time.deltaTime * moveSpeed);
+			this.transform.position = (Vector2)this.transform.position + (_movDirection.normalized * Time.deltaTime * PlayerMoveSpeed);
 		}
 
 		protected virtual void PlayerLookingProcess() {
 			Graphic.Flip(0 < this._sightDirection.x);
 
-			_playerArmObject.transform.rotation = Quaternion.FromToRotation(Vector2.up, this._sightDirection);
+			if (null != _playerArmObject) {
+				_playerArmObject.transform.rotation = Quaternion.FromToRotation(Vector2.up, this._sightDirection);
+			}
 		}
 
 		public virtual void FireStart() { }
@@ -184,7 +191,7 @@ namespace EFN.Game {
 		/// </summary>
 		public virtual void ChangeEquipSlotOnBehaviourEnd(int slotType) { }
 
-		public virtual int ArmorAmount() { return 0; }
-		public virtual int MaxHealthPoint() { return 100; }
+		public virtual int ArmorAmount() { return _customArmor; }
+		public virtual int MaxHealthPoint() { return _customHealth; }
 	}
 }

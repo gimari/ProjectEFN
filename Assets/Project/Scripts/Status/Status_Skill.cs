@@ -102,9 +102,9 @@ namespace EFN {
 
 	internal class Status_SkillCritDmg : Status_Skill {
 		public override int MaxLevel { get { return 50; } }
-		public override float EffectAmount(int level) { return 50 + (level * 1); }
+		public override float EffectAmount(int level) { return 1.5f + (level * 0.01f); }
 		public override long NextLevelCost(int level) { return (level + 1) * 208; }
-		public override string Explain { get { return "치명타 데미지가 {0}% 증가합니다."; } }
+		public override string Explain { get { return "치명타 시 데미지가 {0}배 증가합니다."; } }
 	}
 
 	internal class Status_SkillCritical : Status_Skill {
