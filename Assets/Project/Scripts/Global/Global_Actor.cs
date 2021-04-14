@@ -9,7 +9,7 @@ namespace EFN.Game {
 	public enum eActorName {
 		None = 0,
 		Actor_Player,
-		
+		Actor_EnemyPurple_0,
 	}
 
 	public class Global_Actor : MonoBehaviour {
@@ -22,16 +22,23 @@ namespace EFN.Game {
 			set { _selfPlayer = value; }
 		}
 
-		private void Start() {
-			this.InitActor(eActorName.Actor_Player.ToString());
+		private static Global_Actor _instance;
+
+		private void Awake() {
+			_instance = this;
 		}
 
-		public void InitActor(string actorName) {
-			GameObject go = Array.Find(_actorObjectList, x => x.name == actorName);
+		private void Start() {
+			InitActor(eActorName.Actor_Player.ToString(), this.transform, Global_Environment.GetRandomEntranceIndex());
+		}
 
-			Vector3 target = Global_Environment.GetRandomEntranceIndex();
+		public static GameObject InitActor(string actorName, Transform parent, Vector2 position) {
+			if (null == _instance) {
+				return null;
+			}
 
-			Instantiate(go, Global_Environment.GetRandomEntranceIndex(), Quaternion.identity, this.transform);
+			GameObject go = Array.Find(_instance._actorObjectList, x => x.name == actorName);
+			return Instantiate(go, position, Quaternion.identity, parent);
 		}
 
 		public static class Interactable {

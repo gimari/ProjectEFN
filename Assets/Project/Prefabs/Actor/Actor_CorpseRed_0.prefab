@@ -152,6 +152,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379a05b9ab87cb041a5a2f492a862ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _usingStartPos: 0
+  _startPos: 0
   _yTarget: {fileID: 4731128414640339049}
   _setDynamic: 1
 --- !u!1 &4731128413504623658
@@ -332,19 +334,19 @@ MonoBehaviour:
   _graphic: {fileID: 4731128413373288352}
   _boxDropTable:
   - ItemType: 22
-    DropRate: 50
+    DropRate: 90
     MinCount: 1
     MaxCount: 1
   - ItemType: 19
-    DropRate: 70
+    DropRate: 40
     MinCount: 1
     MaxCount: 1
   - ItemType: 20
-    DropRate: 20
+    DropRate: 100
     MinCount: 1
     MaxCount: 30
   - ItemType: 20
-    DropRate: 20
+    DropRate: 80
     MinCount: 1
     MaxCount: 30
   - ItemType: 6
@@ -358,13 +360,37 @@ MonoBehaviour:
   - ItemType: 14
     DropRate: 7
     MinCount: 1
-    MaxCount: 50
+    MaxCount: 30
   - ItemType: 20
     DropRate: 20
     MinCount: 1
     MaxCount: 30
-  - ItemType: 6
-    DropRate: 3
+  - ItemType: 32
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 34
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 35
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 36
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 37
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 38
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 44
+    DropRate: 1
     MinCount: 1
     MaxCount: 1
   _rigidBody: {fileID: 4731128414640339060}

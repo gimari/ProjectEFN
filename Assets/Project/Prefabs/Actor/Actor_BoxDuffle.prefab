@@ -285,36 +285,124 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _graphic: {fileID: 4731128413373288352}
   _boxDropTable:
-  - ItemType: 22
-    DropRate: 100
+  - ItemType: 20
+    DropRate: 1
     MinCount: 1
-    MaxCount: 1
-  - ItemType: 23
-    DropRate: 100
+    MaxCount: 30
+  - ItemType: 16
+    DropRate: 1
     MinCount: 1
-    MaxCount: 1
+    MaxCount: 30
   - ItemType: 39
-    DropRate: 3
+    DropRate: 0.5
     MinCount: 1
     MaxCount: 1
   - ItemType: 40
-    DropRate: 3
+    DropRate: 0.5
     MinCount: 1
     MaxCount: 1
   - ItemType: 41
-    DropRate: 3
+    DropRate: 0.5
     MinCount: 1
     MaxCount: 1
   - ItemType: 42
-    DropRate: 3
+    DropRate: 0.5
     MinCount: 1
     MaxCount: 1
   - ItemType: 43
-    DropRate: 3
+    DropRate: 0.5
     MinCount: 1
     MaxCount: 1
   - ItemType: 44
     DropRate: 0.01
+    MinCount: 1
+    MaxCount: 1
+  - ItemType: 24
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 25
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 26
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 27
+    DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 28
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 29
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 30
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 31
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 32
+    DropRate: 1
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 33
+    DropRate: 1
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 34
+    DropRate: 1
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 35
+    DropRate: 1
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 36
+    DropRate: 1
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 37
+    DropRate: 1
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 17
+    DropRate: 1
+    MinCount: 1
+    MaxCount: 30
+  - ItemType: 3
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 30
+  - ItemType: 5
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 30
+  - ItemType: 10
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 30
+  - ItemType: 11
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 30
+  - ItemType: 14
+    DropRate: 3
+    MinCount: 1
+    MaxCount: 30
+  - ItemType: 19
+    DropRate: 0.1
+    MinCount: 1
+    MaxCount: 1
+  - ItemType: 7
+    DropRate: 0.1
     MinCount: 1
     MaxCount: 1
 --- !u!50 &4731128414640339060

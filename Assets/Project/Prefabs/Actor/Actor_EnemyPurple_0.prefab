@@ -61,6 +61,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379a05b9ab87cb041a5a2f492a862ea1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _usingStartPos: 0
+  _startPos: 0
   _yTarget: {fileID: 2173410267240439593}
   _setDynamic: 1
 --- !u!114 &6843052907339892525
@@ -108,7 +110,7 @@ GameObject:
   - component: {fileID: 4675137488047304259}
   - component: {fileID: 5788814199117306074}
   m_Layer: 0
-  m_Name: Actor_Enemy
+  m_Name: Actor_EnemyPurple_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142,7 +144,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _graphic: {fileID: 6843052907339892525}
+  _customArmor: 0
+  _customHealth: 200
   _playerArmObject: {fileID: 2165031240525092918}
+  _playerHatObject: {fileID: 0}
   _actorui: {fileID: 0}
   _dmgable: {fileID: 2173410267337655994}
   _soundGenerator: {fileID: 3343917135005141816}
@@ -258,7 +263,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8591131759b47949bdfaa869e8f4611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHitPoint: 100
+  _showFloatingDamage: 1
 --- !u!50 &3796764565739656485
 Rigidbody2D:
   serializedVersion: 4

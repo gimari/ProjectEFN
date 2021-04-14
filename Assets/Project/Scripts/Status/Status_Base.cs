@@ -215,6 +215,9 @@ namespace EFN {
 
 		// 반동 크기
 		public virtual float RecoilRate { get { return 0; } }
+
+		// 소음기임?
+		public virtual bool UsingSilence { get { return false; } }
 	}
 
 	/// <summary>
@@ -223,7 +226,7 @@ namespace EFN {
 	public class Status_9X39SP5 : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 20; } }
+		public override int MaxStackSize { get { return 40; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 10; } }
 		public override long DefaultPrice { get { return 23; } }
@@ -251,11 +254,12 @@ namespace EFN {
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
 		public override bool ContinuousFire { get { return true; } }
-		public override float FireRate { get { return 0.11f; } }
+		public override float FireRate { get { return 0.06f; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X39SP5 }; } }
 		public override float UseCoolTime { get { return 0.8f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
+		public override bool UsingSilence { get { return true; } }
 	}
 
 	/// <summary>
@@ -430,6 +434,7 @@ namespace EFN {
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
 		public override float RecoilRate { get { return 8; } }
+		public override bool UsingSilence { get { return true; } }
 	}
 
 	/// <summary>
@@ -438,7 +443,7 @@ namespace EFN {
 	public class Status_45AP : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 50; } }
+		public override int MaxStackSize { get { return 40; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 19; } }
 		public override long DefaultPrice { get { return 22; } }

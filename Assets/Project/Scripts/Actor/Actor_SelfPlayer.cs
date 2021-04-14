@@ -388,7 +388,11 @@ namespace EFN.Game {
 
 			// 총 사운드
 			SoundGeneratingData sgd = new SoundGeneratingData();
-			sgd.Radius = 10f * Global_SelfPlayerData.GetSkillAmount(eSkillType.Silence);
+
+			// 우선 소음기를 먼저 사용중인지 체크한다.
+			sgd.Radius = (gunStatus.UsingSilence ? 3f : 10f);
+			sgd.Radius = sgd.Radius * Global_SelfPlayerData.GetSkillAmount(eSkillType.Silence);
+
 			sgd.EndTimer = 0.1f;
 			_soundGenerator.MakeSound(sgd);
 
@@ -464,7 +468,11 @@ namespace EFN.Game {
 
 			// 총 사운드
 			SoundGeneratingData sgd = new SoundGeneratingData();
-			sgd.Radius = 10f * Global_SelfPlayerData.GetSkillAmount(eSkillType.Silence);
+
+			// 우선 소음기를 먼저 사용중인지 체크한다.
+			sgd.Radius = (gunStatus.UsingSilence ? 3f : 10f);
+			sgd.Radius = sgd.Radius * Global_SelfPlayerData.GetSkillAmount(eSkillType.Silence);
+
 			sgd.EndTimer = 0.1f;
 			_soundGenerator.MakeSound(sgd);
 
