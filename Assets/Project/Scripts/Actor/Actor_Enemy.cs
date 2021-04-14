@@ -20,7 +20,7 @@ namespace EFN.Game {
     public class Actor_Enemy : Actor_Player {
 
 		[Header("Enemy Components")]
-		[SerializeField] private NavMeshAgent _enemyAgent = default;
+		[SerializeField] protected NavMeshAgent _enemyAgent = default;
 		[SerializeField] private SoundReceiver _soundReceiver = default;
 
 		[Header("Scanning settings")]
@@ -36,7 +36,7 @@ namespace EFN.Game {
 		/// 추격하다 놓쳤을 때 제자리 서칭시간.
 		/// </summary>
 		[SerializeField] private float _searchingTime = 10;
-		[SerializeField] private float _walkingSpeed = 2;
+		[SerializeField] protected float _walkingSpeed = 2;
 		[SerializeField] private float _runningSpeed = 3.5f;
 
 		[Header("Enemy Status")]
@@ -48,15 +48,15 @@ namespace EFN.Game {
 
 		[SerializeField] private GameObject _corpseObject = default;
 
-		private Actor_Player _targetPlayer = null;
-		private float _lostChaingTargetTimer = 0;
+		protected Actor_Player _targetPlayer = null;
+		protected float _lostChaingTargetTimer = 0;
 
-		private Vector2 _randTarget = default;
-		private eEnemyBehaviourStatus _enemyBehaviour = eEnemyBehaviourStatus.Roaming;
+		protected Vector2 _randTarget = default;
+		protected eEnemyBehaviourStatus _enemyBehaviour = eEnemyBehaviourStatus.Roaming;
 
-		private Vector2 _searchingRandTarget = default;
-		private float _attackDuration = 1f;
-		private float _searchingTimer = 0;
+		protected Vector2 _searchingRandTarget = default;
+		protected float _attackDuration = 1f;
+		protected float _searchingTimer = 0;
 
 		protected override void OnAwake() {
 			base.OnAwake();
@@ -77,7 +77,7 @@ namespace EFN.Game {
 			Global_Effect.ShowEffect(info);
 		}
 
-		private void FixedUpdate() {
+		protected virtual void FixedUpdate() {
 			ScanForPlayerProcess();
 
 			// 간단하게 애니메이션 함..
@@ -243,7 +243,7 @@ namespace EFN.Game {
 		/// <summary>
 		/// 일정 시간동안 현재 위치에서 랜덤하게 주변을 왓다갓다 거리는 부분
 		/// </summary>
-		protected void SearchingProcess() {
+		protected virtual void SearchingProcess() {
 
 			// 서칭 시간이 끝나면 로밍을 진입한다.
 			if (_searchingTimer < 0) {
@@ -270,7 +270,7 @@ namespace EFN.Game {
 			_targetPlayer = null;
 		}
 
-		private void OnEndSearching() {
+		protected virtual void OnEndSearching() {
 			_enemyBehaviour = eEnemyBehaviourStatus.Roaming;
 		}
 

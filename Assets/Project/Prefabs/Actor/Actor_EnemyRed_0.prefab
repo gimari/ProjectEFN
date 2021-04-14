@@ -106,9 +106,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2173410267240439593}
-  - component: {fileID: 2173410267240439592}
   - component: {fileID: 4675137488047304259}
   - component: {fileID: 5788814199117306074}
+  - component: {fileID: 5791757175948661823}
   m_Layer: 0
   m_Name: Actor_EnemyRed_0
   m_TagString: Untagged
@@ -131,38 +131,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
---- !u!114 &2173410267240439592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2173410267240439594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 11e0632a4ecfc324bb065e061e07121e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _graphic: {fileID: 6843052907339892525}
-  _customArmor: 5
-  _customHealth: 450
-  _playerArmObject: {fileID: 2165031240525092918}
-  _playerHatObject: {fileID: 0}
-  _actorui: {fileID: 0}
-  _dmgable: {fileID: 2173410267337655994}
-  _soundGenerator: {fileID: 3343917135005141816}
-  _enemyAgent: {fileID: 4675137488047304259}
-  _soundReceiver: {fileID: 2701306480920364855}
-  _viewFov: 160
-  _viewDistance: 8
-  _timeBeforeTargetLost: 3
-  _searchingTime: 10
-  _walkingSpeed: 2
-  _runningSpeed: 3.5
-  _wearingArmor: 1
-  _usingBullet: 20
-  _corpseObject: {fileID: 4731128414640339048, guid: 01ce3b474f1823145bc249aba0ac9d4c,
-    type: 3}
 --- !u!195 &4675137488047304259
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -201,6 +169,38 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!114 &5791757175948661823
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2173410267240439594}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cfe61a8f7e77ca4789317ec8bc02a9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _graphic: {fileID: 6843052907339892525}
+  _customArmor: 5
+  _customHealth: 450
+  _playerArmObject: {fileID: 2165031240525092918}
+  _playerHatObject: {fileID: 0}
+  _actorui: {fileID: 0}
+  _dmgable: {fileID: 2173410267337655994}
+  _soundGenerator: {fileID: 3343917135005141816}
+  _enemyAgent: {fileID: 4675137488047304259}
+  _soundReceiver: {fileID: 2701306480920364855}
+  _viewFov: 160
+  _viewDistance: 10
+  _timeBeforeTargetLost: 6000
+  _searchingTime: 10
+  _walkingSpeed: 2
+  _runningSpeed: 3.5
+  _wearingArmor: 1
+  _usingBullet: 20
+  _corpseObject: {fileID: 4731128414640339048, guid: 01ce3b474f1823145bc249aba0ac9d4c,
+    type: 3}
 --- !u!1 &2173410267337655996
 GameObject:
   m_ObjectHideFlags: 0
