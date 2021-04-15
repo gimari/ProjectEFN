@@ -69,9 +69,8 @@ namespace EFN.Game {
 		protected override void OnStart() {
 			base.OnStart();
 
-			// 맞은곳에 탄흔 이펙트
 			EffectInstanceInfo info = new EffectInstanceInfo(eEffectType.RoundExplosion);
-			info.Pos = this.Graphic.transform.position;
+			info.Pos = this.transform.position;
 			info.Duration = 1f;
 
 			Global_Effect.ShowEffect(info);
@@ -81,24 +80,32 @@ namespace EFN.Game {
 			ScanForPlayerProcess();
 
 			// 간단하게 애니메이션 함..
-			if (null != _enemyAgent && _enemyAgent.velocity.magnitude == 0) {
-				Graphic.PlayIdle();
-			} else if (_enemyBehaviour == eEnemyBehaviourStatus.Chasing) {
-				Graphic.PlayRun();
-			} else {
-				Graphic.PlayWalk();
-			}
 
 			switch (_enemyBehaviour) {
 				case eEnemyBehaviourStatus.Chasing:
+
+					if (null != _enemyAgent && _enemyAgent.velocity.magnitude == 0) {
+						Graphic.PlayIdle();
+					} else {
+						Graphic.PlayRun();
+					}
+
 					ChaseForPlayerProcess();
 					break;
 
 				case eEnemyBehaviourStatus.Searching:
+
+					if (_searchingRandTarget == Vector2.zero) {
+						Graphic.PlayIdle();
+					} else {
+						Graphic.PlayWalk();
+					}
+
 					SearchingProcess();
 					break;
 
 				case eEnemyBehaviourStatus.Roaming:
+					Graphic.PlayWalk();
 					RoamingProcess();
 					break;
 
@@ -254,10 +261,14 @@ namespace EFN.Game {
 			_searchingTimer -= Time.deltaTime;
 
 			if (_searchingRandTarget != Vector2.zero) {
+				// _searchingRandTarget 이 무언가 지정되어 있으면
 				_sightDirection = _searchingRandTarget.normalized;
-			}
+				_enemyAgent.velocity = _searchingRandTarget.normalized * _walkingSpeed;
 
-			_enemyAgent.velocity = _searchingRandTarget.normalized * _walkingSpeed;
+			} else {
+				// _searchingRandTarget 이 제자리에 있으라고 하면
+				_enemyAgent.velocity = Vector3.zero;
+			}
 		}
 
 		/// <summary>
@@ -271,6 +282,16 @@ namespace EFN.Game {
 		}
 
 		protected virtual void OnEndSearching() {
+
+			// 서칭 끝나면 랜덤하게 다음 패트롤 집어서 간다
+			Transform pos = Global_Environment.GetRandomPatrolPosition();
+
+			// 사실 이런 경우는 없어야 하지만..
+			if (null == pos) {
+				OnEndChasing();
+			}
+
+			_enemyAgent.SetDestination(pos.position);
 			_enemyBehaviour = eEnemyBehaviourStatus.Roaming;
 		}
 
