@@ -59,6 +59,7 @@ namespace EFN.Game {
 		[SerializeField] protected SoundGenerator _soundGenerator = default;
 
 		protected Coroutine _behaviourRoutine = null;
+		protected float _recoilRate = 0;
 
 		protected virtual float PlayerMoveSpeed {
 			get { return this._currentBehaviourCondition.HasFlag(eBehaviourCondition.Running) ? 5 : 3; }
@@ -85,6 +86,8 @@ namespace EFN.Game {
 		protected virtual void Update() {
 			PlayerMovementProcess();
 			PlayerLookingProcess();
+
+			this._recoilRate = Mathf.Max(0, this._recoilRate - 20 * Time.deltaTime);
 		}
 
 		protected virtual void OnDieInAction(DamageInfo hitinfo) {

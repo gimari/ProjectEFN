@@ -11,14 +11,20 @@ namespace EFN.Game {
 
         [SerializeField] private int _maxEnemySize = 10;
         [SerializeField] private Transform[] _spawnPoint = default;
+        [SerializeField] private GameObject[] _actorObjectList = default;
 
         private void Start() {
             StartCoroutine(EnemySpawnRoutine());
         }
 
         private IEnumerator EnemySpawnRoutine() {
+
+            // 일단 처음에는 전부다 생성해놓고 시작
+            yield return EnemySpawnProcess();
+
+            // 그 뒤에는 5~10초마다 자리있으면 한개씩 충전해주자.
             while (this.gameObject != null) {
-                yield return EnemySpawnProcess();
+                EnemySpawnSingle();
                 yield return new WaitForSeconds(Random.Range(5f, 10f));
             }
         }
@@ -28,9 +34,20 @@ namespace EFN.Game {
 
             for (; 0 < targetCount; targetCount--) {
                 Vector3 target = _spawnPoint[Random.Range(0, _spawnPoint.Length)].position;
-                GameObject go = Global_Actor.InitActor(eActorName.Actor_EnemyPurple_0.ToString(), this.transform, target);
+                GameObject go = _actorObjectList[Random.Range(0, _actorObjectList.Length)];
+                Instantiate(go, target, Quaternion.identity, this.transform);
 
                 yield return new WaitForSeconds(0.2f);
+            }
+        }
+
+        private void EnemySpawnSingle() {
+            int targetCount = _maxEnemySize - this.transform.childCount;
+
+            if (0 < targetCount) {
+                Vector3 target = _spawnPoint[Random.Range(0, _spawnPoint.Length)].position;
+                GameObject go = _actorObjectList[Random.Range(0, _actorObjectList.Length)];
+                Instantiate(go, target, Quaternion.identity, this.transform);
             }
         }
     }

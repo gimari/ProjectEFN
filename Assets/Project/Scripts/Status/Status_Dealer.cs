@@ -81,9 +81,42 @@ namespace EFN {
 			List<KeyValuePair<eItemType, int>> itemDropTable = new List<KeyValuePair<eItemType, int>>();
 
 			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 1));
-			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 5));
-			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 11));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 15));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X19AP, 30));
+
 			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.Weapon_MP443, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_MP5, 1));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_762BP, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_762BP, 15));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_762BP, 30));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_AKM, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_SKS, 1));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_23X75, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_23X75, 5));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_KS23M, 1));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X39SP5, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X39SP5, 15));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_9X39SP5, 30));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_ASVAL, 1));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_556M855, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_556M855, 15));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_556M855, 30));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_HK416, 1));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_45AP, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_45AP, 20));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.AMMO_45AP, 40));
+
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_M1911, 1));
+			itemDropTable.Add(new KeyValuePair<eItemType, int>(eItemType.WEAPON_VECTOR, 1));
 
 			SetDealerInven(itemDropTable);
 		}

@@ -9,8 +9,9 @@ namespace EFN.Game {
 		[SerializeField] private Transform[] _spawnPoint = default;
 
 		private void Start() {
-			float random = Random.Range(0f, 100f);
-			if (random < 50) {
+			float random = Random.Range(0f, 1f);
+
+			if (random < 0f) {
 				return;
 			}
 

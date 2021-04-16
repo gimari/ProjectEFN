@@ -40,8 +40,8 @@ namespace EFN.Game {
 		[SerializeField] private float _runningSpeed = 3.5f;
 
 		[Header("Enemy Status")]
-		[SerializeField] private eItemType _wearingArmor = default;
-		public eItemType WearingArmor { get { return this._wearingArmor; } }
+		[SerializeField] private eItemType _usingWeapon = default;
+		public eItemType UsingWeapon { get { return this._usingWeapon; } }
 
 		[SerializeField] private eItemType _usingBullet = default;
 		public eItemType UsingBullet { get { return this._usingBullet; } }
@@ -57,6 +57,7 @@ namespace EFN.Game {
 		protected Vector2 _searchingRandTarget = default;
 		protected float _attackDuration = 1f;
 		protected float _searchingTimer = 0;
+		protected int _remainRound = 0;
 
 		protected override void OnAwake() {
 			base.OnAwake();
@@ -191,17 +192,37 @@ namespace EFN.Game {
 			}
 
 			// duration 이 돌아오면 공격할 수 있다
-			_attackDuration = Random.Range(0.2f, 0.5f);
+			Status_Base weapon = Status_Base.GetStatus(this._usingWeapon);
+			if (null == weapon) {
+				Debug.LogError("I has no weapon!");
+				_attackDuration = 1;
+				return;
+			}
+
+			// 지정된 maxround 의 절반을 쓰면 1초동안 공격 안함.
+			if (_remainRound <= 0) {
+				_remainRound = weapon.MaxRoundAmount / 2;
+				_attackDuration = 1;
+				return;
+			}
+
+			_attackDuration = weapon.FireRate;
+			_remainRound--;
+
+			// 몬스터도 반동을 가진다.
+			Vector2 shootDir = Vector2Extension.Rotate(_sightDirection, Random.Range(-_recoilRate, _recoilRate));
+			float recoilRate = weapon.RecoilRate;
+			_recoilRate = Mathf.Min(_recoilRate + recoilRate / 5, recoilRate);
 
 			// 떄려야하는 타겟들
 			int targetLayer = (1 << (int)eLayerMask.UserHitbox) + (1 << (int)eLayerMask.OtherHittable);
-			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 10, targetLayer);
+			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, shootDir, 10, targetLayer);
 
 			// 총알 날라가는 이펙트 부터 우선 생성
 			EffectInstanceInfo lineinfo = new EffectInstanceInfo(eEffectType.BulletLine);
 			lineinfo.Pos = _playerArmObject.GetMuzzlePos;
 			lineinfo.Duration = 0.1f;
-			lineinfo.EndPos = lineinfo.Pos + ((Vector2)_sightDirection.normalized * 10);
+			lineinfo.EndPos = lineinfo.Pos + (shootDir.normalized * 10);
 
 			// ray 를 쏴서 맞을 놈이 있는지 검사.
 			if (rays) {

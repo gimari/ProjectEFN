@@ -20,8 +20,6 @@ namespace EFN.Game {
 
 		private Data_Item _currentEquipItem = null;
 
-		private float _recoilRate = 0;
-
 		protected override float PlayerMoveSpeed {
 			get { return base.PlayerMoveSpeed * Global_SelfPlayerData.GetSkillAmount(eSkillType.Speed); }
 		}
@@ -41,7 +39,6 @@ namespace EFN.Game {
 			base.Update();
 
 			this.transform.rotation = Quaternion.Euler(90, 0, 0);
-			this._recoilRate = Mathf.Max(0, this._recoilRate - 20 * Time.deltaTime);
 		}
 
 		protected void UpdateHatObject() {

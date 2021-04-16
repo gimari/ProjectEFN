@@ -22,6 +22,11 @@ namespace EFN.Main {
 		[SerializeField] private Graphic_NumericText _buyCokeCount = default;
 		[SerializeField] private InputField _txtBuyCount = default;
 
+		[Header("DealerInfo")]
+
+		[EnumNamedArray(typeof(eDealerType))]
+		[SerializeField] private GameObject[] _dealerInfoObject = default;
+
 		private List<Data_Item> _sellReadyList = new List<Data_Item>();
 		private eDealerType _currentDealer = eDealerType.None;
 
@@ -36,6 +41,12 @@ namespace EFN.Main {
 			_currentDealer = dealerType;
 			_sellPanelPopup.gameObject.SetActive(false);
 			_buyPanelPopup.gameObject.SetActive(false);
+
+			for (int idx = 0; idx < _dealerInfoObject.Length; idx++) {
+				if (null != _dealerInfoObject[idx]) {
+					_dealerInfoObject[idx].SetActive(idx == (int)dealerType);
+				}
+			}
 
 			this.Open();
 			InitTradingPanel();

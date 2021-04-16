@@ -226,9 +226,9 @@ namespace EFN {
 	public class Status_9X39SP5 : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 40; } }
+		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 10; } }
+		public override float DmgAmount { get { return 16; } }
 		public override long DefaultPrice { get { return 23; } }
 	}
 
@@ -260,6 +260,7 @@ namespace EFN {
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
 		public override bool UsingSilence { get { return true; } }
+		public override float RecoilRate { get { return 22; } }
 	}
 
 	/// <summary>
@@ -272,10 +273,11 @@ namespace EFN {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP, eItemType.AMMO_9X197N }; } }
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
-		public override float FireRate { get { return 2f; } }
+		public override float FireRate { get { return 0.5f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Holster; } }
 		public override long DefaultPrice { get { return 8230; } }
+		public override float RecoilRate { get { return 13; } }
 	}
 
 	/// <summary>
@@ -375,6 +377,7 @@ namespace EFN {
 		public override long DefaultPrice { get { return 8230; } }
 		public override int FireRoundsInSingle { get { return 7; } }
 		public override eWeaponCategory WeaponType { get { return eWeaponCategory.ShotGun; } }
+		public override float RecoilRate { get { return 18; } }
 	}
 
 	/// <summary>
@@ -416,6 +419,7 @@ namespace EFN {
 		public override float UseCoolTime { get { return 0.8f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
+		public override float RecoilRate { get { return 12; } }
 	}
 
 	/// <summary>
@@ -475,7 +479,7 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 20; } }
+		public override float DmgAmount { get { return 24; } }
 		public override long DefaultPrice { get { return 13; } }
 	}
 
@@ -487,7 +491,7 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 23; } }
+		public override float DmgAmount { get { return 28; } }
 		public override long DefaultPrice { get { return 15; } }
 	}
 
@@ -505,6 +509,7 @@ namespace EFN {
 		public override float UseCoolTime { get { return 0.7f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
+		public override float RecoilRate { get { return 11; } }
 	}
 
 	/// <summary>
@@ -522,6 +527,7 @@ namespace EFN {
 		public override float UseCoolTime { get { return 0.6f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
+		public override float RecoilRate { get { return 18; } }
 	}
 
 	/// <summary>
@@ -546,10 +552,12 @@ namespace EFN {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_45AP }; } }
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
-		public override float FireRate { get { return 2f; } }
+		public override float FireRate { get { return 0.5f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Holster; } }
 		public override long DefaultPrice { get { return 8230; } }
+		public override bool UsingSilence { get { return true; } }
+		public override float RecoilRate { get { return 18; } }
 	}
 
 	/// <summary>

@@ -1,0 +1,71 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!687078895 &4343727234628468602
+SpriteAtlas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Atlas_Object
+  m_EditorData:
+    serializedVersion: 2
+    textureSettings:
+      serializedVersion: 2
+      anisoLevel: 1
+      compressionQuality: 50
+      maxTextureSize: 2048
+      textureCompression: 0
+      filterMode: 1
+      generateMipMaps: 0
+      readable: 0
+      crunchedCompression: 0
+      sRGB: 1
+    platformSettings: []
+    packingSettings:
+      serializedVersion: 2
+      padding: 4
+      blockOffset: 1
+      allowAlphaSplitting: 0
+      enableRotation: 0
+      enableTightPacking: 0
+    variantMultiplier: 1
+    packables:
+    - {fileID: 102900000, guid: b18910070a96f494db8b92fd7e129ddc, type: 3}
+    bindAsDefault: 1
+  m_MasterAtlas: {fileID: 0}
+  m_PackedSprites:
+  - {fileID: 21300000, guid: b9f399b037fff894aa796ed5dce9b4f6, type: 3}
+  - {fileID: 21300000, guid: 790772d0f8b58924981f8e8991cf1c34, type: 3}
+  - {fileID: 21300000, guid: a0070b413b3b1ea428e180c1704de18c, type: 3}
+  - {fileID: 21300000, guid: 860584d469434df46aa5ade7602f5032, type: 3}
+  - {fileID: 21300000, guid: 3cd8eba578e8b874db1b079595e0ef42, type: 3}
+  - {fileID: 21300000, guid: 7e0fa836cb02fb347bf692680467a3ad, type: 3}
+  - {fileID: 21300000, guid: 2008c146ddf62a3438770b38a98f1730, type: 3}
+  - {fileID: 21300000, guid: 9e6643a6334fcbc41beaaeb9eb7dddb1, type: 3}
+  - {fileID: 21300000, guid: c9e45f571d5c97343a3fd8a085828f1b, type: 3}
+  - {fileID: 21300000, guid: cee306c8beaefa5458f2d83c2ddc837b, type: 3}
+  - {fileID: 21300000, guid: dbb1f409f5693094881e9c735eda26e1, type: 3}
+  - {fileID: 21300000, guid: 032a4eaa16360754bbcfcb084ad8b29d, type: 3}
+  - {fileID: 21300000, guid: cce5ccda21dcf7b418d135717d8994e0, type: 3}
+  - {fileID: 21300000, guid: ccbf666baef362747bd6c369733785e3, type: 3}
+  - {fileID: 21300000, guid: d5676f2ce9e89584da8997a6f941e0c5, type: 3}
+  - {fileID: 21300000, guid: 5cce2dde3846d694da0fcab153610373, type: 3}
+  m_PackedSpriteNamesToIndex:
+  - Box_1
+  - SandPocket_2
+  - SandPocket_1
+  - box
+  - chair_1
+  - window_2
+  - window_1
+  - box_duffle
+  - window_3
+  - OtherObj_1
+  - MapWall_1
+  - WalkBlocker_2
+  - rock_0
+  - WalkBlocker_1
+  - grass_0
+  - MapWall_0
+  m_Tag: Atlas_Object
+  m_IsVariant: 0

@@ -159,7 +159,7 @@ MonoBehaviour:
   _searchingTime: 10
   _walkingSpeed: 2
   _runningSpeed: 3.5
-  _wearingArmor: 1
+  _usingWeapon: 2
   _usingBullet: 3
   _corpseObject: {fileID: 4731128414640339048, guid: 417bd327dbbe1f14da8e0e2cafd01c5f,
     type: 3}
