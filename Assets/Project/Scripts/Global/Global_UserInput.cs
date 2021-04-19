@@ -155,6 +155,14 @@ namespace EFN.Game {
 		public void PressExit(InputAction.CallbackContext context) {
 			if (context.phase != InputActionPhase.Started) { return; }
 
+			MessageData data = new MessageData();
+			data.Context = "임의로 전투 이탈시에는 죽는 것과 같은 패널티가 부과됩니다. 정말 이탈하시겠습니까?";
+			data.OnClickOkFunc = OnExitGame;
+
+			Global_UIEvent.CallUIEvent(ePermanetEventType.ShowMessage, data);
+		}
+
+		public void OnExitGame() {
 			Global_SelfPlayerData.SetKilledInAction();
 		}
 

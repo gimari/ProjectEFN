@@ -10,7 +10,7 @@ public class Graphic_FadePop : Graphic_SimplePopUp {
 	[SerializeField] protected GameObject inputBlocker = default;
 
 	protected override void ShowAnimation(AnimationEndCallback callback) {
-        animationTarget.DOKill();
+		animationTarget.GetComponent<CanvasGroup>().DOKill();
         PlaySound_OnShow();
 
         animationTarget.GetComponent<CanvasGroup>().alpha = 0;
@@ -24,7 +24,8 @@ public class Graphic_FadePop : Graphic_SimplePopUp {
     }
 
     protected override void HideAnimation(AnimationEndCallback callback) {
-        PlaySound_OnHide();
+		animationTarget.GetComponent<CanvasGroup>().DOKill();
+		PlaySound_OnHide();
 
 		if (null != inputBlocker) {
 			inputBlocker.SetActive(true);

@@ -298,11 +298,11 @@ MonoBehaviour:
     MinCount: 1
     MaxCount: 1
   - ItemType: 18
-    DropRate: 0.5
+    DropRate: 3
     MinCount: 1
     MaxCount: 1
   - ItemType: 9
-    DropRate: 0.5
+    DropRate: 3
     MinCount: 1
     MaxCount: 1
   - ItemType: 21

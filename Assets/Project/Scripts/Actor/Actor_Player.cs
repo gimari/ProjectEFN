@@ -58,6 +58,8 @@ namespace EFN.Game {
 		/// </summary>
 		[SerializeField] protected SoundGenerator _soundGenerator = default;
 
+		[SerializeField] protected AudioSource _audioSource = default;
+
 		protected Coroutine _behaviourRoutine = null;
 		protected float _recoilRate = 0;
 

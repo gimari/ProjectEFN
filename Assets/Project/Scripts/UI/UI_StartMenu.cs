@@ -15,12 +15,11 @@ namespace EFN.Main {
 
 		public void OnClickExit() {
 			Global_Common.Quit();
-
 			Global_SelfPlayerData.Save();
 		}
 
 		public void OnClickEnterEscape() {
-			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneGame.ToString());
+			Global_UIEvent.CallUIEvent(eEventType.OnShowDeploy);
 		}
 
 		public void OnClickTrading() {
@@ -33,12 +32,30 @@ namespace EFN.Main {
 			Global_UIEvent.CallUIEvent(eEventType.OpenMainInven);
 		}
 
+		public void OnClickSetting() {
+			CloseMenu();
+			Global_UIEvent.CallUIEvent(eEventType.OpenSetting);
+		}
+
 		private void CloseMenu() {
 			this._panel.Hide();
 		}
 
 		private void OpenMenu() {
 			this._panel.Show();
+		}
+
+		public void OnClickResetData() {
+			MessageData data = new MessageData();
+			data.Context = "기록된 모든 데이터가 초기화됩니다!! 정말 계속하시겠습니까?";
+			data.OnClickOkFunc = OnResetData;
+
+			Global_UIEvent.CallUIEvent(ePermanetEventType.ShowMessage, data);
+		}
+
+		public void OnResetData() {
+			PlayerPrefs.DeleteAll();
+			Global_Common.Quit();
 		}
 	}
 }

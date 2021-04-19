@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 4731128414640339063}
   - component: {fileID: 2379013048525776393}
   m_Layer: 8
-  m_Name: Actor_Corpse
+  m_Name: Actor_CorpsePurple_0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -349,20 +349,36 @@ MonoBehaviour:
     DropRate: 80
     MinCount: 1
     MaxCount: 10
-  - ItemType: 24
+  - ItemType: 26
     DropRate: 80
     MinCount: 1
     MaxCount: 5
-  - ItemType: 27
+  - ItemType: 29
     DropRate: 50
     MinCount: 1
     MaxCount: 5
-  - ItemType: 28
+  - ItemType: 31
     DropRate: 20
     MinCount: 1
     MaxCount: 5
-  - ItemType: 31
+  - ItemType: 33
     DropRate: 10
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 34
+    DropRate: 5
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 35
+    DropRate: 5
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 36
+    DropRate: 5
+    MinCount: 1
+    MaxCount: 5
+  - ItemType: 37
+    DropRate: 5
     MinCount: 1
     MaxCount: 5
   _rigidBody: {fileID: 4731128414640339060}

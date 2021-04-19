@@ -74,6 +74,7 @@ namespace EFN {
 					break;
 			}
 
+			Save();
 			return eErrorCode.Success;
 		}
 
@@ -101,6 +102,10 @@ namespace EFN {
 			data.IsKIA = true;
 
 			_instance._gameEndData = data;
+
+			// 저장도 바로해버림
+			Save();
+
 			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
 		}
 
@@ -116,6 +121,10 @@ namespace EFN {
 			data.IsKIA = false;
 
 			_instance._gameEndData = data;
+
+			// 저장도 바로해버림
+			Save();
+
 			Global_UIEvent.CallUIEvent<string>(ePermanetEventType.TryChangeScene, eSceneName.SceneMain.ToString());
 		}
 
@@ -160,6 +169,11 @@ namespace EFN {
 			}
 		}
 
+		private void LoadSetting() {
+			float volume = PlayerPrefs.GetFloat("_volume", 0.5f);
+			AudioListener.volume = volume;
+		}
+
 		private static Global_SelfPlayerData _instance = null;
 
 		public static void Save() {
@@ -169,6 +183,37 @@ namespace EFN {
 
 			// self inventory
 			string parsed = JsonUtility.ToJson(_instance._selfInventory);
+			string first = enc.Encrypt(parsed);
+
+			PlayerPrefs.SetString("_selfInventory", first);
+
+			// stash inventory
+			parsed = JsonUtility.ToJson(_instance._stashInventory);
+			first = enc.Encrypt(parsed);
+
+			PlayerPrefs.SetString("_stashInventory", first);
+
+			//skill inventory
+			parsed = JsonUtility.ToJson(_instance._skillInventory);
+			first = enc.Encrypt(parsed);
+
+			PlayerPrefs.SetString("_skillInventory", first);
+
+			PlayerPrefs.Save();
+		}
+
+		/// <summary>
+		/// ㅎㅎ 게임 들어갈땐 이걸로 저장함..ㅎㅎ
+		/// </summary>
+		public static void SaveAtGameIn() {
+			if (null == _instance) { return; }
+
+			EFNEncrypt enc = new EFNEncrypt();
+
+			Inventory_SelfPlayer tempSelfInven = Inventory_SelfPlayer.GetClearedInven(_instance._selfInventory);
+
+			// self inventory
+			string parsed = JsonUtility.ToJson(tempSelfInven);
 			string first = enc.Encrypt(parsed);
 
 			PlayerPrefs.SetString("_selfInventory", first);
@@ -233,6 +278,11 @@ namespace EFN {
 
 			_stashInventory.MaxDisplayIndex = 20 + (int)GetSkillAmount(eSkillType.StashSize);
 
+			int gaved = PlayerPrefs.GetInt("_defaultItemGaved");
+			if (gaved != 1){
+				GiveDefaultItem();
+			}
+
 			// dealer inventory (예정)
 		}
 
@@ -241,6 +291,30 @@ namespace EFN {
 
 			LoadInventory();
 			LoadCoke();
+			LoadSetting();
+		}
+
+		/// <summary>
+		/// 기본 아이템 지급
+		/// 칼, mp443, 9기본탄 30발, 5000 원
+		/// </summary>
+		private void GiveDefaultItem() {
+			Data_Item addedItem0 = new Data_Item(eItemType.WEAPON_DAGGER);
+			_stashInventory.AddInventory(addedItem0);
+
+			Data_Item addedItem1 = new Data_Item(eItemType.Weapon_MP443);
+			_stashInventory.AddInventory(addedItem1);
+
+			Data_Item addedItem2 = new Data_Item(eItemType.AMMO_9X19AP);
+			addedItem2.StackCount = 30;
+			_stashInventory.AddInventory(addedItem2);
+
+			Data_Item addedItem3 = new Data_Item(eItemType.HEAD_STAR);
+			_selfInventory.AddInventory(addedItem3, (int)ePlayerSlotType.Head);
+
+			CokeAmount += 5000;
+
+			PlayerPrefs.SetInt("_defaultItemGaved", 1);
 		}
 
 		/*

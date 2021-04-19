@@ -53,6 +53,12 @@ namespace EFN {
 		NONE_TROPHY3,
 		NONE_TROPHY4,
 		NONE_TROPHY5,
+
+		WEAPON_DAGGER,
+		HEAD_DDU,
+		HEAD_COLLET,
+		HEAD_TEM,
+		HEAD_YOOWOO,
 	}
 
 	public enum eItemCategory {
@@ -128,6 +134,11 @@ namespace EFN {
 					case eItemType.NONE_TROPHY3:	{ status = new Status_Trophy3(); } break;
 					case eItemType.NONE_TROPHY4:	{ status = new Status_Trophy4(); } break;
 					case eItemType.NONE_TROPHY5:	{ status = new Status_Trophy5(); } break;
+					case eItemType.WEAPON_DAGGER:	{ status = new Weapon_DAGGER(); } break;
+					case eItemType.HEAD_DDU:		{ status = new Status_HeadDdu(); } break;
+					case eItemType.HEAD_COLLET:		{ status = new Status_HeadCollet(); } break;
+					case eItemType.HEAD_TEM:		{ status = new Status_HeadTem(); } break;
+					case eItemType.HEAD_YOOWOO:		{ status = new Status_HeadYoowoo(); } break;
 					
 					default:
 						status = null;
@@ -162,6 +173,9 @@ namespace EFN {
 
 		// 아이템 기본 가격
 		public virtual long DefaultPrice { get { return 10; } }
+
+		// 아이템 표기 이름
+		public virtual string DisplayName { get { return ""; } }
 
 		/// <summary>
 		/// 사용 아이템 관련 정보
@@ -228,8 +242,9 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 16; } }
-		public override long DefaultPrice { get { return 23; } }
+		public override float DmgAmount { get { return 21; } }
+		public override long DefaultPrice { get { return 167; } }
+		public override string DisplayName { get { return "9x39"; } }
 	}
 
 	/// <summary>
@@ -240,8 +255,9 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 13; } }
-		public override long DefaultPrice { get { return 11; } }
+		public override float DmgAmount { get { return 16; } }
+		public override long DefaultPrice { get { return 83; } }
+		public override string DisplayName { get { return "9x19 AP"; } }
 	}
 
 	/// <summary>
@@ -261,6 +277,7 @@ namespace EFN {
 		public override long DefaultPrice { get { return 10234; } }
 		public override bool UsingSilence { get { return true; } }
 		public override float RecoilRate { get { return 22; } }
+		public override string DisplayName { get { return "ASVAL"; } }
 	}
 
 	/// <summary>
@@ -276,22 +293,23 @@ namespace EFN {
 		public override float FireRate { get { return 0.5f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Holster; } }
-		public override long DefaultPrice { get { return 8230; } }
+		public override long DefaultPrice { get { return 5913; } }
 		public override float RecoilRate { get { return 13; } }
+		public override string DisplayName { get { return "MP443"; } }
 	}
 
 	/// <summary>
 	/// 힐킷
 	/// </summary>
 	public class Status_FIRSTAID : Status_Base {
-		public override bool Stackable { get { return false; } }
-		public override int MaxStackSize { get { return 1; } }
+		public override bool Stackable { get { return true; } }
+		public override int MaxStackSize { get { return 3; } }
 		public override bool DisplayStack { get { return true; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Consumable; } }
 		public override bool Useable { get { return true; } }
 		public override float UseCoolTime { get { return 3; } }
 		public override eBehaviourCondition CancelCondition { get { return eBehaviourCondition.Running | eBehaviourCondition.Damaging | eBehaviourCondition.Firing; } }
-		public override long DefaultPrice { get { return 1537; } }
+		public override long DefaultPrice { get { return 2715; } }
 
 		public override void OnEndItemUsed(Actor_Player actor, Data_Item usedItem) {
 
@@ -300,7 +318,7 @@ namespace EFN {
 				actor.PlayerArmObject.SetBareHand();
 			}
 
-			actor.Dmgable.Heal(30);
+			actor.Dmgable.Heal(45);
 
 			if (null != usedItem) {
 				usedItem.DecreaseItem();
@@ -309,6 +327,7 @@ namespace EFN {
 			// 통보
 			Global_UIEvent.CallUIEvent(eEventType.UpdateUserInventory);
 		}
+		public override string DisplayName { get { return "First aid"; } }
 	}
 
 	/// <summary>
@@ -321,9 +340,26 @@ namespace EFN {
 		public override float FireRate { get { return 0.3f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
 		public override eWeaponCategory WeaponType { get { return eWeaponCategory.Knife; } }
-		public override float DmgAmount { get { return 100; } }
+		public override float DmgAmount { get { return 27; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Knife; } }
-		public override long DefaultPrice { get { return 44444; } }
+		public override long DefaultPrice { get { return 444444; } }
+		public override string DisplayName { get { return "Recorder"; } }
+	}
+
+	/// <summary>
+	/// 근접무기 대거
+	/// </summary>
+	public class Weapon_DAGGER : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
+		public override bool Useable { get { return true; } }
+		public override bool Fireable { get { return true; } }
+		public override float FireRate { get { return 0.3f; } }
+		public override float UseCoolTime { get { return 0.3f; } }
+		public override eWeaponCategory WeaponType { get { return eWeaponCategory.Knife; } }
+		public override float DmgAmount { get { return 14; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Knife; } }
+		public override long DefaultPrice { get { return 1345; } }
+		public override string DisplayName { get { return "Dagger"; } }
 	}
 
 	/// <summary>
@@ -341,6 +377,47 @@ namespace EFN {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
 		public override long DefaultPrice { get { return 44444; } }
+		public override string DisplayName { get { return "Galaxy Star"; } }
+	}
+
+	/// <summary>
+	/// 뚜띠모자
+	/// </summary>
+	public class Status_HeadDdu : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
+		public override long DefaultPrice { get { return 960524; } }
+		public override string DisplayName { get { return "Banana"; } }
+	}
+
+	/// <summary>
+	/// 코렛트모자
+	/// </summary>
+	public class Status_HeadCollet : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
+		public override long DefaultPrice { get { return 1000802; } }
+		public override string DisplayName { get { return "Beanie"; } }
+	}
+
+	/// <summary>
+	/// 탬탬모자
+	/// </summary>
+	public class Status_HeadTem : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
+		public override long DefaultPrice { get { return 313506; } }
+		public override string DisplayName { get { return "Bell"; } }
+	}
+
+	/// <summary>
+	/// 유우양모자
+	/// </summary>
+	public class Status_HeadYoowoo : Status_Base {
+		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
+		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
+		public override long DefaultPrice { get { return 333536; } }
+		public override string DisplayName { get { return "Milk"; } }
 	}
 
 	/// <summary>
@@ -349,7 +426,8 @@ namespace EFN {
 	public class Status_Fedora : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
-		public override long DefaultPrice { get { return 20130114; } }
+		public override long DefaultPrice { get { return 950802; } }
+		public override string DisplayName { get { return "Fedora"; } }
 	}
 
 	/// <summary>
@@ -358,7 +436,8 @@ namespace EFN {
 	public class Status_Rabbit : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Head; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Head; } }
-		public override long DefaultPrice { get { return 2772525; } }
+		public override long DefaultPrice { get { return 310169; } }
+		public override string DisplayName { get { return "Rabbit"; } }
 	}
 
 	/// <summary>
@@ -374,10 +453,11 @@ namespace EFN {
 		public override float FireRate { get { return 0.5f; } }
 		public override float UseCoolTime { get { return 0.65f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
-		public override long DefaultPrice { get { return 8230; } }
+		public override long DefaultPrice { get { return 42983; } }
 		public override int FireRoundsInSingle { get { return 7; } }
 		public override eWeaponCategory WeaponType { get { return eWeaponCategory.ShotGun; } }
 		public override float RecoilRate { get { return 18; } }
+		public override string DisplayName { get { return "KS23M"; } }
 	}
 
 	/// <summary>
@@ -388,8 +468,9 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 17; } }
-		public override long DefaultPrice { get { return 13; } }
+		public override float DmgAmount { get { return 22; } }
+		public override long DefaultPrice { get { return 826; } }
+		public override string DisplayName { get { return "23x75"; } }
 	}
 
 	/// <summary>
@@ -400,8 +481,9 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 15; } }
+		public override float DmgAmount { get { return 18; } }
 		public override long DefaultPrice { get { return 22; } }
+		public override string DisplayName { get { return "9x19 7N"; } }
 	}
 
 	/// <summary>
@@ -418,8 +500,9 @@ namespace EFN {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_9X19AP, eItemType.AMMO_9X197N }; } }
 		public override float UseCoolTime { get { return 0.8f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
-		public override long DefaultPrice { get { return 10234; } }
+		public override long DefaultPrice { get { return 28234; } }
 		public override float RecoilRate { get { return 12; } }
+		public override string DisplayName { get { return "MP5"; } }
 	}
 
 	/// <summary>
@@ -439,6 +522,7 @@ namespace EFN {
 		public override long DefaultPrice { get { return 10234; } }
 		public override float RecoilRate { get { return 8; } }
 		public override bool UsingSilence { get { return true; } }
+		public override string DisplayName { get { return "Vector"; } }
 	}
 
 	/// <summary>
@@ -450,7 +534,8 @@ namespace EFN {
 		public override int MaxStackSize { get { return 40; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 19; } }
-		public override long DefaultPrice { get { return 22; } }
+		public override long DefaultPrice { get { return 173; } }
+		public override string DisplayName { get { return "45 AP"; } }
 	}
 
 	/// <summary>
@@ -467,8 +552,9 @@ namespace EFN {
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_762BP, eItemType.AMMO_762US }; } }
 		public override float UseCoolTime { get { return 0.8f; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
-		public override long DefaultPrice { get { return 10234; } }
+		public override long DefaultPrice { get { return 76194; } }
 		public override float RecoilRate { get { return 30; } }
+		public override string DisplayName { get { return "AKM"; } }
 	}
 
 	/// <summary>
@@ -480,7 +566,8 @@ namespace EFN {
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 24; } }
-		public override long DefaultPrice { get { return 13; } }
+		public override long DefaultPrice { get { return 134; } }
+		public override string DisplayName { get { return "7.62 BP"; } }
 	}
 
 	/// <summary>
@@ -492,7 +579,8 @@ namespace EFN {
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 28; } }
-		public override long DefaultPrice { get { return 15; } }
+		public override long DefaultPrice { get { return 162; } }
+		public override string DisplayName { get { return "7.62 US"; } }
 	}
 
 	/// <summary>
@@ -510,6 +598,7 @@ namespace EFN {
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
 		public override float RecoilRate { get { return 11; } }
+		public override string DisplayName { get { return "SKS"; } }
 	}
 
 	/// <summary>
@@ -528,6 +617,7 @@ namespace EFN {
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.PrimeWeapon; } }
 		public override long DefaultPrice { get { return 10234; } }
 		public override float RecoilRate { get { return 18; } }
+		public override string DisplayName { get { return "HK416"; } }
 	}
 
 	/// <summary>
@@ -538,8 +628,9 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 30; } }
 		public override bool DisplayStack { get { return true; } }
-		public override float DmgAmount { get { return 21; } }
-		public override long DefaultPrice { get { return 15; } }
+		public override float DmgAmount { get { return 22; } }
+		public override long DefaultPrice { get { return 195; } }
+		public override string DisplayName { get { return "5.56"; } }
 	}
 
 	/// <summary>
@@ -547,7 +638,7 @@ namespace EFN {
 	/// </summary>
 	public class Status_M1911 : Status_Base {
 		public override float ReloadTime { get { return 0.3f; } }
-		public override int MaxRoundAmount { get { return 7; } }
+		public override int MaxRoundAmount { get { return 11; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override eItemType[] RequireItem { get { return new eItemType[] { eItemType.AMMO_45AP }; } }
 		public override bool Useable { get { return true; } }
@@ -558,6 +649,7 @@ namespace EFN {
 		public override long DefaultPrice { get { return 8230; } }
 		public override bool UsingSilence { get { return true; } }
 		public override float RecoilRate { get { return 18; } }
+		public override string DisplayName { get { return "M1911"; } }
 	}
 
 	/// <summary>
@@ -567,87 +659,108 @@ namespace EFN {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke1 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke2 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke3 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke4 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke5 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke6 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke7 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke8 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke9 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke10 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke11 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke12 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke13 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Coke14 : Status_Base {
 		public override bool Stackable { get { return true; } }
 		public override int MaxStackSize { get { return 5; } }
 		public override bool DisplayStack { get { return true; } }
+		public override string DisplayName { get { return "Coke"; } }
 	}
 	public class Status_Trophy0 : Status_Base {
+		public override string DisplayName { get { return "Trophy"; } }
 	}
 	public class Status_Trophy1 : Status_Base {
+		public override string DisplayName { get { return "Trophy"; } }
 	}
 	public class Status_Trophy2 : Status_Base {
+		public override string DisplayName { get { return "Trophy"; } }
 	}
 	public class Status_Trophy3 : Status_Base {
+		public override string DisplayName { get { return "Trophy"; } }
 	}
 	public class Status_Trophy4 : Status_Base {
+		public override string DisplayName { get { return "Trophy"; } }
 	}
 	public class Status_Trophy5 : Status_Base {
+		public override string DisplayName { get { return "Trophy"; } }
 	}
 }

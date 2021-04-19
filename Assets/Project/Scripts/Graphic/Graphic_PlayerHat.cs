@@ -10,7 +10,9 @@ namespace EFN.Game {
 
 		public void SetItem(Data_Item item) {
 
-			Destroy(_hatObject.gameObject);
+			if (null != _hatObject) {
+				Destroy(_hatObject.gameObject);
+			}
 
 			if (null == item) {
 				return;

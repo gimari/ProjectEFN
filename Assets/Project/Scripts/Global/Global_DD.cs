@@ -11,7 +11,6 @@ public class Global_DD : MonoBehaviour {
 		foreach (IDontDestroy dd in ddList) {
 			dd.Init();
 		}
-
 	}
 }
 

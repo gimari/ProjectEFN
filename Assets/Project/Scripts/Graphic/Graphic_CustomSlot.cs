@@ -13,7 +13,5 @@ namespace EFN {
         public override void OnSlotDropDowned(Graphic_ItemSlot fromSlot) {
             CustomDropAction?.Invoke(this, fromSlot);
         }
-
-        public override void OnBeginDrag(PointerEventData eventData) { }
     }
 }

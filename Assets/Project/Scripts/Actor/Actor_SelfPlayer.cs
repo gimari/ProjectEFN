@@ -97,6 +97,11 @@ namespace EFN.Game {
 				return;
 			}
 
+			// 애석하게도 퀵슬롯에서는 equip 가능한놈은 사용 불가능 하다.
+			if (targetItem.StatusData.TargetEquipSlot != ePlayerSlotType.None) {
+				return;
+			}
+
 			// 발사부터 멈춤
 			FireEnd();
 
@@ -228,6 +233,9 @@ namespace EFN.Game {
 
 				Global_UIEvent.CallUIEvent(eEventType.OnPlayerShoot);
 
+				// arm 에서 발사 애니메이션 재생해야함
+				_playerArmObject.Fire();
+
 				switch (fireTarget.StatusData.WeaponType) {
 					case eWeaponCategory.Common:
 						this.ShootGunWeapon(fireTarget.StatusData, firedItem);
@@ -240,9 +248,6 @@ namespace EFN.Game {
 						break;
 				}
 				
-				// arm 에서 발사 애니메이션 재생해야함
-				_playerArmObject.Fire();
-
 				// 연사속도 기다린다.
 				yield return new WaitForSeconds(fireTarget.StatusData.FireRate);
 
@@ -273,10 +278,9 @@ namespace EFN.Game {
 			// 떄려야하는 타겟들
 			int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
 			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, _sightDirection, 1.5f, targetLayer);
-			
+
 			// ray 를 쏴서 맞을 놈이 있는지 검사.
 			if (rays) {
-
 				// dmgable 을 때리면 Hit 이후에 죽을 수가 있으니 처리에 조심하자.
 				Damageable dmgable = rays.transform.GetComponent<Damageable>();
 				if (null != dmgable) {
@@ -301,6 +305,8 @@ namespace EFN.Game {
 					damage.Pos = dmgable.transform.position;
 
 					dmgable.Hit(damage);
+
+					_playerArmObject.PlaySound(Global_SoundContainer.GetSound(eSoundClip.Knife_Hit));
 				}
 
 				// 맞은곳에 탄흔 이펙트
@@ -344,6 +350,15 @@ namespace EFN.Game {
 			lineinfo.Pos = _playerArmObject.GetMuzzlePos;
 			lineinfo.Duration = 0.1f;
 			lineinfo.EndPos = lineinfo.Pos + (shootDir.normalized * 10);
+
+			// 총구이펙트
+			EffectInstanceInfo muzzle = new EffectInstanceInfo(eEffectType.MuzzleSpark);
+			muzzle.Pos = _playerArmObject.GetMuzzlePos;
+			muzzle.RotateType = eEffectRotateType.Normal;
+			muzzle.TargetNormal = _sightDirection.normalized;
+			muzzle.Duration = 1f;
+
+			Global_Effect.ShowEffect(muzzle);
 
 			// ray 를 쏴서 맞을 놈이 있는지 검사.
 			if (rays) {
@@ -404,6 +419,15 @@ namespace EFN.Game {
 
 			// 떄려야하는 타겟들
 			int targetLayer = (1 << (int)eLayerMask.EnemyHittable) + (1 << (int)eLayerMask.OtherHittable);
+
+			// 총구이펙트
+			EffectInstanceInfo muzzle = new EffectInstanceInfo(eEffectType.MuzzleSpark);
+			muzzle.Pos = _playerArmObject.GetMuzzlePos;
+			muzzle.RotateType = eEffectRotateType.Normal;
+			muzzle.TargetNormal = _sightDirection.normalized;
+			muzzle.Duration = 1f;
+
+			Global_Effect.ShowEffect(muzzle);
 
 			// 샷건은 한번에 여러발을 쏴야 한다.
 			for (int idx = 0; idx < gunStatus.FireRoundsInSingle; idx++) {

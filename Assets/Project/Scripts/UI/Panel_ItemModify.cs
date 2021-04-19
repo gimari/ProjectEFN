@@ -21,6 +21,7 @@ namespace EFN {
 
         [SerializeField] private Graphic_FadePop _popup = default;
         [SerializeField] private Graphic_LayoutList _modifyBtnList = default;
+		[SerializeField] private Transform _modifyPanel = default;
 
         public void SetInfo(ModifyPanelData panelData) {
             this._popup.Show();
@@ -31,7 +32,7 @@ namespace EFN {
                 content.OnUpdate(btnInfo);
             }
 
-            this.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+			_modifyPanel.position = (Vector2)Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         }
 
         public void EndInfo() {

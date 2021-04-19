@@ -11,7 +11,12 @@ namespace EFN.Game {
 	public class Graphic_PlayerArm : MonoBehaviour {
 
 		[SerializeField] private Graphic_Gun _targetGun = null;
+		[SerializeField] private AudioSource _audioSource = default;
+
 		private eArmGraphicStatus _currentStatus = eArmGraphicStatus.BareHand;
+
+		private eItemType _currentItemType = eItemType.None;
+		public eItemType CurrentItemType { set { _currentItemType = value; } }
 
 		public Vector2 GetMuzzlePos {
 			get {
@@ -46,6 +51,7 @@ namespace EFN.Game {
 			}
 
 			_currentStatus = eArmGraphicStatus.Gun;
+			_currentItemType = item.ItemType;
 			_targetGun = gunGraphic;
 
 			switch(item.StatusData.ItemCategory) {
@@ -74,8 +80,20 @@ namespace EFN.Game {
 				return;
 			}
 
+			if (null != _audioSource) {
+				_audioSource.clip = Global_SoundContainer.GetFireSound(_currentItemType);
+				_audioSource.Play();
+			}
+
 			_targetGun.GunAnimator.speed = 1;
 			_targetGun.GunAnimator.Play("Fire");
+		}
+
+		public void PlaySound(AudioClip audio) {
+			if (null != _audioSource) {
+				_audioSource.clip = audio;
+				_audioSource.Play();
+			}
 		}
 
 		public void SetBareHand() {

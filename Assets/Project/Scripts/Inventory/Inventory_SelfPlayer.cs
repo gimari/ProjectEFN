@@ -241,5 +241,25 @@ namespace EFN {
 				_inventoryList.Add(pair.Key, pair.Value);
 			}
 		}
+
+		public static Inventory_SelfPlayer GetClearedInven(Inventory_SelfPlayer inventory) {
+			Inventory_SelfPlayer rv = new Inventory_SelfPlayer();
+
+			List<KeyValuePair<int, Data_Item>> safeInven = new List<KeyValuePair<int, Data_Item>>();
+
+			foreach (KeyValuePair<int, Data_Item> pair in inventory._inventoryList) {
+				if (pair.Key == (int)ePlayerSlotType.Head || pair.Key == (int)ePlayerSlotType.Knife) {
+					safeInven.Add(pair);
+				}
+			}
+
+			rv._inventoryList.Clear();
+
+			foreach (KeyValuePair<int, Data_Item> pair in safeInven) {
+				rv._inventoryList.Add(pair.Key, pair.Value);
+			}
+
+			return rv;
+		}
 	}
 }

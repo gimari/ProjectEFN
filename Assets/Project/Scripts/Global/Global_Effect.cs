@@ -12,6 +12,7 @@ namespace EFN {
 		SpikyBurst,
 		ExplosionNova,
 		RoundExplosion,
+		MuzzleSpark,
 	}
 
 	public enum eEffectRotateType {

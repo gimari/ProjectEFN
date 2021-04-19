@@ -35,6 +35,10 @@ namespace EFN.Game {
 
 			this._backpackSlotList.Init();
 			foreach (Content_ItemSlot slot in _indexedSlotList) {
+				if (null == slot) {
+					continue;
+				}
+
 				slot.ClearImage();
 				slot.gameObject.SetActive(false);
 			}
@@ -43,12 +47,16 @@ namespace EFN.Game {
 			if (null != Global_Actor.SelfPlayer) {
 				Global_Actor.SelfPlayer.RefreshEquipItem();
 
-				int selfinvenCount = Global_Actor.SelfPlayer.ActorInventory.MaxDisplayIndex;
+				int selfinvenCount = Global_SelfPlayerData.SelfInventory.MaxDisplayIndex;
 				int idx = (int)ePlayerSlotType.PrimeWeapon;
 
 				// 퀵슬롯 부분부터 갱신
 				for (; idx < selfinvenCount && idx < (int)ePlayerSlotType.BackpackSlotStart; idx++) {
 					Content_ItemSlot slot = _indexedSlotList[idx - (int)ePlayerSlotType.PrimeWeapon];
+
+					if (null == slot) {
+						continue;
+					}
 
 					slot.gameObject.SetActive(true);
 					slot.TargetSlot.QuickSlotIdx = idx;

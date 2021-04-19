@@ -79,7 +79,7 @@ public class Graphic_NumericText : MonoBehaviour
         _currentValue = from;
         targetValue = to;
         timer = 0;
-        if (animationRoutineAlive == false) {
+        if (animationRoutineAlive == false && this.gameObject.activeInHierarchy == true) {
             animateRoutine = StartCoroutine(TextAnimationRoutine(format));
         }
     }

@@ -65,6 +65,7 @@ namespace EFN.Game {
 			StartCoroutine(RandomSearchingRoutine());
 
 			this._soundReceiver.OnHearSound = this.OnHearSound;
+			this._playerArmObject.CurrentItemType = _usingWeapon;
 		}
 
 		protected override void OnStart() {
@@ -75,6 +76,12 @@ namespace EFN.Game {
 			info.Duration = 1f;
 
 			Global_Effect.ShowEffect(info);
+
+			// duration 이 돌아오면 공격할 수 있다
+			Status_Base weapon = Status_Base.GetStatus(this._usingWeapon);
+			if (null != weapon) {
+				_remainRound = weapon.MaxRoundAmount / 4;
+			}
 		}
 
 		protected virtual void FixedUpdate() {
@@ -199,12 +206,15 @@ namespace EFN.Game {
 				return;
 			}
 
-			// 지정된 maxround 의 절반을 쓰면 1초동안 공격 안함.
+			// 지정된 maxround 의 1/4 을 쓰면 2초동안 공격 안함.
 			if (_remainRound <= 0) {
-				_remainRound = weapon.MaxRoundAmount / 2;
-				_attackDuration = 1;
+				_remainRound = weapon.MaxRoundAmount / 4;
+				_attackDuration = 2;
 				return;
 			}
+
+			// arm 에서 발사 애니메이션 재생해야함
+			_playerArmObject.Fire();
 
 			_attackDuration = weapon.FireRate;
 			_remainRound--;
@@ -223,6 +233,15 @@ namespace EFN.Game {
 			lineinfo.Pos = _playerArmObject.GetMuzzlePos;
 			lineinfo.Duration = 0.1f;
 			lineinfo.EndPos = lineinfo.Pos + (shootDir.normalized * 10);
+
+			// 총구이펙트
+			EffectInstanceInfo muzzle = new EffectInstanceInfo(eEffectType.MuzzleSpark);
+			muzzle.Pos = _playerArmObject.GetMuzzlePos;
+			muzzle.RotateType = eEffectRotateType.Normal;
+			muzzle.TargetNormal = _sightDirection.normalized;
+			muzzle.Duration = 1f;
+
+			Global_Effect.ShowEffect(muzzle);
 
 			// ray 를 쏴서 맞을 놈이 있는지 검사.
 			if (rays) {
@@ -441,7 +460,7 @@ namespace EFN.Game {
 		/// </summary>
 		private void EnemyFocusScream(bool withScream = false) {
 			SoundGeneratingData sgd = new SoundGeneratingData();
-			sgd.Radius = 7f;
+			sgd.Radius = 4.5f;
 			this._soundGenerator.MakeSound(sgd);
 		}
 

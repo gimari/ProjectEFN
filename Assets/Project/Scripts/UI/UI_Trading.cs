@@ -33,6 +33,9 @@ namespace EFN.Main {
 		private const int MAX_SELL_SLOT_COUNT = 25;
 
 		private void Awake() {
+			_dealerList.Init();
+			_sellSlotLost.Init();
+
 			Global_UIEvent.RegisterUIEvent<eDealerType>(eEventType.OpenDealerPanel, OpenDealerPanel);
 			Global_UIEvent.RegisterUIEvent(eEventType.UpdateUserInventory, UpdateTradingPanel);
 		}
@@ -49,6 +52,7 @@ namespace EFN.Main {
 			}
 
 			this.Open();
+			OnClickClearDealTable();
 			InitTradingPanel();
 		}
 
@@ -59,7 +63,7 @@ namespace EFN.Main {
 			_txtDealExpectResult.SetNumericTextWithOutAnimation(0, MoneyFormat.JustComma);
 
 			// 판매 대기 리스트 초기화
-			_sellSlotLost.Init();
+			_sellSlotLost.Clear();
 			for (int sellSlotIdx = 0; sellSlotIdx < MAX_SELL_SLOT_COUNT; sellSlotIdx++) {
 				Graphic_CustomSlot slot = _sellSlotLost.AddWith<Graphic_CustomSlot>();
 				slot.CustomDropAction = SellSlotDropAction;
@@ -69,7 +73,7 @@ namespace EFN.Main {
 			Status_Dealer dealer = Status_Dealer.GetStatus(_currentDealer);
 
 			// 딜러 리스트 초기화
-			_dealerList.Init();
+			_dealerList.Clear();
 			for (int dealerIdx = 0; dealerIdx < dealer.DealerInven.MaxDisplayIndex; dealerIdx++) {
 				Content_ItemSlot slot = _dealerList.AddWith<Content_ItemSlot>();
 
@@ -116,6 +120,7 @@ namespace EFN.Main {
 		}
 
 		public void OnClickBack() {
+			OnClickClearDealTable();
 			this.Close();
 			Global_UIEvent.CallUIEvent(eEventType.OpenTradeSelectPanel);
 		}
@@ -125,6 +130,7 @@ namespace EFN.Main {
 		}
 
 		private void Close() {
+			Global_SelfPlayerData.Save();
 			this._panel.SetActive(false);
 		}
 
@@ -133,6 +139,7 @@ namespace EFN.Main {
 		}
 
 		public void OnClickBuy() {
+			OnClickClearDealTable();
 			_sellPanelPopup.Hide();
 		}
 
@@ -151,6 +158,7 @@ namespace EFN.Main {
 			}
 
 			Global_SelfPlayerData.CokeAmount += resultMoney;
+			Global_SelfPlayerData.Save();
 
 			UpdateTradingPanel();
 			OnClickClearDealTable();
@@ -227,6 +235,9 @@ namespace EFN.Main {
 
 				Global_SelfPlayerData.StashInventory.AddInventory(addedItem);
 			}
+
+			// 저장
+			Global_SelfPlayerData.Save();
 
 			_buyPanelPopup.Hide();
 		}

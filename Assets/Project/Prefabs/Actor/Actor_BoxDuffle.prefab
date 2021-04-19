@@ -388,7 +388,7 @@ MonoBehaviour:
   - ItemType: 10
     DropRate: 3
     MinCount: 1
-    MaxCount: 30
+    MaxCount: 5
   - ItemType: 11
     DropRate: 3
     MinCount: 1
@@ -403,6 +403,10 @@ MonoBehaviour:
     MaxCount: 1
   - ItemType: 7
     DropRate: 0.1
+    MinCount: 1
+    MaxCount: 1
+  - ItemType: 6
+    DropRate: 10
     MinCount: 1
     MaxCount: 1
 --- !u!50 &4731128414640339060

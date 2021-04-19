@@ -38,7 +38,9 @@ SpriteAtlas:
   - {fileID: 21300000, guid: 790772d0f8b58924981f8e8991cf1c34, type: 3}
   - {fileID: 21300000, guid: a0070b413b3b1ea428e180c1704de18c, type: 3}
   - {fileID: 21300000, guid: 860584d469434df46aa5ade7602f5032, type: 3}
+  - {fileID: 21300000, guid: 160931e491bd97243bc1e4db81fb007f, type: 3}
   - {fileID: 21300000, guid: 3cd8eba578e8b874db1b079595e0ef42, type: 3}
+  - {fileID: 21300000, guid: ad2dabb54701ae445a24c2a257b18181, type: 3}
   - {fileID: 21300000, guid: 7e0fa836cb02fb347bf692680467a3ad, type: 3}
   - {fileID: 21300000, guid: 2008c146ddf62a3438770b38a98f1730, type: 3}
   - {fileID: 21300000, guid: 9e6643a6334fcbc41beaaeb9eb7dddb1, type: 3}
@@ -49,13 +51,16 @@ SpriteAtlas:
   - {fileID: 21300000, guid: cce5ccda21dcf7b418d135717d8994e0, type: 3}
   - {fileID: 21300000, guid: ccbf666baef362747bd6c369733785e3, type: 3}
   - {fileID: 21300000, guid: d5676f2ce9e89584da8997a6f941e0c5, type: 3}
+  - {fileID: 21300000, guid: 93db7c0e28c99304ab886eecc20e9ce1, type: 3}
   - {fileID: 21300000, guid: 5cce2dde3846d694da0fcab153610373, type: 3}
   m_PackedSpriteNamesToIndex:
   - Box_1
   - SandPocket_2
   - SandPocket_1
   - box
+  - Car
   - chair_1
+  - Container
   - window_2
   - window_1
   - box_duffle
@@ -66,6 +71,7 @@ SpriteAtlas:
   - rock_0
   - WalkBlocker_1
   - grass_0
+  - Drums
   - MapWall_0
   m_Tag: Atlas_Object
   m_IsVariant: 0

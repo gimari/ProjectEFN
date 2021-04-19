@@ -13,6 +13,9 @@ namespace EFN {
 		[Header("Config")]
 		[SerializeField] private bool _useEmptyImage = true;
 		[SerializeField] private bool _blockAnyDrag = false;
+		public bool BlockAnyDrag {
+			get { return _blockAnyDrag; }
+		}
 
 		[SerializeField] private int _quickSlotIdx = default;
 		public int QuickSlotIdx {
@@ -26,6 +29,7 @@ namespace EFN {
 		[SerializeField] private Text _txtItemCount = default;
 		[SerializeField] private Image _raycastTarget = default;
 		[SerializeField] private GameObject _blockImage = default;
+		[SerializeField] private Text _txtitemName = default;
 
 		private Data_Item _targetData = null;
 		public Data_Item TargetData {
@@ -93,6 +97,10 @@ namespace EFN {
 
 			this._txtItemCount.gameObject.SetActive(data.StatusData.DisplayStack);
 			this._txtItemCount.text = data.StackCount.ToString() + "/" + data.StatusData.MaxStackSize.ToString();
+
+			if (null != _txtitemName) {
+				_txtitemName.text = data.StatusData.DisplayName;
+			}
 		}
 
 		public virtual void ClearImage() {
@@ -109,6 +117,10 @@ namespace EFN {
 
 			if (null != _txtItemCount) {
 				_txtItemCount.gameObject.SetActive(false);
+			}
+
+			if (null != _txtitemName) {
+				_txtitemName.text = "";
 			}
 		}
 

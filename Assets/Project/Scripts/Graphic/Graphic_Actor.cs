@@ -6,6 +6,7 @@ namespace EFN.Game {
     public class Graphic_Actor : MonoBehaviour {
 
 		[SerializeField] private Animator _actorAnim = default;
+		[SerializeField] private AudioSource _audioSource = default;
 
         public Vector3 Pos { get { return this.transform.position; } }
 
@@ -36,6 +37,13 @@ namespace EFN.Game {
 
 		public bool IsFlip() {
 			return this.transform.localScale.x < 0;
+		}
+
+		public void PlayAudioWalk() {
+			if (null != this._audioSource) {
+				_audioSource.clip = Global_SoundContainer.GetWalk();
+				_audioSource.Play();
+			}
 		}
     }
 }

@@ -37,13 +37,17 @@ namespace EFN {
 		public void TryPickSlot(Graphic_ItemSlot target) {
 
 			EndModifySlot();
-
+			
 			// 빈 곳을 눌렀을 때..
 			if (null == target.TargetData) {
 				target.OnSlotDropDowned(_fromSlot);
 				EndPickSlot();
 
 			} else if (null == _fromSlot) {
+				if (true == target.BlockAnyDrag) {
+					return;
+				}
+
 				// 안 비어있는곳을 눌렀는데 현재 집은게 없으면 들고온다.
 				this.UpdateImage(target.TargetData);
 
@@ -56,6 +60,12 @@ namespace EFN {
 				this._fromSlot = target;
 
 			} else {
+				// 빈곳도 아니고 이미 들고있는것도 있다.
+				if (true == target.BlockAnyDrag) {
+					EndPickSlot();
+					return;
+				}
+
 				target.OnSlotDropDowned(_fromSlot);
 				EndPickSlot();
 			}

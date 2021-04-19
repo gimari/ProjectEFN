@@ -27,6 +27,8 @@ namespace EFN {
 		OnPlayerShoot,
 		OnPlayerSwapWeapon,
 		OnPlayerDamageTaken,
+		OpenSetting,
+		OnShowDeploy,
 
 		ShowFloatingDamage,
 
@@ -45,6 +47,7 @@ namespace EFN {
 
 		ShowFade,
 		HideFade,
+		ShowMessage,
 
 		TryChangeScene,
 	}

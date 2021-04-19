@@ -226,7 +226,7 @@ namespace EFN {
 			if (target.ItemType != fromItem.ItemType || target.StatusData.Stackable == false || target.IsFullStack == true) {
 
 				// 바뀌는 대상이 되는 놈이 해당 슬롯에 들어갈 수 있는지 체크 해야한다.
-				if (false == CheckSlotIndex(target, fromItem.SlotIndex)) {
+				if (false == externalInven.CheckSlotIndex(target, fromItem.SlotIndex)) {
 					return eErrorCode.Fail;
 				}
 
