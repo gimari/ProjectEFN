@@ -226,7 +226,7 @@ namespace EFN.Game {
 
 			// 떄려야하는 타겟들
 			int targetLayer = (1 << (int)eLayerMask.UserHitbox) + (1 << (int)eLayerMask.OtherHittable);
-			RaycastHit2D rays = Physics2D.Raycast(_playerArmObject.GetMuzzlePos, shootDir, 10, targetLayer);
+			RaycastHit2D rays = Physics2D.Raycast(Graphic.Pos, shootDir, 10, targetLayer);
 
 			// 총알 날라가는 이펙트 부터 우선 생성
 			EffectInstanceInfo lineinfo = new EffectInstanceInfo(eEffectType.BulletLine);

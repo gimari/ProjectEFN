@@ -240,7 +240,7 @@ namespace EFN {
 	public class Status_9X39SP5 : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 30; } }
+		public override int MaxStackSize { get { return 90; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 21; } }
 		public override long DefaultPrice { get { return 167; } }
@@ -253,7 +253,7 @@ namespace EFN {
 	public class Status_9X19AP : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 30; } }
+		public override int MaxStackSize { get { return 90; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 16; } }
 		public override long DefaultPrice { get { return 83; } }
@@ -265,7 +265,7 @@ namespace EFN {
 	/// </summary>
 	public class Status_ASVAL : Status_Base {
 		public override float ReloadTime { get { return 0.5f; } }
-		public override int MaxRoundAmount { get { return 20; } }
+		public override int MaxRoundAmount { get { return 25; } }
 		public override eItemCategory ItemCategory { get { return eItemCategory.Weapon; } }
 		public override bool Useable { get { return true; } }
 		public override bool Fireable { get { return true; } }
@@ -340,7 +340,7 @@ namespace EFN {
 		public override float FireRate { get { return 0.3f; } }
 		public override float UseCoolTime { get { return 0.3f; } }
 		public override eWeaponCategory WeaponType { get { return eWeaponCategory.Knife; } }
-		public override float DmgAmount { get { return 27; } }
+		public override float DmgAmount { get { return 22; } }
 		public override ePlayerSlotType TargetEquipSlot { get { return ePlayerSlotType.Knife; } }
 		public override long DefaultPrice { get { return 444444; } }
 		public override string DisplayName { get { return "Recorder"; } }
@@ -466,7 +466,7 @@ namespace EFN {
 	public class Status_23X75 : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 5; } }
+		public override int MaxStackSize { get { return 9; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 22; } }
 		public override long DefaultPrice { get { return 826; } }
@@ -479,7 +479,7 @@ namespace EFN {
 	public class Status_9X197N : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 30; } }
+		public override int MaxStackSize { get { return 90; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 18; } }
 		public override long DefaultPrice { get { return 22; } }
@@ -531,7 +531,7 @@ namespace EFN {
 	public class Status_45AP : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 40; } }
+		public override int MaxStackSize { get { return 120; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 19; } }
 		public override long DefaultPrice { get { return 173; } }
@@ -563,7 +563,7 @@ namespace EFN {
 	public class Status_762BP : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 30; } }
+		public override int MaxStackSize { get { return 90; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 24; } }
 		public override long DefaultPrice { get { return 134; } }
@@ -576,7 +576,7 @@ namespace EFN {
 	public class Status_762US : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 30; } }
+		public override int MaxStackSize { get { return 90; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 28; } }
 		public override long DefaultPrice { get { return 162; } }
@@ -626,7 +626,7 @@ namespace EFN {
 	public class Status_556M855 : Status_Base {
 		public override eItemCategory ItemCategory { get { return eItemCategory.Ammo; } }
 		public override bool Stackable { get { return true; } }
-		public override int MaxStackSize { get { return 30; } }
+		public override int MaxStackSize { get { return 90; } }
 		public override bool DisplayStack { get { return true; } }
 		public override float DmgAmount { get { return 22; } }
 		public override long DefaultPrice { get { return 195; } }

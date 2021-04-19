@@ -130,7 +130,7 @@ namespace EFN {
 
 	internal class Status_SkillMelee : Status_Skill {
 		public override int MaxLevel { get { return 10; } }
-		public override float EffectAmount(int level) { return 1 + (level * 0.05f); }
+		public override float EffectAmount(int level) { return 1 + (level * 0.03f); }
 		public override long NextLevelCost(int level) { return 3629 + (level) * 1429; }
 		public override string Explain { get { return "{0}배 더 쎈 주먹을 가집니다!"; } }
 	}
